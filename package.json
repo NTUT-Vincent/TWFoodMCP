@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "wrangler dev --config worker/wrangler.jsonc",
     "deploy": "wrangler deploy --config worker/wrangler.jsonc",
+    "check:deploy": "wrangler deploy --dry-run --config worker/wrangler.jsonc",
     "typecheck": "tsc --noEmit",
     "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/worker.test.mjs"
   },
