@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "wrangler dev --config worker/wrangler.jsonc",
     "deploy": "wrangler deploy --config worker/wrangler.jsonc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/worker.test.mjs"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260731.0",
+    "@cloudflare/workers-types": "^5.20260728.1",
     "typescript": "^5.8.3",
-    "wrangler": "^4.26.1"
+    "wrangler": "^4.114.0"
   }
 }
