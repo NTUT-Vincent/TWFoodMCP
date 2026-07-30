@@ -1,0 +1,16 @@
+{
+  "name": "twfoodmcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --config worker/wrangler.jsonc",
+    "deploy": "wrangler deploy --config worker/wrangler.jsonc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260731.0",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.26.1"
+  }
+}
