@@ -1,0 +1,17 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "okf-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-31",
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "GITHUB_REPOSITORY": "NTUT-Vincent/TWFoodMCP",
+    "GITHUB_DEFAULT_BRANCH": "main"
+  }
+  // Add a KV binding named DATASET after creating the namespace:
+  // "kv_namespaces": [{ "binding": "DATASET", "id": "<namespace-id>" }]
+  // Add secrets with: wrangler secret put GITHUB_TOKEN --config worker/wrangler.jsonc
+  // and: wrangler secret put DRAFT_API_TOKEN --config worker/wrangler.jsonc
+}
