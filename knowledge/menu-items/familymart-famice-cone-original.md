@@ -1,11 +1,14 @@
 ---
 type: Food Product
 title: 全家 Fami!ce 霜淇淋餅皮（原味）
-status: draft
+status: stable
 stale_after: 2027-02-01
 access: {classification: public}
 tags: [全家, Fami!ce, 餅皮, 甜筒, 原味]
 generated: {by: agent:chatgpt-official-page-import, at: 2026-08-01T01:25:00+08:00}
+verified:
+  - by: human:ntut-vincent
+    at: 2026-08-01T01:37:00+08:00
 sources:
   - id: familymart-famice-products-2026-08-01
     resource: https://event.family.com.tw/ice_cream/products.html
@@ -45,11 +48,10 @@ allergens:
   declarations:
     - {allergen: 含麩質穀物, status: contains, source_id: familymart-famice-products-2026-08-01}
     - {allergen: 大豆, status: contains, source_id: familymart-famice-products-2026-08-01}
-quality: {data_quality: official_brand, completeness: full_label, confidence: medium, calculation_allowed: false}
+quality: {data_quality: official_brand, completeness: full_label, confidence: high, calculation_allowed: true}
 limitations:
-  - 尚未由授權真人 reviewer 核對確切商品版本與頁面內容，因此維持 draft。
   - 此文件只描述餅皮，不包含霜淇淋本體。
-  - draft 不進公開 KV，也不可用於正式營養計算。
+  - 商品配方可能變動；超過 stale_after 後必須重新驗證。
 ---
 
 # Summary
