@@ -22,3 +22,17 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run check:deploy
+      - name: Check production KV dataset
+        shell: bash
+        env:
+          DATASET_URL: https://okf-mcp.vincent930093.workers.dev/dataset
+        run: |
+          set -euo pipefail
+          body=$(curl -sS --max-time 20 "$DATASET_URL")
+          echo "Production /dataset response:"
+          echo "$body"
+          if echo "$body" | grep -q '"dataset_version":"unconfigured"'; then
+            echo "KV binding or dataset manifest is not configured yet" >&2
+            exit 1
+          fi
+          echo "$body" | grep -q '"dataset_version"'
