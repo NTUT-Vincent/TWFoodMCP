@@ -22,3 +22,41 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run check:deploy
+      - name: Verify production API
+        shell: bash
+        env:
+          BASE_URL: https://okf-mcp.vincent930093.workers.dev
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 20 "$BASE_URL/health" | tee /tmp/health.json
+          grep -q '"status":"ok"' /tmp/health.json
+          grep -q '"service":"TWFoodMCP"' /tmp/health.json
+
+          curl -fsS --max-time 20 "$BASE_URL/" | tee /tmp/root.json
+          grep -q '"mcp":"/mcp"' /tmp/root.json
+
+          curl -fsS --max-time 20 "$BASE_URL/dataset" | tee /tmp/dataset.json
+          grep -q '"dataset_version"' /tmp/dataset.json
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"github-production-test","version":"1.0.0"}}}' \
+            | tee /tmp/initialize.json
+          grep -q '"name":"TWFoodMCP"' /tmp/initialize.json
+          grep -q '"protocolVersion":"2025-06-18"' /tmp/initialize.json
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+            | tee /tmp/tools.json
+          grep -q '"name":"search_food"' /tmp/tools.json
+          grep -q '"name":"create_draft"' /tmp/tools.json
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":3,"method":"ping","params":{}}' \
+            | tee /tmp/ping.json
+          grep -q '"result":{}' /tmp/ping.json
