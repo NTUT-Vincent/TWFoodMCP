@@ -1,0 +1,1 @@
+Trigger live API smoke verification after root Wrangler config fix.
