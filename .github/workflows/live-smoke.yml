@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   smoke:
@@ -73,3 +74,32 @@ jobs:
             --data '{"jsonrpc":"2.0","id":3,"method":"ping","params":{}}' \
             | tee /tmp/ping.json
           grep -q '"result":{}' /tmp/ping.json
+
+      - name: Report smoke-test result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="Live API smoke test: ${JOB_STATUS}"
+          body=$(cat <<EOF
+          Automated live API verification finished.
+
+          - Status: **${JOB_STATUS}**
+          - Endpoint: \`${BASE_URL}\`
+          - Commit: \`${GITHUB_SHA}\`
+          - Workflow run: ${RUN_URL}
+
+          Tested:
+          - \`GET /health\`
+          - \`GET /\`
+          - \`GET /dataset\`
+          - MCP \`initialize\`
+          - MCP \`tools/list\`
+          - MCP \`ping\`
+          EOF
+          )
+          gh issue create --title "$title" --body "$body"
