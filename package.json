@@ -8,11 +8,15 @@
     "deploy": "wrangler deploy --config worker/wrangler.jsonc",
     "check:deploy": "wrangler deploy --dry-run --config worker/wrangler.jsonc",
     "typecheck": "tsc --noEmit",
-    "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/worker.test.mjs"
+    "validate:data": "node scripts/validate-okf.mjs",
+    "build:dataset": "node scripts/build-kv-dataset.mjs",
+    "publish:dataset": "node scripts/publish-kv-dataset.mjs",
+    "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260728.1",
     "typescript": "^5.8.3",
-    "wrangler": "^4.114.0"
+    "wrangler": "^4.114.0",
+    "yaml": "^2.9.0"
   }
 }
