@@ -1,7 +1,7 @@
 ---
 type: Food Product
 title: 全家 Fami!ce 日世霜淇淋－日式甜醬油
-status: draft
+status: stable
 stale_after: 2027-02-01
 access:
   classification: public
@@ -9,6 +9,9 @@ tags: [全家, Fami!ce, 霜淇淋, 日式甜醬油, 奶素]
 generated:
   by: agent:chatgpt-official-page-import
   at: 2026-08-01T01:25:00+08:00
+verified:
+  - by: human:ntut-vincent
+    at: 2026-08-01T01:37:00+08:00
 sources:
   - id: familymart-famice-products-2026-08-01
     resource: https://event.family.com.tw/ice_cream/products.html
@@ -66,11 +69,10 @@ allergens:
 quality:
   data_quality: official_brand
   completeness: full_label
-  confidence: medium
-  calculation_allowed: false
+  confidence: high
+  calculation_allowed: true
 limitations:
-  - 尚未由授權真人 reviewer 核對確切商品版本與頁面內容，因此維持 draft。
-  - draft 不進公開 KV，也不可用於正式營養計算。
+  - 商品口味、配方與販售期間可能變動；超過 stale_after 後必須重新驗證。
 ---
 
 # Summary
