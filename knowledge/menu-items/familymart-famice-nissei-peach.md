@@ -2,7 +2,7 @@
 type: Food Product
 title: 全家 Fami!ce 日世霜淇淋－水蜜桃
 description: 全家便利商店台灣門市販售之日世水蜜桃風味霜淇淋，資料取自全家官方 Fami!ce 商品頁。
-status: draft
+status: stable
 stale_after: 2027-02-01
 access:
   classification: public
@@ -15,6 +15,9 @@ tags:
 generated:
   by: agent:chatgpt-official-page-import
   at: 2026-08-01T01:25:00+08:00
+verified:
+  - by: human:ntut-vincent
+    at: 2026-08-01T01:37:00+08:00
 sources:
   - id: familymart-famice-products-2026-08-01
     resource: https://event.family.com.tw/ice_cream/products.html
@@ -107,11 +110,10 @@ allergens:
 quality:
   data_quality: official_brand
   completeness: full_label
-  confidence: medium
-  calculation_allowed: false
+  confidence: high
+  calculation_allowed: true
 limitations:
-  - 尚未由授權真人 reviewer 核對確切商品版本與頁面內容，因此維持 draft。
-  - draft 不進公開 KV，也不可用於正式營養計算。
+  - 商品口味、配方與販售期間可能變動；超過 stale_after 後必須重新驗證。
 ---
 
 # Summary
