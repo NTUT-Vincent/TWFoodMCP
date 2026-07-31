@@ -24,11 +24,15 @@ jobs:
           set -euo pipefail
           for i in $(seq 1 30); do
             echo "Attempt $i/30"
-            if body=$(curl -fsS --max-time 10 "$BASE_URL/health"); then
+            body=$(curl -fsS --max-time 10 "$BASE_URL/health" 2>/tmp/curl-error || true)
+            if echo "$body" | grep -q '"status":"ok"' && echo "$body" | grep -q '"service":"TWFoodMCP"'; then
               echo "$body"
-              echo "$body" | grep -q '"status":"ok"'
-              echo "$body" | grep -q '"service":"TWFoodMCP"'
               exit 0
+            fi
+            if [ -n "$body" ]; then
+              echo "Unexpected response: $body"
+            elif [ -s /tmp/curl-error ]; then
+              cat /tmp/curl-error
             fi
             sleep 10
           done
@@ -103,4 +107,4 @@ jobs:
           - MCP \`ping\`
           EOF
           )
-          gh issue create --title "$title" --body "$body"
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
