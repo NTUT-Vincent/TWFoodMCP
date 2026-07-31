@@ -24,7 +24,7 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
     assert.equal(food.quality.confidence, "high");
     assert.equal(food.quality.calculation_allowed, true);
     assert.equal(food.stale, false);
-    assert.match(food.last_verified, /^2026-08-01T/);
+    assert.equal(food.last_verified, "2026-07-31T17:37:00.000Z");
   }
 
   const peach = dataset.runtimeFoods.find((food) => food.id === "food:tw:menu:familymart:famice-nissei-peach");
