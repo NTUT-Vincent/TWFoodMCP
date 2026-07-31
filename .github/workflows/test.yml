@@ -22,3 +22,27 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run check:deploy
+      - name: Verify deployed preview API
+        shell: bash
+        env:
+          BASE_URL: https://e56f5241-okf-mcp.vincent930093.workers.dev
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 20 "$BASE_URL/health" | tee /tmp/health.json
+          grep -q '"status":"ok"' /tmp/health.json
+          grep -q '"service":"TWFoodMCP"' /tmp/health.json
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"github-preview-test","version":"1.0.0"}}}' \
+            | tee /tmp/initialize.json
+          grep -q '"name":"TWFoodMCP"' /tmp/initialize.json
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+            | tee /tmp/tools.json
+          grep -q '"name":"search_food"' /tmp/tools.json
+          grep -q '"name":"create_draft"' /tmp/tools.json
