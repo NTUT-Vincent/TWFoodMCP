@@ -1,0 +1,99 @@
+name: publish-dataset
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "knowledge/**"
+      - "references/**"
+      - "config/**"
+      - "scripts/**"
+      - "tests/dataset-build.test.mjs"
+      - "package.json"
+      - "worker/**"
+      - ".github/workflows/publish-dataset.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-dataset
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DATASET_VERSION: git-${{ github.sha }}
+      DATASET_TIMESTAMP: ${{ github.event.head_commit.timestamp }}
+      PRODUCTION_BASE_URL: https://okf-mcp.vincent930093.workers.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run validate:data
+      - run: npm test
+      - run: npm run build:dataset
+
+      - name: Check Cloudflare credentials
+        id: credentials
+        shell: bash
+        run: |
+          if [[ -n "$CLOUDFLARE_API_TOKEN" && -n "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Dataset was built but not published. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository Actions secrets."
+          fi
+
+      - name: Publish versioned entries and switch current dataset
+        if: steps.credentials.outputs.available == 'true'
+        run: npm run publish:dataset
+
+      - name: Verify production dataset and search
+        if: steps.credentials.outputs.available == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_version="$(cat dist/kv/current-version.txt)"
+
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error "$PRODUCTION_BASE_URL/dataset" > /tmp/dataset.json; then
+              if EXPECTED_VERSION="$expected_version" node --input-type=module -e '
+                import fs from "node:fs";
+                const body = JSON.parse(fs.readFileSync("/tmp/dataset.json", "utf8"));
+                if (body.dataset_version !== process.env.EXPECTED_VERSION || body.stable_documents !== 7) process.exit(1);
+              '; then
+                break
+              fi
+            fi
+            if [[ "$attempt" == "12" ]]; then
+              echo "Production dataset did not converge to $expected_version" >&2
+              cat /tmp/dataset.json 2>/dev/null || true
+              exit 1
+            fi
+            sleep 10
+          done
+
+          curl --fail --silent --show-error \
+            -X POST "$PRODUCTION_BASE_URL/mcp" \
+            -H "content-type: application/json" \
+            --data '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"Fami","limit":10}}}' \
+            > /tmp/search.json
+
+          EXPECTED_VERSION="$expected_version" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/search.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("search returned the wrong dataset version");
+            if (!Array.isArray(content?.results) || content.results.length < 1) throw new Error("search_food returned no Fami results");
+          '
+
+          echo "Verified dataset $expected_version and search_food in production."
