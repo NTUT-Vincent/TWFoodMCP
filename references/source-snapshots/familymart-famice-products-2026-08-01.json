@@ -1,0 +1,211 @@
+{
+  "source": {
+    "publisher": "全家便利商店股份有限公司",
+    "title": "全家 Fami!ce 霜淇淋商品與營養標示",
+    "url": "https://event.family.com.tw/ice_cream/products.html",
+    "retrieved_at": "2026-08-01T01:25:00+08:00",
+    "source_class": "primary_official",
+    "capture_method": "manual structured extraction from official HTML text",
+    "limitations": [
+      "頁面內容可能隨口味與配方更新。",
+      "商品實際供應與現場標示仍以門市為準。",
+      "此快照僅保存頁面明確列出的營養、成分與過敏原資訊，不補推缺失欄位。"
+    ]
+  },
+  "shared_allergen_statement": {
+    "applies_to": "日世霜淇淋品項",
+    "contains": ["牛奶及其製品"],
+    "production_line_also_handles": ["含麩質穀物", "堅果類", "芝麻", "花生", "蛋", "大豆", "芒果及其製品"]
+  },
+  "items": [
+    {
+      "source_name": "日世霜淇淋-水蜜桃(奶素)",
+      "serving_g": 110,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 151,
+          "protein_g": 2.3,
+          "fat_g": 4.1,
+          "saturated_fat_g": 3.3,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 26.3,
+          "sugar_g": 22.4,
+          "sodium_mg": 40
+        },
+        "per_100g": {
+          "energy_kcal": 137,
+          "protein_g": 2.1,
+          "fat_g": 3.7,
+          "saturated_fat_g": 3.0,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 23.9,
+          "sugar_g": 20.4,
+          "sodium_mg": 36
+        }
+      },
+      "ingredients": ["水", "麥芽糖", "蔗糖", "脫脂奶粉", "植物油（椰子油、硬質棕櫚油）", "水蜜桃原汁", "複方香料（丙二醇、乙醇、水、香料）", "脂肪酸甘油酯", "脂肪酸山梨醇酐酯", "酪蛋白鈉", "膠質微結晶纖維素（微結晶狀α-纖維素、羧甲基纖維素鈉）", "鹿角菜膠", "刺槐豆膠", "多磷酸鈉", "焦糖糖漿（蔗糖、水）", "食用黃色四號", "食用紅色四十號"]
+    },
+    {
+      "source_name": "日世霜淇淋-日式甜醬油(奶素)",
+      "serving_g": 110,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 142,
+          "protein_g": 2.5,
+          "fat_g": 3.4,
+          "saturated_fat_g": 2.9,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 25.3,
+          "sugar_g": 22.3,
+          "sodium_mg": 312
+        },
+        "per_100g": {
+          "energy_kcal": 129,
+          "protein_g": 2.3,
+          "fat_g": 3.1,
+          "saturated_fat_g": 2.6,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 23.0,
+          "sugar_g": 20.3,
+          "sodium_mg": 284
+        }
+      },
+      "ingredients": ["水", "蔗糖", "麥芽糖", "脫脂奶粉", "醬油", "植物油（椰子油、硬質棕櫚油）", "甜醬油香料（水、乙醇、水解蛋白（大豆）、甘油、香料）", "膠質微結晶纖維素（微結晶狀α-纖維素、羧甲基纖維素鈉）", "脂肪酸甘油酯", "脂肪酸山梨醇酐酯", "焦糖糖漿（蔗糖、水）", "酪蛋白鈉", "多磷酸鈉", "關華豆膠", "刺槐豆膠", "鹿角菜膠"]
+    },
+    {
+      "source_name": "日世霜淇淋-山葵(奶素)",
+      "serving_g": 110,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 143,
+          "protein_g": 2.1,
+          "fat_g": 2.6,
+          "saturated_fat_g": 2.1,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 27.7,
+          "sugar_g": 22.7,
+          "sodium_mg": 85
+        },
+        "per_100g": {
+          "energy_kcal": 130,
+          "protein_g": 1.9,
+          "fat_g": 2.4,
+          "saturated_fat_g": 1.9,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 25.2,
+          "sugar_g": 20.6,
+          "sodium_mg": 77
+        }
+      },
+      "ingredients": ["水", "麥芽糖", "蔗糖", "脫脂奶粉", "植物油（椰子油、硬質棕櫚油）", "山葵香料（油菜油、香料、乙醇、混合濃縮生育醇（抗氧化劑））", "膠質微結晶纖維素（微結晶狀α-纖維素、羧甲基纖維素鈉）", "脂肪酸甘油酯", "脂肪酸山梨醇酐酯", "酪蛋白鈉", "精鹽", "多磷酸鈉", "鹿角菜膠", "關華豆膠", "刺槐豆膠", "食用黃色四號", "食用黃色五號", "食用藍色一號"]
+    },
+    {
+      "source_name": "日世霜淇淋-比利時巧克力風味(奶素)",
+      "serving_g": 110,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 156,
+          "protein_g": 4.1,
+          "fat_g": 4.1,
+          "saturated_fat_g": 2.5,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 25.7,
+          "sugar_g": 19.2,
+          "sodium_mg": 63
+        },
+        "per_100g": {
+          "energy_kcal": 141,
+          "protein_g": 3.7,
+          "fat_g": 3.7,
+          "saturated_fat_g": 2.2,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 23.3,
+          "sugar_g": 17.4,
+          "sodium_mg": 57
+        }
+      },
+      "ingredients": ["水", "蔗糖", "脫脂奶粉", "中脂可可粉（可可粉、碳酸鉀）", "麥芽糖", "全脂奶粉", "無鹽奶油", "比利時黑巧克力（可可膏、蔗糖、可可脂、大豆卵磷脂、香草香料）", "脂肪酸甘油酯", "脂肪酸山梨醇酐酯", "酪蛋白鈉", "膠質微結晶纖維素（微結晶狀α-纖維素、羧甲基纖維素）", "巧克力香料（丙二醇、香料、乙醇、水、葡萄糖）", "多磷酸鈉", "刺槐豆膠", "關華豆膠"]
+    },
+    {
+      "source_name": "日世霜淇淋-莊園牛奶(奶素)",
+      "serving_g": 110,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 175,
+          "protein_g": 3.9,
+          "fat_g": 8.7,
+          "saturated_fat_g": 7.5,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 20.2,
+          "sugar_g": 19.0,
+          "sodium_mg": 74
+        },
+        "per_100g": {
+          "energy_kcal": 159,
+          "protein_g": 3.5,
+          "fat_g": 7.9,
+          "saturated_fat_g": 6.8,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 18.4,
+          "sugar_g": 17.3,
+          "sodium_mg": 67
+        }
+      },
+      "ingredients": ["水", "蔗糖", "脫脂奶粉", "鮮乳", "完全氫化椰子油", "無鹽奶油", "麥芽糖", "脂肪酸甘油酯", "脂肪酸山梨醇酐酯", "酪蛋白鈉", "微結晶纖維素（微結晶纖維素、羧甲基纖維素鈉）", "複方香料（丙二醇、糊精、乙醇、水、香料、辛烯基丁二酸鈉澱粉、脂肪酸甘油酯、甘油）", "關華豆膠", "精鹽", "多磷酸鈉", "刺槐豆膠", "鹿角菜膠"]
+    },
+    {
+      "source_name": "Fami霜淇淋餅皮(原味)",
+      "serving_g": 15,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 54.8,
+          "protein_g": 0.9,
+          "fat_g": 0.8,
+          "saturated_fat_g": 0.3,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 11.0,
+          "sugar_g": 4.2,
+          "sodium_mg": 9
+        },
+        "per_100g": {
+          "energy_kcal": 361.9,
+          "protein_g": 5.7,
+          "fat_g": 5.1,
+          "saturated_fat_g": 2.1,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 73.3,
+          "sugar_g": 28.3,
+          "sodium_mg": 62
+        }
+      },
+      "ingredients": ["麵粉", "砂糖", "棕櫚油（棕櫚油、抗氧化劑（L-抗壞血酸棕櫚酸酯）、丙二醇、消泡劑（矽樹脂））", "焦糖色素", "水", "醋酸澱粉", "麥芽糖", "大豆卵磷脂", "小麥纖維", "麥芽精粉（大麥、麥芽、焦糖色素）", "食用鹽", "小蘇打"]
+    },
+    {
+      "source_name": "愛心造型餅皮",
+      "serving_g": 15,
+      "nutrition": {
+        "per_serving": {
+          "energy_kcal": 55.4,
+          "protein_g": 0.9,
+          "fat_g": 0.6,
+          "saturated_fat_g": 0.4,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 11.6,
+          "sugar_g": 4.0,
+          "sodium_mg": 10
+        },
+        "per_100g": {
+          "energy_kcal": 370.4,
+          "protein_g": 6.2,
+          "fat_g": 4.0,
+          "saturated_fat_g": 2.6,
+          "trans_fat_g": 0,
+          "carbohydrate_g": 77.4,
+          "sugar_g": 26.4,
+          "sodium_mg": 64
+        }
+      },
+      "ingredients": ["麵粉", "砂糖", "醋酸澱粉", "水", "椰子油", "竹碳粉", "大豆卵磷脂", "小麥纖維", "食用鹽", "小蘇打"]
+    }
+  ]
+}
