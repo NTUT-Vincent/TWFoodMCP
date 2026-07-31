@@ -1,0 +1,75 @@
+name: live-smoke
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      BASE_URL: https://okf-mcp.vincent930093.workers.dev
+    steps:
+      - name: Wait for health endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 30); do
+            echo "Attempt $i/30"
+            if body=$(curl -fsS --max-time 10 "$BASE_URL/health"); then
+              echo "$body"
+              echo "$body" | grep -q '"status":"ok"'
+              echo "$body" | grep -q '"service":"TWFoodMCP"'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Health endpoint did not become ready" >&2
+          exit 1
+
+      - name: Test root and dataset endpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 15 "$BASE_URL/" | tee /tmp/root.json
+          grep -q '"mcp":"/mcp"' /tmp/root.json
+
+          curl -fsS --max-time 15 "$BASE_URL/dataset" | tee /tmp/dataset.json
+          grep -q '"dataset_version"' /tmp/dataset.json
+
+      - name: Test MCP initialize
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 15 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"github-smoke-test","version":"1.0.0"}}}' \
+            | tee /tmp/initialize.json
+          grep -q '"name":"TWFoodMCP"' /tmp/initialize.json
+          grep -q '"protocolVersion":"2025-06-18"' /tmp/initialize.json
+
+      - name: Test MCP tools list and ping
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 15 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
+            | tee /tmp/tools.json
+          grep -q '"name":"search_food"' /tmp/tools.json
+          grep -q '"name":"create_draft"' /tmp/tools.json
+
+          curl -fsS --max-time 15 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":3,"method":"ping","params":{}}' \
+            | tee /tmp/ping.json
+          grep -q '"result":{}' /tmp/ping.json
