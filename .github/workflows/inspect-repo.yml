@@ -1,0 +1,30 @@
+name: Inspect repository snapshot
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/inspect-repo.yml
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload relevant repository files
+        uses: actions/upload-artifact@v4
+        with:
+          name: repository-inspection
+          path: |
+            knowledge
+            schemas
+            scripts
+            tests
+            worker
+            config
+            package.json
+            tsconfig*.json
+          if-no-files-found: warn
+          retention-days: 1
