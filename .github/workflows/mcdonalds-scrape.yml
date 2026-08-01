@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - scripts/scrape-mcdonalds-tw-api.mjs
+      - scripts/diagnose-mcdonalds-api-response.mjs
       - .github/workflows/mcdonalds-scrape.yml
 
 permissions:
@@ -27,10 +28,15 @@ jobs:
           node scripts/scrape-mcdonalds-tw-api.mjs \
             --output artifacts/mcdonalds-tw-nutrition.api.raw.json
 
+      - name: Capture one raw API response for diagnostics
+        if: always()
+        run: node scripts/diagnose-mcdonalds-api-response.mjs
+
       - name: Upload raw snapshot for review
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mcdonalds-tw-nutrition-api-raw
-          path: artifacts/mcdonalds-tw-nutrition.api.raw.json
+          path: artifacts/*.json
           if-no-files-found: error
           retention-days: 14
