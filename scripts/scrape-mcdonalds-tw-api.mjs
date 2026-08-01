@@ -9,8 +9,6 @@ const CALCULATOR_URL =
   'https://www.mcdonalds.com/tw/zh-tw/sustainability/good-food/nutrition-calculator.html';
 const FULL_MENU_URL = 'https://www.mcdonalds.com/tw/zh-tw/full-menu.html';
 const DEFAULT_OUTPUT = 'artifacts/mcdonalds-tw-nutrition.api.raw.json';
-const DEFAULT_MAX_PRODUCTS = 300;
-const DEFAULT_DELAY_MS = 350;
 const USER_AGENT =
   'TWFoodMCP/0.1 (+https://github.com/NTUT-Vincent/TWFoodMCP; public nutrition data research)';
 
@@ -20,25 +18,39 @@ function readArg(name, fallback) {
 }
 
 const outputPath = readArg('--output', process.env.OUTPUT_PATH ?? DEFAULT_OUTPUT);
-const maxProducts = Number(
-  readArg('--max-products', process.env.MAX_PRODUCTS ?? DEFAULT_MAX_PRODUCTS),
-);
-const delayMs = Number(readArg('--delay-ms', process.env.DELAY_MS ?? DEFAULT_DELAY_MS));
+const maxProducts = Number(readArg('--max-products', process.env.MAX_PRODUCTS ?? '300'));
+const delayMs = Number(readArg('--delay-ms', process.env.DELAY_MS ?? '350'));
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function curlText(url, accept = 'text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8') {
-  const { stdout } = await execFileAsync(
-    'curl',
-    [
-      '--http1.1', '--location', '--compressed', '--silent', '--show-error', '--fail-with-body',
-      '--retry', '3', '--retry-all-errors', '--connect-timeout', '20', '--max-time', '90',
-      '--user-agent', USER_AGENT,
-      '--header', 'Accept-Language: zh-TW,zh;q=0.9,en;q=0.7',
-      '--header', `Accept: ${accept}`,
-      url,
-    ],
-    { encoding: 'utf8', maxBuffer: 30 * 1024 * 1024 },
-  );
+async function curlText(url, { accept = 'text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8', referer } = {}) {
+  const args = [
+    '--http1.1',
+    '--location',
+    '--compressed',
+    '--silent',
+    '--show-error',
+    '--fail-with-body',
+    '--retry',
+    '3',
+    '--retry-all-errors',
+    '--connect-timeout',
+    '20',
+    '--max-time',
+    '90',
+    '--user-agent',
+    USER_AGENT,
+    '--header',
+    'Accept-Language: zh-TW,zh;q=0.9,en;q=0.7',
+    '--header',
+    `Accept: ${accept}`,
+  ];
+  if (referer) args.push('--referer', referer);
+  args.push(url);
+
+  const { stdout } = await execFileAsync('curl', args, {
+    encoding: 'utf8',
+    maxBuffer: 50 * 1024 * 1024,
+  });
   return stdout;
 }
 
@@ -102,6 +114,7 @@ function pageName(html, fallbackUrl) {
 function productConfig(html, pageUrl) {
   const match = html.match(/<[^>]+data-component=["']pdp["'][^>]*>/i);
   if (!match) return null;
+
   const attributes = parseAttributes(match[0]);
   const productId = attributes['data-product-id'];
   const apiPath = attributes['data-product-api-url'];
@@ -112,28 +125,40 @@ function productConfig(html, pageUrl) {
   apiUrl.searchParams.set('language', attributes['data-language'] || 'zh-tw');
   apiUrl.searchParams.set('showLiveData', attributes['data-show-live-data'] || 'true');
   apiUrl.searchParams.set('item', productId);
+  if (attributes['data-daypart-id']) {
+    apiUrl.searchParams.set('daypartId', attributes['data-daypart-id']);
+  }
+  apiUrl.searchParams.set('compType', 'core');
+  apiUrl.searchParams.set('returnType', 'json');
 
   return {
     product_id: productId,
     nutrients_id: attributes['data-nutrients-id'] || null,
-    country: attributes['data-country'] || 'tw',
-    language: attributes['data-language'] || 'zh-tw',
-    show_live_data: attributes['data-show-live-data'] || 'true',
     api_url: apiUrl.href,
   };
 }
 
 function numeric(value) {
   if (value === null || value === undefined || value === '') return null;
-  const number = Number(String(value).replace(/,/g, '').trim());
+  const matched = String(value).replace(/,/g, '').match(/-?\d+(?:\.\d+)?/);
+  if (!matched) return null;
+  const number = Number(matched[0]);
   return Number.isFinite(number) ? number : null;
 }
 
 function canonicalKey(nutrient) {
-  const id = String(nutrient?.nutrient_name_id ?? '').toLowerCase();
-  const name = String(nutrient?.name ?? '').toLowerCase();
-  const combined = `${id} ${name}`;
-  if (/energy_kcal|calories|熱量/.test(combined)) return 'energy_kcal';
+  const combined = [
+    nutrient?.nutrient_name_id,
+    nutrient?.nutrientNameId,
+    nutrient?.name,
+    nutrient?.title,
+    nutrient?.description,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
+  if (/energy_kcal|calories|kcal|熱量/.test(combined)) return 'energy_kcal';
   if (/saturated/.test(combined) || /飽和脂肪/.test(combined)) return 'saturated_fat_g';
   if (/trans[_ -]?fat/.test(combined) || /反式脂肪/.test(combined)) return 'trans_fat_g';
   if (/carbohydrate|碳水化合物/.test(combined)) return 'carbohydrate_g';
@@ -145,44 +170,80 @@ function canonicalKey(nutrient) {
   return null;
 }
 
-function normalizeApiItem(payload) {
-  const item = payload?.item ?? null;
-  const nutrients = item?.nutrient_facts?.nutrient;
-  const rawNutrients = Array.isArray(nutrients) ? nutrients : nutrients ? [nutrients] : [];
+function nutrientValue(nutrient) {
+  return numeric(
+    nutrient?.value ??
+      nutrient?.amount ??
+      nutrient?.nutrient_value ??
+      nutrient?.nutrientValue ??
+      nutrient?.primary_serving_value,
+  );
+}
+
+function looksLikeNutrient(record) {
+  if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
+  return Boolean(canonicalKey(record)) && nutrientValue(record) !== null;
+}
+
+function collectNutrientRecords(node, found = [], seen = new Set()) {
+  if (!node || typeof node !== 'object' || seen.has(node)) return found;
+  seen.add(node);
+
+  if (Array.isArray(node)) {
+    for (const entry of node) {
+      if (looksLikeNutrient(entry)) found.push(entry);
+      collectNutrientRecords(entry, found, seen);
+    }
+    return found;
+  }
+
+  if (looksLikeNutrient(node)) found.push(node);
+  for (const value of Object.values(node)) collectNutrientRecords(value, found, seen);
+  return found;
+}
+
+function findItem(payload) {
+  if (payload?.item && typeof payload.item === 'object') return payload.item;
+  if (payload?.itemDetail?.item && typeof payload.itemDetail.item === 'object') return payload.itemDetail.item;
+  if (payload?.itemDetails?.item && typeof payload.itemDetails.item === 'object') return payload.itemDetails.item;
+  if (payload?.data?.item && typeof payload.data.item === 'object') return payload.data.item;
+  return null;
+}
+
+function normalizeApiPayload(payload) {
+  const item = findItem(payload);
+  const rawNutrients = collectNutrientRecords(payload);
   const nutrition = {};
   const evidence = [];
+  const dedupe = new Set();
 
   for (const nutrient of rawNutrients) {
     const key = canonicalKey(nutrient);
-    const value = numeric(nutrient?.value);
+    const value = nutrientValue(nutrient);
     if (!key || value === null || nutrition[key] !== undefined) continue;
+    const signature = `${key}:${value}`;
+    if (dedupe.has(signature)) continue;
+    dedupe.add(signature);
     nutrition[key] = value;
     evidence.push({
       key,
       id: nutrient?.id ?? null,
-      name: nutrient?.name ?? null,
-      nutrient_name_id: nutrient?.nutrient_name_id ?? null,
-      value: nutrient?.value ?? null,
-      uom: nutrient?.uom ?? null,
-      uom_description: nutrient?.uom_description ?? null,
-      adult_dv: nutrient?.adult_dv ?? null,
+      name: nutrient?.name ?? nutrient?.title ?? null,
+      nutrient_name_id: nutrient?.nutrient_name_id ?? nutrient?.nutrientNameId ?? null,
+      value: nutrient?.value ?? nutrient?.amount ?? nutrient?.nutrient_value ?? null,
+      uom: nutrient?.uom ?? nutrient?.unit ?? null,
+      uom_description: nutrient?.uom_description ?? nutrient?.unit_description ?? null,
+      adult_dv: nutrient?.adult_dv ?? nutrient?.daily_value ?? null,
     });
   }
-
-  const serving = rawNutrients.find((nutrient) =>
-    /serving|primary_serving|份量/i.test(
-      `${nutrient?.nutrient_name_id ?? ''} ${nutrient?.name ?? ''}`,
-    ),
-  );
 
   return {
     item,
     raw_nutrients: rawNutrients,
     nutrition,
     nutrition_evidence: evidence,
-    serving_size: serving
-      ? { value: numeric(serving.value), unit: serving.uom ?? null, description: serving.uom_description ?? null }
-      : null,
+    payload_top_level_keys:
+      payload && typeof payload === 'object' && !Array.isArray(payload) ? Object.keys(payload) : [],
   };
 }
 
@@ -197,7 +258,11 @@ async function main() {
       const html = await curlText(url);
       const links = collectProductLinks(html, url);
       links.forEach((link) => productLinks.add(link));
-      enumeratorPages.push({ url, byte_length: Buffer.byteLength(html), discovered_links: links.length });
+      enumeratorPages.push({
+        url,
+        byte_length: Buffer.byteLength(html),
+        discovered_links: links.length,
+      });
     } catch (error) {
       errors.push({ stage: 'enumerate', url, error: String(error) });
     }
@@ -211,9 +276,18 @@ async function main() {
       const html = await curlText(pageUrl);
       const config = productConfig(html, pageUrl);
       if (!config) throw new Error('Product page did not expose PDP API configuration.');
-      const payload = JSON.parse(await curlText(config.api_url, 'application/json'));
-      const normalized = normalizeApiItem(payload);
-      const apiName = normalized.item?.product_marketing_name || normalized.item?.item_marketing_name;
+
+      const rawApiText = await curlText(config.api_url, {
+        accept: 'application/json',
+        referer: pageUrl,
+      });
+      const payload = JSON.parse(rawApiText);
+      const normalized = normalizeApiPayload(payload);
+      const apiName =
+        normalized.item?.product_marketing_name ||
+        normalized.item?.item_marketing_name ||
+        normalized.item?.productName ||
+        normalized.item?.name;
       const nutritionCount = Object.keys(normalized.nutrition).length;
 
       items.push({
@@ -223,14 +297,15 @@ async function main() {
         nutrients_id: config.nutrients_id,
         name: typeof apiName === 'string' && apiName.trim() ? apiName.trim() : pageName(html, pageUrl),
         nutrition_basis: 'per_portion_as_published',
-        serving_size: normalized.serving_size,
+        serving_size: null,
         nutrition: normalized.nutrition,
         nutrition_evidence: normalized.nutrition_evidence,
         raw_nutrients: normalized.raw_nutrients,
+        api_payload_top_level_keys: normalized.payload_top_level_keys,
         api_item_metadata: {
-          product_name: normalized.item?.product_name ?? null,
+          product_name: normalized.item?.product_name ?? normalized.item?.productName ?? null,
           product_marketing_name: normalized.item?.product_marketing_name ?? null,
-          item_name: normalized.item?.item_name ?? null,
+          item_name: normalized.item?.item_name ?? normalized.item?.name ?? null,
           item_marketing_name: normalized.item?.item_marketing_name ?? null,
           item_allergen: normalized.item?.item_allergen ?? null,
           item_additional_allergen: normalized.item?.item_additional_allergen ?? null,
@@ -281,7 +356,8 @@ async function main() {
   const parsed = items.filter((item) => item.extraction_status === 'parsed_from_official_api').length;
   console.log(`Wrote ${outputPath}`);
   console.log(`Discovered ${productLinks.size} products; API parsed ${parsed}/${items.length}.`);
-  if (productLinks.size === 0 || items.length === 0) process.exitCode = 2;
+
+  if (productLinks.size === 0 || items.length === 0 || parsed === 0) process.exitCode = 2;
 }
 
 main().catch((error) => {
