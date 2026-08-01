@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - scripts/scrape-mcdonalds-tw-api.mjs
+      - scripts/scrape-mcdonalds-tw-api-v2.mjs
       - scripts/diagnose-mcdonalds-api-response.mjs
       - .github/workflows/mcdonalds-scrape.yml
 
@@ -25,7 +25,7 @@ jobs:
       - name: Crawl official McDonald's Taiwan nutrition API
         run: |
           mkdir -p artifacts
-          node scripts/scrape-mcdonalds-tw-api.mjs \
+          node scripts/scrape-mcdonalds-tw-api-v2.mjs \
             --output artifacts/mcdonalds-tw-nutrition.api.raw.json
 
       - name: Capture one raw API response for diagnostics
