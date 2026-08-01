@@ -13,21 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Upload relevant repository files
+      - name: Create complete repository archive
+        run: tar --exclude=.git --exclude=repository.tar.gz -czf repository.tar.gz .
+      - name: Upload repository archive
         uses: actions/upload-artifact@v4
         with:
           name: repository-inspection
-          path: |
-            .github/workflows
-            knowledge
-            schemas
-            scripts
-            tests
-            worker
-            config
-            README.md
-            package.json
-            tsconfig*.json
-          include-hidden-files: true
-          if-no-files-found: warn
+          path: repository.tar.gz
+          if-no-files-found: error
           retention-days: 1
