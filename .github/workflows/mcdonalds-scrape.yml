@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - scripts/scrape-mcdonalds-tw.mjs
+      - scripts/scrape-mcdonalds-tw-http1.mjs
       - .github/workflows/mcdonalds-scrape.yml
 
 permissions:
@@ -24,24 +25,30 @@ jobs:
       - name: Install project dependencies
         run: npm install --package-lock=false
 
+      - name: Crawl source with forced HTTP/1.1
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts
+          node scripts/scrape-mcdonalds-tw-http1.mjs \
+            --output artifacts/mcdonalds-tw-nutrition.http1.raw.json
+
       - name: Install Playwright without changing package metadata
         run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.54.1
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Scrape official McDonald's Taiwan pages
+      - name: Crawl dynamic pages with Chromium
         continue-on-error: true
         run: |
-          mkdir -p artifacts
           node scripts/scrape-mcdonalds-tw.mjs \
-            --output artifacts/mcdonalds-tw-nutrition.raw.json
+            --output artifacts/mcdonalds-tw-nutrition.browser.raw.json
 
-      - name: Upload raw snapshot for review
+      - name: Upload raw snapshots for review
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mcdonalds-tw-nutrition-raw
-          path: artifacts/mcdonalds-tw-nutrition.raw.json
+          path: artifacts/*.json
           if-no-files-found: error
           retention-days: 14
