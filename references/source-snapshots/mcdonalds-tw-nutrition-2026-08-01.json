@@ -1,0 +1,2816 @@
+{
+  "source": {
+    "publisher": "台灣麥當勞餐廳股份有限公司",
+    "title": "麥當勞台灣營養計算機、產品頁與官方 itemDetails API",
+    "calculator_url": "https://www.mcdonalds.com/tw/zh-tw/sustainability/good-food/nutrition-calculator.html",
+    "menu_url": "https://www.mcdonalds.com/tw/zh-tw/full-menu.html",
+    "api_path": "/dnaapp/itemDetails",
+    "source_class": "primary_official",
+    "retrieved_at": "2026-08-01T15:01:21.023Z",
+    "transport": "curl_http1_1"
+  },
+  "lifecycle": "raw_snapshot_for_review",
+  "generated_from_artifact": {
+    "workflow_run_id": 30705004162,
+    "artifact_id": 8820059069,
+    "artifact_sha256": "e15017489fc54c75ab75b15707d162b3add97822a9001c06d57be9e5126c8424"
+  },
+  "warnings": [
+    "此檔案由機器從官方 API 擷取，尚未經人工逐項驗證，不可直接標記為 stable 或 human-reviewed。",
+    "nutrition_basis 保留為官方 API 的每份 per portion；不自行把官方每份資料改寫為每 100 g。",
+    "缺少欄位保持 unknown，不補成 0。",
+    "官方數值為平均資料，實際產品可能因配方、操作及食材差異而變動。"
+  ],
+  "enumeration": {
+    "discovered_product_count": 99,
+    "attempted_product_count": 99,
+    "parsed_product_count": 99,
+    "pages": [
+      {
+        "url": "https://www.mcdonalds.com/tw/zh-tw/sustainability/good-food/nutrition-calculator.html",
+        "byte_length": 306405,
+        "discovered_links": 0
+      },
+      {
+        "url": "https://www.mcdonalds.com/tw/zh-tw/full-menu.html",
+        "byte_length": 516299,
+        "discovered_links": 99
+      }
+    ]
+  },
+  "items": [
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/McDouble.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200290&compType=core&returnType=json",
+      "product_id": "200290",
+      "name": "麥克雙牛堡",
+      "short_name": "mcdouble",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 153.67,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 429,
+        "fat_g": 22,
+        "saturated_fat_g": 11,
+        "trans_fat_g": 0.7,
+        "carbohydrate_g": 35,
+        "sugar_g": 6.8,
+        "dietary_fiber_g": 2.671795,
+        "protein_g": 24,
+        "sodium_mg": 680
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/americano.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200058&compType=core&returnType=json",
+      "product_id": "200058",
+      "name": "經典美式咖啡(熱)",
+      "short_name": "americano",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 330,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 15.01,
+        "fat_g": 0.3,
+        "saturated_fat_g": 0.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 2.2,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.648,
+        "protein_g": 0.9,
+        "sodium_mg": 1.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/apple-pie.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200080&compType=core&returnType=json",
+      "product_id": "200080",
+      "name": "蘋果派",
+      "short_name": "apple-pie",
+      "category": "飲料與點心",
+      "allergens": "麩質",
+      "additional_allergens": "牛奶、蛋、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 78,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 216.84,
+        "fat_g": 9.2,
+        "saturated_fat_g": 3,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 32,
+        "sugar_g": 9.4,
+        "dietary_fiber_g": 1.638,
+        "protein_g": 2,
+        "sodium_mg": 123.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/bagel-burger-with-cheese.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200265&compType=core&returnType=json",
+      "product_id": "200265",
+      "name": "番茄嫩蛋焙果堡",
+      "short_name": "bagel-burger-with-cheese",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 208.61,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 452.13,
+        "fat_g": 17,
+        "saturated_fat_g": 8.2,
+        "trans_fat_g": 0.3,
+        "carbohydrate_g": 53,
+        "sugar_g": 6.2,
+        "dietary_fiber_g": 2.50373,
+        "protein_g": 20,
+        "sodium_mg": 684.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/bagel-burger-with-mushroom.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200285&compType=core&returnType=json",
+      "product_id": "200285",
+      "name": "蕈菇起司嫩蛋焙果堡",
+      "short_name": "bagel-burger-with-mushroom",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 246.11,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 478.45,
+        "fat_g": 19,
+        "saturated_fat_g": 8.4,
+        "trans_fat_g": 0.3,
+        "carbohydrate_g": 56,
+        "sugar_g": 6.8,
+        "dietary_fiber_g": 3.62873,
+        "protein_g": 22,
+        "sodium_mg": 836.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/big-mac.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200008&compType=core&returnType=json",
+      "product_id": "200008",
+      "name": "大麥克",
+      "short_name": "big-mac",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、芝麻、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 211.64,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 503.17,
+        "fat_g": 25,
+        "saturated_fat_g": 11,
+        "trans_fat_g": 0.6,
+        "carbohydrate_g": 43,
+        "sugar_g": 6.1,
+        "dietary_fiber_g": 3.1433419,
+        "protein_g": 26,
+        "sodium_mg": 1092.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/blt-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200009&compType=core&returnType=json",
+      "product_id": "200009",
+      "name": "BLT 安格斯牛肉堡",
+      "short_name": "blt-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": "芝麻、芒果、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 218.3,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 543.46,
+        "fat_g": 29,
+        "saturated_fat_g": 12,
+        "trans_fat_g": 0.5,
+        "carbohydrate_g": 41,
+        "sugar_g": 10,
+        "dietary_fiber_g": 2.625987,
+        "protein_g": 29,
+        "sodium_mg": 922.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/blt-grilled-chicken-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200166&compType=core&returnType=json",
+      "product_id": "200166",
+      "name": "BLT 嫩煎鷄腿堡",
+      "short_name": "blt-grilled-chicken-burger",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": "芒果、芝麻、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 219.3,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 456.73,
+        "fat_g": 20,
+        "saturated_fat_g": 5.6,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 42,
+        "sugar_g": 11,
+        "dietary_fiber_g": 3.140987,
+        "protein_g": 27,
+        "sodium_mg": 952.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/cappuccino.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200123&compType=core&returnType=json",
+      "product_id": "200123",
+      "name": "經典卡布奇諾(熱)",
+      "short_name": "cappuccino",
+      "category": " McCafe",
+      "allergens": "牛奶",
+      "additional_allergens": "芒果、花生、蛋、堅果、芝麻、麩質、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 369,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 148.25,
+        "fat_g": 7.9,
+        "saturated_fat_g": 4.8,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 12,
+        "sugar_g": 9.9,
+        "dietary_fiber_g": 0.5931,
+        "protein_g": 7.6,
+        "sodium_mg": 80.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/caramel-milk-tea-iced.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200321&compType=core&returnType=json",
+      "product_id": "200321",
+      "name": "焦糖冰奶茶",
+      "short_name": "caramel-milk-tea-iced",
+      "category": null,
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 591,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 187.99,
+        "fat_g": 4.4,
+        "saturated_fat_g": 3,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 34,
+        "sugar_g": 30,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.8,
+        "sodium_mg": 58
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/cheese-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200005&compType=core&returnType=json",
+      "product_id": "200005",
+      "name": "吉事漢堡",
+      "short_name": "cheese-burger",
+      "category": "飲料與點心",
+      "allergens": "牛奶、大豆、麩質",
+      "additional_allergens": "蛋、堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 116.46,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 325,
+        "fat_g": 14,
+        "saturated_fat_g": 6.9,
+        "trans_fat_g": 0.4,
+        "carbohydrate_g": 34,
+        "sugar_g": 6.8,
+        "dietary_fiber_g": 2.323225,
+        "protein_g": 16,
+        "sodium_mg": 618.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mccrispy-2-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200162&compType=core&returnType=json",
+      "product_id": "200162",
+      "name": "原味麥脆鷄腿(2塊)",
+      "short_name": "chicken-mccrispy-2-pieces",
+      "category": "超值全餐",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 255.2,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 699.81,
+        "fat_g": 46,
+        "saturated_fat_g": 13,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 28,
+        "sugar_g": 0,
+        "dietary_fiber_g": 2.0971,
+        "protein_g": 43,
+        "sodium_mg": 1079.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mccrispy-drumstick-1-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200182&compType=core&returnType=json",
+      "product_id": "200182",
+      "name": "原味麥脆鷄腿",
+      "short_name": "200182",
+      "category": "點心",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 99.85,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 275.09,
+        "fat_g": 17,
+        "saturated_fat_g": 4.9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 11,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.69895,
+        "protein_g": 18,
+        "sodium_mg": 458.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mccrispy-thigh-1-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200179&compType=core&returnType=json",
+      "product_id": "200179",
+      "name": "原味麥脆鷄腿(大腿)",
+      "short_name": "200179",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 155.35,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 424.73,
+        "fat_g": 29,
+        "saturated_fat_g": 7.9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 16,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.39815,
+        "protein_g": 25,
+        "sodium_mg": 620.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mcnuggets-10-pieces-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200291&compType=core&returnType=json",
+      "product_id": "200291",
+      "name": "麥克鷄塊(10塊)",
+      "short_name": "chicken-mcnuggets-10-pieces-breakfast",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 170,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 435.71,
+        "fat_g": 26,
+        "saturated_fat_g": 4.8,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 24,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.36,
+        "protein_g": 26,
+        "sodium_mg": 925.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mcnuggets-10-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200170&compType=core&returnType=json",
+      "product_id": "200170",
+      "name": "麥克鷄塊(10塊)",
+      "short_name": "chicken-mcnuggets-10-pieces",
+      "category": "超值全餐",
+      "allergens": "麩質",
+      "additional_allergens": "大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 170,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 435.71,
+        "fat_g": 26,
+        "saturated_fat_g": 4.8,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 24,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.36,
+        "protein_g": 26,
+        "sodium_mg": 925.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mcnuggets-4-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200016&compType=core&returnType=json",
+      "product_id": "200016",
+      "name": "麥克鷄塊(4塊)",
+      "short_name": "chicken-mcnuggets-4-pieces",
+      "category": "飲料與點心",
+      "allergens": "麩質",
+      "additional_allergens": "大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 68,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 174.28,
+        "fat_g": 11,
+        "saturated_fat_g": 1.9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 9.7,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.544,
+        "protein_g": 10,
+        "sodium_mg": 370.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mcnuggets-6-pieces-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200287&compType=core&returnType=json",
+      "product_id": "200287",
+      "name": "麥克鷄塊(6塊/早餐)",
+      "short_name": "chicken-mcnuggets-6-pieces-breakfast",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 102,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 261.43,
+        "fat_g": 16,
+        "saturated_fat_g": 2.9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 14,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.816,
+        "protein_g": 16,
+        "sodium_mg": 555.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/chicken-mcnuggets-6-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200015&compType=core&returnType=json",
+      "product_id": "200015",
+      "name": "麥克鷄塊®(6塊)",
+      "short_name": "chicken-mcnuggets-6-pieces",
+      "category": "超值全餐",
+      "allergens": "麩質",
+      "additional_allergens": "大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 102,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 261.43,
+        "fat_g": 16,
+        "saturated_fat_g": 2.9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 14,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.816,
+        "protein_g": 16,
+        "sodium_mg": 555.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/cinnamon-swirl.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200053&compType=core&returnType=json",
+      "product_id": "200053",
+      "name": "肉桂捲",
+      "short_name": "cinnamon-swirl",
+      "category": " McCafe",
+      "allergens": "牛奶、蛋、麩質",
+      "additional_allergens": "堅果、芝麻、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 95,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 350,
+        "fat_g": 19,
+        "saturated_fat_g": 13,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 41,
+        "sugar_g": 14,
+        "dietary_fiber_g": 1.615,
+        "protein_g": 5.5,
+        "sodium_mg": 328.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/classic-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200302&compType=core&returnType=json",
+      "product_id": "200302",
+      "name": "四盎司牛肉堡",
+      "short_name": "classic-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 204.92,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 541.29,
+        "fat_g": 28,
+        "saturated_fat_g": 15,
+        "trans_fat_g": 0.7,
+        "carbohydrate_g": 40,
+        "sugar_g": 9.7,
+        "dietary_fiber_g": 3.001635,
+        "protein_g": 32,
+        "sodium_mg": 1001.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/coke-zero.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200066&compType=core&returnType=json",
+      "product_id": "200066",
+      "name": "可口可樂zero",
+      "short_name": "coke-zero",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 440,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 0,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 39.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/coke.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200063&compType=core&returnType=json",
+      "product_id": "200063",
+      "name": "可口可樂",
+      "short_name": "coke",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 157.94,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 39,
+        "sugar_g": 39,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 7.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/corn-cup.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200020&compType=core&returnType=json",
+      "product_id": "200020",
+      "name": "玉米杯",
+      "short_name": "corn-cup",
+      "category": "HappyMeal-非飲料配餐選擇",
+      "allergens": "牛奶、蛋",
+      "additional_allergens": "堅果、麩質、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 113,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 93.09,
+        "fat_g": 1.2,
+        "saturated_fat_g": 0.3,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 18,
+        "sugar_g": 6.5,
+        "dietary_fiber_g": 2.7346,
+        "protein_g": 3,
+        "sodium_mg": 174
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/corn-soup-small.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200021&compType=core&returnType=json",
+      "product_id": "200021",
+      "name": "玉米湯",
+      "short_name": "corn-soup-small",
+      "category": "飲料與點心",
+      "allergens": "牛奶",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 46.13,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 93,
+        "fat_g": 2.1,
+        "saturated_fat_g": 1.2,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 17,
+        "sugar_g": 5.3,
+        "dietary_fiber_g": 1.043448,
+        "protein_g": 1.9,
+        "sodium_mg": 637.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/croissant-chocolate.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200051&compType=core&returnType=json",
+      "product_id": "200051",
+      "name": "巧克力榛果可頌",
+      "short_name": "croissant-chocolate",
+      "category": " McCafe",
+      "allergens": "牛奶、蛋、堅果、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 62,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 264.12,
+        "fat_g": 14,
+        "saturated_fat_g": 7.4,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 31,
+        "sugar_g": 11,
+        "dietary_fiber_g": 0.682,
+        "protein_g": 4.3,
+        "sodium_mg": 215.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/croissant.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200050&compType=core&returnType=json",
+      "product_id": "200050",
+      "name": "原味可頌",
+      "short_name": "croissant",
+      "category": " McCafe",
+      "allergens": "牛奶、蛋、麩質",
+      "additional_allergens": "堅果、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 69,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 255.99,
+        "fat_g": 13,
+        "saturated_fat_g": 9,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 30,
+        "sugar_g": 4.6,
+        "dietary_fiber_g": 0.345,
+        "protein_g": 4.8,
+        "sodium_mg": 273.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-cheese-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200007&compType=core&returnType=json",
+      "product_id": "200007",
+      "name": "雙層牛肉吉事堡",
+      "short_name": "double-cheese-burger",
+      "category": "超值全餐",
+      "allergens": "牛奶、大豆、麩質",
+      "additional_allergens": "蛋、堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 167.15,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 475,
+        "fat_g": 26,
+        "saturated_fat_g": 14,
+        "trans_fat_g": 0.9,
+        "carbohydrate_g": 35,
+        "sugar_g": 7.2,
+        "dietary_fiber_g": 2.900955,
+        "protein_g": 26,
+        "sodium_mg": 855.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-classic-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200303&compType=core&returnType=json",
+      "product_id": "200303",
+      "name": "雙層四盎司牛肉堡",
+      "short_name": "double-classic-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 288.92,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 779.94,
+        "fat_g": 46,
+        "saturated_fat_g": 24,
+        "trans_fat_g": 1.1,
+        "carbohydrate_g": 40,
+        "sugar_g": 9.7,
+        "dietary_fiber_g": 3.001635,
+        "protein_g": 52,
+        "sodium_mg": 1059.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-filet-o-fish-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200340&compType=core&returnType=json",
+      "product_id": "200340",
+      "name": "早餐雙層麥香魚",
+      "short_name": "double-filet-o-fish-breakfast",
+      "category": null,
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 194.14,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 491.8,
+        "fat_g": 25,
+        "saturated_fat_g": 5.6,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 44,
+        "sugar_g": 4.5,
+        "dietary_fiber_g": 3.08098,
+        "protein_g": 24,
+        "sodium_mg": 829.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-filet-o-fish-regular.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200341&compType=core&returnType=json",
+      "product_id": "200341",
+      "name": "雙層麥香魚",
+      "short_name": "double-filet-o-fish-regular",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 194.14,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 491.8,
+        "fat_g": 25,
+        "saturated_fat_g": 5.6,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 44,
+        "sugar_g": 4.5,
+        "dietary_fiber_g": 3.08098,
+        "protein_g": 24,
+        "sodium_mg": 829.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-mcchicken.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200297&compType=core&returnType=json",
+      "product_id": "200297",
+      "name": "雙層麥香鷄",
+      "short_name": "double-mcchicken",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 225.38,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 528.62,
+        "fat_g": 25,
+        "saturated_fat_g": 5.7,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 54,
+        "sugar_g": 6.6,
+        "dietary_fiber_g": 3.726119,
+        "protein_g": 22,
+        "sodium_mg": 1125.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/double-oreo-mcflurry.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200286&compType=core&returnType=json",
+      "product_id": "200286",
+      "name": "雙倍OREO冰炫風",
+      "short_name": "double-oreo-mcflurry",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 200.3,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 381.72,
+        "fat_g": 13,
+        "saturated_fat_g": 6.7,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 60,
+        "sugar_g": 44,
+        "dietary_fiber_g": 0.453,
+        "protein_g": 6.1,
+        "sodium_mg": 305.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/egg-burger-with-canadian-bacon.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200039&compType=core&returnType=json",
+      "product_id": "200039",
+      "name": "火腿蛋堡",
+      "short_name": "egg-burger-with-canadian-bacon",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 141.79,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 326.28,
+        "fat_g": 15,
+        "saturated_fat_g": 4.3,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 31,
+        "sugar_g": 5.6,
+        "dietary_fiber_g": 1.444913,
+        "protein_g": 15,
+        "sodium_mg": 694.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/egg-burger-with-sausage.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200041&compType=core&returnType=json",
+      "product_id": "200041",
+      "name": "豬肉蛋堡",
+      "short_name": "egg-burger-with-sausage",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 181.67,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 430.64,
+        "fat_g": 24,
+        "saturated_fat_g": 7.7,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 32,
+        "sugar_g": 5.5,
+        "dietary_fiber_g": 1.887713,
+        "protein_g": 21,
+        "sodium_mg": 731.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/egg-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200038&compType=core&returnType=json",
+      "product_id": "200038",
+      "name": "吉事蛋堡",
+      "short_name": "egg-burger",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 124.49,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 305.19,
+        "fat_g": 15,
+        "saturated_fat_g": 4,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 31,
+        "sugar_g": 5.3,
+        "dietary_fiber_g": 1.444913,
+        "protein_g": 12,
+        "sodium_mg": 538.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/egg-mcmuffin.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200026&compType=core&returnType=json",
+      "product_id": "200026",
+      "name": "滿福堡",
+      "short_name": "egg-mcmuffin",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 138.29,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 286.37,
+        "fat_g": 11,
+        "saturated_fat_g": 5.5,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 30,
+        "sugar_g": 2.2,
+        "dietary_fiber_g": 1.65723,
+        "protein_g": 17,
+        "sodium_mg": 689.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/espresso.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200114&compType=core&returnType=json",
+      "product_id": "200114",
+      "name": "義式濃縮咖啡(熱)",
+      "short_name": "espresso",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 45,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 6.26,
+        "fat_g": 0.1,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0.9,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.27,
+        "protein_g": 0.4,
+        "sodium_mg": 0.54
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/evian-water.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200288&compType=core&returnType=json",
+      "product_id": "200288",
+      "name": "McC Evian天然礦泉水",
+      "short_name": "evian-water",
+      "category": "飲料",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 330,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 0,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 113.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/filet-o-fish-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200317&compType=core&returnType=json",
+      "product_id": "200317",
+      "name": "早餐麥香魚",
+      "short_name": "filet-o-fish-breakfast",
+      "category": null,
+      "allergens": "堅果、芝麻",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 131.13,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 342.92,
+        "fat_g": 15,
+        "saturated_fat_g": 3.2,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 36,
+        "sugar_g": 4.3,
+        "dietary_fiber_g": 2.18465,
+        "protein_g": 15,
+        "sodium_mg": 602.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/filet-o-fish.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200012&compType=core&returnType=json",
+      "product_id": "200012",
+      "name": "麥香魚®",
+      "short_name": "filet-o-fish",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、麩質、大豆、魚、亞硫酸鹽",
+      "additional_allergens": "堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 131.13,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 342.92,
+        "fat_g": 15,
+        "saturated_fat_g": 3.2,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 36,
+        "sugar_g": 4.3,
+        "dietary_fiber_g": 2.18465,
+        "protein_g": 15,
+        "sodium_mg": 602.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/french-fries-small.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200076&compType=core&returnType=json",
+      "product_id": "200076",
+      "name": "薯條(小)",
+      "short_name": "french-fries-small",
+      "category": "HappyMeal-非飲料配餐選擇",
+      "allergens": {},
+      "additional_allergens": "大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 78,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 240.94,
+        "fat_g": 11,
+        "saturated_fat_g": 1.2,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 31,
+        "sugar_g": 0,
+        "dietary_fiber_g": 3.042,
+        "protein_g": 3.7,
+        "sodium_mg": 171.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/grand-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200034&compType=core&returnType=json",
+      "product_id": "200034",
+      "name": "鷄塊鬆餅大早餐",
+      "short_name": "grand-breakfast",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 381.1,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 694.86,
+        "fat_g": 34,
+        "saturated_fat_g": 9.8,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 64,
+        "sugar_g": 12,
+        "dietary_fiber_g": 3.902888,
+        "protein_g": 33,
+        "sodium_mg": 1351.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/grilled-bbq-chicken-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200158&compType=core&returnType=json",
+      "product_id": "200158",
+      "name": "嫩煎鷄腿堡",
+      "short_name": "grilled-bbq-chicken-burger",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、芝麻、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": "芒果、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 201.97,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 391.17,
+        "fat_g": 13,
+        "saturated_fat_g": 3.8,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 43,
+        "sugar_g": 13,
+        "dietary_fiber_g": 2.970996,
+        "protein_g": 25,
+        "sodium_mg": 738.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hamburger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200006&compType=core&returnType=json",
+      "product_id": "200006",
+      "name": "漢堡",
+      "short_name": "hamburger",
+      "category": "飲料與點心",
+      "allergens": "麩質",
+      "additional_allergens": "牛奶、蛋、堅果、芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 102.27,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 276,
+        "fat_g": 10,
+        "saturated_fat_g": 4.1,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 34,
+        "sugar_g": 6.5,
+        "dietary_fiber_g": 2.081995,
+        "protein_g": 13,
+        "sodium_mg": 433.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hash-browns.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200037&compType=core&returnType=json",
+      "product_id": "200037",
+      "name": "薯餅",
+      "short_name": "hash-browns",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": "大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 58,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 177.42,
+        "fat_g": 13,
+        "saturated_fat_g": 1.2,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 14,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.798,
+        "protein_g": 1.9,
+        "sodium_mg": 320.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/honey-black-tea-iced.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200245&compType=core&returnType=json",
+      "product_id": "200245",
+      "name": "蜂蜜紅茶(冰)",
+      "short_name": "honey-black-tea-iced",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450.02,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 138.39,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 34,
+        "sugar_g": 31,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 9.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/honey-milk-tea-hot.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200275&compType=core&returnType=json",
+      "product_id": "200275",
+      "name": "蜂蜜奶茶(熱)",
+      "short_name": "honey-milk-tea-hot",
+      "category": "飲料與點心",
+      "allergens": "牛奶, 大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 366.8,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 176.99,
+        "fat_g": 4.7,
+        "saturated_fat_g": 3.2,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 31,
+        "sugar_g": 28,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.6,
+        "sodium_mg": 43.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/honey-milk-tea-iced.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200266&compType=core&returnType=json",
+      "product_id": "200266",
+      "name": "蜂蜜奶茶(冰)",
+      "short_name": "honey-milk-tea-iced",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 444.5,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 212.46,
+        "fat_g": 4.7,
+        "saturated_fat_g": 3.2,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 39,
+        "sugar_g": 36,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.6,
+        "sodium_mg": 44.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hot-black-tea.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200055&compType=core&returnType=json",
+      "product_id": "200055",
+      "name": "紅茶(熱)",
+      "short_name": "hot-black-tea",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 350,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 0,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 0
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hot-milk-tea-medium.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200057&compType=core&returnType=json",
+      "product_id": "200057",
+      "name": "奶茶 (熱)",
+      "short_name": "hot-milk-tea-medium",
+      "category": "飲料與點心",
+      "allergens": "牛奶、大豆",
+      "additional_allergens": "花生、蛋",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 377,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 74.83,
+        "fat_g": 4.9,
+        "saturated_fat_g": 3.3,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 5,
+        "sugar_g": 4.6,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.7,
+        "sodium_mg": 37.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hotcakes-3-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200036&compType=core&returnType=json",
+      "product_id": "200036",
+      "name": "鬆餅(3片)",
+      "short_name": "hotcakes-3-pieces",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 142.56,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 319,
+        "fat_g": 8.6,
+        "saturated_fat_g": 1.7,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 53,
+        "sugar_g": 11,
+        "dietary_fiber_g": 2.822688,
+        "protein_g": 8,
+        "sodium_mg": 711.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/hotcakes-with-sausage.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200035&compType=core&returnType=json",
+      "product_id": "200035",
+      "name": "豬肉鬆餅",
+      "short_name": "hotcakes-with-sausage",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 185.56,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 439,
+        "fat_g": 18,
+        "saturated_fat_g": 5.4,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 53,
+        "sugar_g": 11,
+        "dietary_fiber_g": 3.166688,
+        "protein_g": 16,
+        "sodium_mg": 932.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/ice-cream-cone-large.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200083&compType=core&returnType=json",
+      "product_id": "200083",
+      "name": "大蛋捲冰淇淋",
+      "short_name": "ice-cream-cone-large",
+      "category": "飲料與點心",
+      "allergens": "牛奶、麩質",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 132.68,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 202,
+        "fat_g": 6.5,
+        "saturated_fat_g": 3.4,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 32,
+        "sugar_g": 25,
+        "dietary_fiber_g": 0.1224,
+        "protein_g": 3.6,
+        "sodium_mg": 100.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/ice-cream-cone.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200082&compType=core&returnType=json",
+      "product_id": "200082",
+      "name": "蛋捲冰淇淋",
+      "short_name": "ice-cream-cone",
+      "category": "飲料與點心",
+      "allergens": "牛奶、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 93.8,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 145,
+        "fat_g": 4.6,
+        "saturated_fat_g": 2.3,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 23,
+        "sugar_g": 18,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.5,
+        "sodium_mg": 68.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-americano.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200072&compType=core&returnType=json",
+      "product_id": "200072",
+      "name": "經典美式咖啡(冰)",
+      "short_name": "iced-americano",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 335,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 20.16,
+        "fat_g": 0.4,
+        "saturated_fat_g": 0.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 2.9,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.87,
+        "protein_g": 1.2,
+        "sodium_mg": 1.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-black-tea-lemon-flavor.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200104&compType=core&returnType=json",
+      "product_id": "200104",
+      "name": "檸檬風味紅茶(冰)(小)",
+      "short_name": "iced-black-tea-lemon-flavor",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 122.99,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 31,
+        "sugar_g": 30,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 14.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-black-tea-sugar-free.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200098&compType=core&returnType=json",
+      "product_id": "200098",
+      "name": "無糖紅茶 (冰)",
+      "short_name": "iced-black-tea-sugar-free",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 0,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 4.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-cappuccino.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200279&compType=core&returnType=json",
+      "product_id": "200279",
+      "name": "經典卡布奇諾(冰)",
+      "short_name": "iced-cappuccino",
+      "category": "飲料",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 370,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 110.22,
+        "fat_g": 5.7,
+        "saturated_fat_g": 3.4,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 9.1,
+        "sugar_g": 6.9,
+        "dietary_fiber_g": 0.636,
+        "protein_g": 5.7,
+        "sodium_mg": 57.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-green-tea-sugar-free.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200101&compType=core&returnType=json",
+      "product_id": "200101",
+      "name": "無糖綠茶 (冰)",
+      "short_name": "iced-green-tea-sugar-free",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 440,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 0,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 0,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 0
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-latte.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200108&compType=core&returnType=json",
+      "product_id": "200108",
+      "name": "經典那堤(冰)",
+      "short_name": "iced-latte",
+      "category": " McCafe",
+      "allergens": "牛奶",
+      "additional_allergens": "芒果、花生、蛋、堅果、芝麻、麩質、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 350,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 117.45,
+        "fat_g": 6.1,
+        "saturated_fat_g": 3.7,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 9.5,
+        "sugar_g": 7.6,
+        "dietary_fiber_g": 0.558,
+        "protein_g": 6.1,
+        "sodium_mg": 62.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-milk-tea-large.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200110&compType=core&returnType=json",
+      "product_id": "200110",
+      "name": "奶茶 (冰)",
+      "short_name": "iced-milk-tea-large",
+      "category": "飲料與點心",
+      "allergens": "牛奶、大豆",
+      "additional_allergens": "芒果、花生、蛋",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 212.75,
+        "fat_g": 4.5,
+        "saturated_fat_g": 3.1,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 41,
+        "sugar_g": 38,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.5,
+        "sodium_mg": 38.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-select-brew-americano-large.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200339&compType=core&returnType=json",
+      "product_id": "200339",
+      "name": "金選美式咖啡(冰)-大杯",
+      "short_name": "200339",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 480,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 25.16,
+        "fat_g": 0.5,
+        "saturated_fat_g": 0.2,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 3.6,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.086,
+        "protein_g": 1.4,
+        "sodium_mg": 2.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-select-brew-americano.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200334&compType=core&returnType=json",
+      "product_id": "200334",
+      "name": "金選美式咖啡(冰)",
+      "short_name": "200334",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 335,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 20.16,
+        "fat_g": 0.4,
+        "saturated_fat_g": 0.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 2.9,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.87,
+        "protein_g": 1.2,
+        "sodium_mg": 1.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/iced-select-brew-latte.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200335&compType=core&returnType=json",
+      "product_id": "200335",
+      "name": "金選那堤(冰)",
+      "short_name": "200335",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 350,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 117.48,
+        "fat_g": 6.1,
+        "saturated_fat_g": 3.7,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 9.5,
+        "sugar_g": 7.6,
+        "dietary_fiber_g": 0.558,
+        "protein_g": 6.1,
+        "sodium_mg": 62.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/latte.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200059&compType=core&returnType=json",
+      "product_id": "200059",
+      "name": "經典那堤(熱)",
+      "short_name": "latte",
+      "category": " McCafe",
+      "allergens": "牛奶",
+      "additional_allergens": "芒果、花生、蛋、堅果、芝麻、麩質、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 370,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 123.48,
+        "fat_g": 6.5,
+        "saturated_fat_g": 3.9,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 9.9,
+        "sugar_g": 8.1,
+        "dietary_fiber_g": 0.54,
+        "protein_g": 6.4,
+        "sodium_mg": 66.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mcchicken-breakfast.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200331&compType=core&returnType=json",
+      "product_id": "200331",
+      "name": "麥香鷄",
+      "short_name": "mcchicken-breakfast",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 167.38,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 393.02,
+        "fat_g": 17,
+        "saturated_fat_g": 3.7,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 45,
+        "sugar_g": 6.6,
+        "dietary_fiber_g": 2.798119,
+        "protein_g": 14,
+        "sodium_mg": 796.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mcchicken.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200019&compType=core&returnType=json",
+      "product_id": "200019",
+      "name": "麥香鷄",
+      "short_name": "mcchicken",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、芝麻、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 167.38,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 393.02,
+        "fat_g": 17,
+        "saturated_fat_g": 3.7,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 45,
+        "sugar_g": 6.6,
+        "dietary_fiber_g": 2.798119,
+        "protein_g": 14,
+        "sodium_mg": 796.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mcflurry.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200081&compType=core&returnType=json",
+      "product_id": "200081",
+      "name": "OREO冰炫風",
+      "short_name": "mcflurry",
+      "category": "飲料與點心",
+      "allergens": "牛奶、麩質、大豆",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 185.2,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 311.72,
+        "fat_g": 11,
+        "saturated_fat_g": 5.5,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 49,
+        "sugar_g": 38,
+        "dietary_fiber_g": 0.2265,
+        "protein_g": 5.2,
+        "sodium_mg": 209.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mega-mcmuffin.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200032&compType=core&returnType=json",
+      "product_id": "200032",
+      "name": "無敵豬肉滿福堡加蛋",
+      "short_name": "mega-mcmuffin",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 206.99,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 512.79,
+        "fat_g": 30,
+        "saturated_fat_g": 13,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 31,
+        "sugar_g": 1.9,
+        "dietary_fiber_g": 2.25923,
+        "protein_g": 30,
+        "sodium_mg": 916.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/milk.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200073&compType=core&returnType=json",
+      "product_id": "200073",
+      "name": "鮮乳(盒裝)",
+      "short_name": "milk",
+      "category": null,
+      "allergens": "牛奶",
+      "additional_allergens": "花生、芝麻、麩質、大豆",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 220,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 145.42,
+        "fat_g": 8.1,
+        "saturated_fat_g": 5.5,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 11,
+        "sugar_g": 11,
+        "dietary_fiber_g": 0,
+        "protein_g": 7.3,
+        "sodium_mg": 99
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/muffin-with-vegetables.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200031&compType=core&returnType=json",
+      "product_id": "200031",
+      "name": "青蔬滿福堡",
+      "short_name": "muffin-with-vegetables",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 152.47,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 288.07,
+        "fat_g": 11,
+        "saturated_fat_g": 5.5,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 30,
+        "sugar_g": 2.4,
+        "dietary_fiber_g": 1.79903,
+        "protein_g": 17,
+        "sodium_mg": 690.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mushroom-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200010&compType=core&returnType=json",
+      "product_id": "200010",
+      "name": "蕈菇安格斯牛肉堡",
+      "short_name": "mushroom-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "芝麻、芒果、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 228.73,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 592.74,
+        "fat_g": 35,
+        "saturated_fat_g": 14,
+        "trans_fat_g": 0.7,
+        "carbohydrate_g": 40,
+        "sugar_g": 7.4,
+        "dietary_fiber_g": 3.42655,
+        "protein_g": 31,
+        "sodium_mg": 1055.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/mushroom-crispy-chicken-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200299&compType=core&returnType=json",
+      "product_id": "200299",
+      "name": "蕈菇主廚鷄腿堡",
+      "short_name": "mushroom-crispy-chicken-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 292.87,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 743.74,
+        "fat_g": 42,
+        "saturated_fat_g": 9.6,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 60,
+        "sugar_g": 8.2,
+        "dietary_fiber_g": 3.05511,
+        "protein_g": 31,
+        "sodium_mg": 1486.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/parmesan-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200300&compType=core&returnType=json",
+      "product_id": "200300",
+      "name": "帕瑪森安格斯牛肉堡",
+      "short_name": "parmesan-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 210.46,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 560.19,
+        "fat_g": 34,
+        "saturated_fat_g": 12,
+        "trans_fat_g": 0.5,
+        "carbohydrate_g": 37,
+        "sugar_g": 7.2,
+        "dietary_fiber_g": 2.858792,
+        "protein_g": 27,
+        "sodium_mg": 850.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/parmesan-crispy-chicken-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200301&compType=core&returnType=json",
+      "product_id": "200301",
+      "name": "帕瑪森主廚鷄腿堡",
+      "short_name": "parmesan-crispy-chicken-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 275.3,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 715.67,
+        "fat_g": 41,
+        "saturated_fat_g": 7.2,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 58,
+        "sugar_g": 8,
+        "dietary_fiber_g": 2.771348,
+        "protein_g": 28,
+        "sodium_mg": 1332.6
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/plain-bagel.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200269&compType=core&returnType=json",
+      "product_id": "200269",
+      "name": "現烤焙果",
+      "short_name": "plain-bagel",
+      "category": "早餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 89.7,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 248.89,
+        "fat_g": 1.2,
+        "saturated_fat_g": 0.4,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 52,
+        "sugar_g": 5.9,
+        "dietary_fiber_g": 1.7005,
+        "protein_g": 7.9,
+        "sodium_mg": 402
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/quinoa-salad-with-fish-filet.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200324&compType=core&returnType=json",
+      "product_id": "200324",
+      "name": "藜麥鱈魚沙拉",
+      "short_name": "200324",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 245.83,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 218.3,
+        "fat_g": 9.7,
+        "saturated_fat_g": 3.4,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 21,
+        "sugar_g": 3.8,
+        "dietary_fiber_g": 4.4571,
+        "protein_g": 12,
+        "sodium_mg": 301.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/quinoa-salad-with-grilled-chicken-filet.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200325&compType=core&returnType=json",
+      "product_id": "200325",
+      "name": "藜麥烤鷄沙拉",
+      "short_name": "200325",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 275.83,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 264.24,
+        "fat_g": 13,
+        "saturated_fat_g": 5.6,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 16,
+        "sugar_g": 4.6,
+        "dietary_fiber_g": 4.6221,
+        "protein_g": 22,
+        "sodium_mg": 433.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/quinoa-salad-with-spicy-fried-chicken-filet.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200326&compType=core&returnType=json",
+      "product_id": "200326",
+      "name": "藜麥辣脆鷄沙拉",
+      "short_name": "200326",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 293.33,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 376.95,
+        "fat_g": 21,
+        "saturated_fat_g": 6.5,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 27,
+        "sugar_g": 3.8,
+        "dietary_fiber_g": 4.3021,
+        "protein_g": 20,
+        "sodium_mg": 683.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/quinoa-salad.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200323&compType=core&returnType=json",
+      "product_id": "200323",
+      "name": "藜麥沙拉(大)",
+      "short_name": "200323",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 190.83,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 96.2,
+        "fat_g": 2.6,
+        "saturated_fat_g": 2.4,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 14,
+        "sugar_g": 3.8,
+        "dietary_fiber_g": 3.6871,
+        "protein_g": 4.1,
+        "sodium_mg": 172.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/salad-large.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200025&compType=core&returnType=json",
+      "product_id": "200025",
+      "name": "四季沙拉",
+      "short_name": "salad-large",
+      "category": "飲料與點心",
+      "allergens": "牛奶、蛋",
+      "additional_allergens": "芒果、堅果、麩質、大豆、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 75.46,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 19.71,
+        "fat_g": 0.2,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 3.9,
+        "sugar_g": 1.4,
+        "dietary_fiber_g": 0.918456,
+        "protein_g": 0.7,
+        "sodium_mg": 25.4
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/sausage-mcmuffin-with-egg.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200028&compType=core&returnType=json",
+      "product_id": "200028",
+      "name": "豬肉滿福堡加蛋",
+      "short_name": "sausage-mcmuffin-with-egg",
+      "category": "早餐",
+      "allergens": "牛奶、蛋、麩質、大豆",
+      "additional_allergens": "芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 163.99,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 389.04,
+        "fat_g": 20,
+        "saturated_fat_g": 8.9,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 30,
+        "sugar_g": 1.9,
+        "dietary_fiber_g": 1.95823,
+        "protein_g": 22,
+        "sodium_mg": 725.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/sausage-mcmuffin.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200027&compType=core&returnType=json",
+      "product_id": "200027",
+      "name": "豬肉滿福堡",
+      "short_name": "sausage-mcmuffin",
+      "category": "早餐",
+      "allergens": "牛奶、麩質、大豆",
+      "additional_allergens": "芝麻",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 116.39,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 327.86,
+        "fat_g": 16,
+        "saturated_fat_g": 7.4,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 30,
+        "sugar_g": 1.7,
+        "dietary_fiber_g": 1.95823,
+        "protein_g": 17,
+        "sodium_mg": 668.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/select-brew-americano.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200332&compType=core&returnType=json",
+      "product_id": "200332",
+      "name": "金選美式咖啡(熱)",
+      "short_name": "200332",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 330,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 15.01,
+        "fat_g": 0.3,
+        "saturated_fat_g": 0.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 2.2,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.648,
+        "protein_g": 0.9,
+        "sodium_mg": 1.3
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/select-brew-latte.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200333&compType=core&returnType=json",
+      "product_id": "200333",
+      "name": "金選那堤(熱)",
+      "short_name": "200333",
+      "category": " McCafe",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 370,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 123.52,
+        "fat_g": 6.5,
+        "saturated_fat_g": 3.9,
+        "trans_fat_g": 0.1,
+        "carbohydrate_g": 9.9,
+        "sugar_g": 8.1,
+        "dietary_fiber_g": 0.54,
+        "protein_g": 6.4,
+        "sodium_mg": 66.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/sliced-guava.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200075&compType=core&returnType=json",
+      "product_id": "200075",
+      "name": "水果袋(芭樂)",
+      "short_name": "sliced-guava",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": "芒果、牛奶、蛋、大豆、魚",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 70,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 30.52,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 7.2,
+        "sugar_g": 3.6,
+        "dietary_fiber_g": 0,
+        "protein_g": 0.4,
+        "sodium_mg": 2.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-filet-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200017&compType=core&returnType=json",
+      "product_id": "200017",
+      "name": "勁辣鷄腿堡",
+      "short_name": "spicy-chicken-filet-burger",
+      "category": "超值全餐",
+      "allergens": "蛋、芝麻、堅果、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": "牛奶",
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 197.71,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 536.52,
+        "fat_g": 28,
+        "saturated_fat_g": 5.8,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 49,
+        "sugar_g": 6.4,
+        "dietary_fiber_g": 2.357589,
+        "protein_g": 23,
+        "sodium_mg": 977.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-mccrispy-2-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200163&compType=core&returnType=json",
+      "product_id": "200163",
+      "name": "辣味麥脆鷄腿(2塊)",
+      "short_name": "spicy-chicken-mccrispy-2-pieces",
+      "category": "超值全餐",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 255.2,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 714.4,
+        "fat_g": 47,
+        "saturated_fat_g": 12,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 31,
+        "sugar_g": 0,
+        "dietary_fiber_g": 3.7616,
+        "protein_g": 41,
+        "sodium_mg": 1410.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-mccrispy-drumstick-1-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200181&compType=core&returnType=json",
+      "product_id": "200181",
+      "name": "辣味麥脆鷄腿",
+      "short_name": "200181",
+      "category": "點心",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 99.85,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 267.3,
+        "fat_g": 17,
+        "saturated_fat_g": 4.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 10,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.49925,
+        "protein_g": 18,
+        "sodium_mg": 620.9
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-mccrispy-thigh-1-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200180&compType=core&returnType=json",
+      "product_id": "200180",
+      "name": "辣味麥脆鷄腿(大腿)",
+      "short_name": "200180",
+      "category": "點心",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 155.35,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 447.1,
+        "fat_g": 30,
+        "saturated_fat_g": 8.1,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 21,
+        "sugar_g": 0,
+        "dietary_fiber_g": 3.26235,
+        "protein_g": 23,
+        "sodium_mg": 789.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-wing-2-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200018&compType=core&returnType=json",
+      "product_id": "200018",
+      "name": "勁辣香鷄翅(2塊)",
+      "short_name": "spicy-chicken-wing-2-pieces",
+      "category": "飲料與點心",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 79.45,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 249.53,
+        "fat_g": 17,
+        "saturated_fat_g": 3.6,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 12,
+        "sugar_g": 0,
+        "dietary_fiber_g": 0.60975,
+        "protein_g": 12,
+        "sodium_mg": 384.2
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-chicken-wing-6-pieces.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200169&compType=core&returnType=json",
+      "product_id": "200169",
+      "name": "勁辣香鷄翅(6塊)",
+      "short_name": "spicy-chicken-wing-6-pieces",
+      "category": "飲料與點心",
+      "allergens": "蛋、麩質、大豆、亞硫酸鹽",
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 238.35,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 748.6,
+        "fat_g": 52,
+        "saturated_fat_g": 11,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 35,
+        "sugar_g": 0,
+        "dietary_fiber_g": 1.82925,
+        "protein_g": 35,
+        "sodium_mg": 1152.5
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-classic-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200342&compType=core&returnType=json",
+      "product_id": "200342",
+      "name": "四盎司牛肉堡(辣味)",
+      "short_name": "spicy-classic-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 209.57,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 630.46,
+        "fat_g": 39,
+        "saturated_fat_g": 17,
+        "trans_fat_g": 0.8,
+        "carbohydrate_g": 37,
+        "sugar_g": 8.3,
+        "dietary_fiber_g": 2.6732,
+        "protein_g": 33,
+        "sodium_mg": 1136.8
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/spicy-classic-double-angus-beef-burger.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200343&compType=core&returnType=json",
+      "product_id": "200343",
+      "name": "雙層四盎司牛肉堡(辣味)",
+      "short_name": "spicy-classic-double-angus-beef-burger",
+      "category": "超值全餐",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 275.84,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 802.92,
+        "fat_g": 50,
+        "saturated_fat_g": 25,
+        "trans_fat_g": 1.3,
+        "carbohydrate_g": 36,
+        "sugar_g": 6.6,
+        "dietary_fiber_g": 3.0932,
+        "protein_g": 52,
+        "sodium_mg": 1278.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/sprite.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200069&compType=core&returnType=json",
+      "product_id": "200069",
+      "name": "雪碧(小)",
+      "short_name": "sprite",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 450.1,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 128.24,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 32,
+        "sugar_g": 32,
+        "dietary_fiber_g": 0,
+        "protein_g": 0,
+        "sodium_mg": 41
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/strawberry-shake.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200338&compType=core&returnType=json",
+      "product_id": "200338",
+      "name": "草莓奶昔",
+      "short_name": "200338",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 350,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 427.13,
+        "fat_g": 3,
+        "saturated_fat_g": 2,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 20,
+        "sugar_g": 16,
+        "dietary_fiber_g": 0,
+        "protein_g": 3.6,
+        "sodium_mg": 75.1
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/taiwan-fresh-orange-juice.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200273&compType=core&returnType=json",
+      "product_id": "200273",
+      "name": "台灣鮮榨柳丁汁(瓶裝)",
+      "short_name": "taiwan-fresh-orange-juice",
+      "category": "飲料與點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 265,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 118.72,
+        "fat_g": 0,
+        "saturated_fat_g": 0,
+        "trans_fat_g": 0,
+        "carbohydrate_g": 28,
+        "sugar_g": 25,
+        "dietary_fiber_g": 0,
+        "protein_g": 2.1,
+        "sodium_mg": 3.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    },
+    {
+      "source_url": "https://www.mcdonalds.com/tw/zh-tw/product/vanilla-shake.html",
+      "source_api_url": "https://www.mcdonalds.com/dnaapp/itemDetails?country=TW&language=zh&showLiveData=true&item=200337&compType=core&returnType=json",
+      "product_id": "200337",
+      "name": "香草奶昔",
+      "short_name": "200337",
+      "category": "點心",
+      "allergens": {},
+      "additional_allergens": {},
+      "nutrition_basis": "per_portion_as_published",
+      "serving_size": {
+        "value": 96.54,
+        "unit": "g",
+        "description": "gram"
+      },
+      "nutrition": {
+        "energy_kcal": 430.15,
+        "fat_g": 3,
+        "saturated_fat_g": 2,
+        "trans_fat_g": 0.2,
+        "carbohydrate_g": 21,
+        "sugar_g": 14,
+        "dietary_fiber_g": 0,
+        "protein_g": 3.6,
+        "sodium_mg": 90.7
+      },
+      "extraction_status": "parsed_from_official_api"
+    }
+  ],
+  "errors": []
+}

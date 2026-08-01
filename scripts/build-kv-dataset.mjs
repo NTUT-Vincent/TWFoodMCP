@@ -15,11 +15,14 @@ try {
     writeFile(path.join(outputDir, "manifest.json"), `${JSON.stringify(dataset.manifest, null, 2)}\n`),
     writeFile(path.join(outputDir, "stats.json"), `${JSON.stringify(dataset.stats, null, 2)}\n`),
     writeFile(path.join(outputDir, "runtime-documents.json"), `${JSON.stringify(dataset.runtimeFoods, null, 2)}\n`),
+    writeFile(path.join(outputDir, "preview-manifest.json"), `${JSON.stringify(dataset.previewManifest, null, 2)}\n`),
+    writeFile(path.join(outputDir, "preview-runtime-documents.json"), `${JSON.stringify(dataset.previewFoods, null, 2)}\n`),
     writeFile(path.join(outputDir, "current-version.txt"), `${dataset.version}\n`),
   ]);
 
   console.log(`Built dataset ${dataset.version}.`);
-  console.log(`Published candidates: ${dataset.runtimeFoods.length}; stale: ${dataset.manifest.stale_documents}.`);
+  console.log(`Stable published candidates: ${dataset.runtimeFoods.length}; stale: ${dataset.manifest.stale_documents}.`);
+  console.log(`Preview candidates: ${dataset.previewFoods.length}; drafts: ${dataset.previewManifest.draft_documents}.`);
   console.log(`Versioned KV entries: ${dataset.versionedEntries.length}.`);
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);

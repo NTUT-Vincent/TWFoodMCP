@@ -12,6 +12,9 @@ const BRAND_ALIASES = new Map<string, string>([
   ["familymart", "全家便利商店 Fami!ce"],
   ["fami", "全家便利商店 Fami!ce"],
   ["famice", "全家便利商店 Fami!ce"],
+  ["mcdonalds", "麥當勞"],
+  ["台灣麥當勞", "麥當勞"],
+  ["麥當勞餐廳", "麥當勞"],
 ]);
 
 function emptySearchResults(value: unknown): boolean {

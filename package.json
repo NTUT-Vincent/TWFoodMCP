@@ -11,7 +11,8 @@
     "validate:data": "node scripts/validate-okf.mjs",
     "build:dataset": "node scripts/build-kv-dataset.mjs",
     "publish:dataset": "node scripts/publish-kv-dataset.mjs",
-    "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs"
+    "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
+    "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260728.1",
