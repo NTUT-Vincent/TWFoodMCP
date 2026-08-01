@@ -31,12 +31,14 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Scrape official McDonald's Taiwan pages
+        continue-on-error: true
         run: |
           mkdir -p artifacts
           node scripts/scrape-mcdonalds-tw.mjs \
             --output artifacts/mcdonalds-tw-nutrition.raw.json
 
       - name: Upload raw snapshot for review
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mcdonalds-tw-nutrition-raw
