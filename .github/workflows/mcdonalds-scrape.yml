@@ -1,0 +1,46 @@
+name: Scrape McDonald's Taiwan nutrition
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - scripts/scrape-mcdonalds-tw.mjs
+      - .github/workflows/mcdonalds-scrape.yml
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Install Playwright without changing package metadata
+        run: npm install --no-save --package-lock=false --ignore-scripts playwright@1.54.1
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Scrape official McDonald's Taiwan pages
+        run: |
+          mkdir -p artifacts
+          node scripts/scrape-mcdonalds-tw.mjs \
+            --output artifacts/mcdonalds-tw-nutrition.raw.json
+
+      - name: Upload raw snapshot for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcdonalds-tw-nutrition-raw
+          path: artifacts/mcdonalds-tw-nutrition.raw.json
+          if-no-files-found: error
+          retention-days: 14
