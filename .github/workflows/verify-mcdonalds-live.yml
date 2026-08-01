@@ -1,0 +1,88 @@
+name: Verify McDonald's live MCP
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/verify-mcdonalds-live.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      BASE_URL: https://okf-mcp.vincent930093.workers.dev
+      EXPECTED_VERSION: git-7478cb2af57f4b2e589525caf71475f8343090cf
+    steps:
+      - name: Wait for stable and preview publication
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in {1..36}; do
+            stable_ok=false
+            preview_ok=false
+            if curl -fsS --max-time 15 "$BASE_URL/dataset" > /tmp/stable.json; then
+              if EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module -e '
+                import fs from "node:fs";
+                const body = JSON.parse(fs.readFileSync("/tmp/stable.json", "utf8"));
+                if (body.dataset_channel !== "stable" || body.dataset_version !== process.env.EXPECTED_VERSION || body.stable_documents !== 7) process.exit(1);
+              '; then stable_ok=true; fi
+            fi
+            if curl -fsS --max-time 15 "$BASE_URL/dataset?channel=preview" > /tmp/preview.json; then
+              if EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module -e '
+                import fs from "node:fs";
+                const body = JSON.parse(fs.readFileSync("/tmp/preview.json", "utf8"));
+                if (body.dataset_channel !== "preview" || body.dataset_version !== process.env.EXPECTED_VERSION || body.preview_documents !== 106 || body.draft_documents !== 99) process.exit(1);
+              '; then preview_ok=true; fi
+            fi
+            if [[ "$stable_ok" == "true" && "$preview_ok" == "true" ]]; then
+              cat /tmp/stable.json
+              cat /tmp/preview.json
+              exit 0
+            fi
+            echo "Attempt $attempt: production has not switched to $EXPECTED_VERSION yet"
+            cat /tmp/stable.json 2>/dev/null || true
+            cat /tmp/preview.json 2>/dev/null || true
+            sleep 10
+          done
+          exit 1
+
+      - name: Verify preview search and get_food
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"大麥克","brand":"McDonald\u0027s","dataset_channel":"preview","limit":10}}}' \
+            > /tmp/search.json
+
+          EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/search.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("wrong preview dataset");
+            const item = content?.results?.find((row) => row.food_id === "food:tw:menu:mcdonalds:big-mac");
+            if (!item || item.status !== "draft") throw new Error("Big Mac draft not found");
+          '
+
+          curl -fsS --max-time 20 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_food","arguments":{"food_id":"food:tw:menu:mcdonalds:big-mac","dataset_channel":"preview"}}}' \
+            > /tmp/get.json
+
+          EXPECTED_VERSION="$EXPECTED_VERSION" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/get.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("wrong get_food dataset");
+            if (content?.food?.food_id !== "food:tw:menu:mcdonalds:big-mac") throw new Error("wrong food");
+            if (content?.food?.status !== "draft") throw new Error("missing draft status");
+            if (content?.food?.nutrition?.[0]?.values?.energy_kcal !== 503.17) throw new Error("unexpected energy value");
+          '
+
+          cat /tmp/search.json
+          cat /tmp/get.json
