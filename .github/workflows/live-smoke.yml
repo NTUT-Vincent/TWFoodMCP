@@ -42,7 +42,12 @@ jobs:
           grep -q '"mcp":"/mcp"' /tmp/root.json
 
           curl -fsS --max-time 15 "$BASE_URL/dataset" | tee /tmp/dataset.json
+          grep -q '"dataset_channel":"stable"' /tmp/dataset.json
           grep -q '"dataset_version"' /tmp/dataset.json
+
+          curl -fsS --max-time 15 "$BASE_URL/dataset?channel=preview" | tee /tmp/preview-dataset.json
+          grep -q '"dataset_channel":"preview"' /tmp/preview-dataset.json
+          grep -q '"preview_documents"' /tmp/preview-dataset.json
 
       - name: Test MCP initialize
         shell: bash
@@ -74,3 +79,15 @@ jobs:
             --data '{"jsonrpc":"2.0","id":3,"method":"ping","params":{}}' \
             | tee /tmp/ping.json
           grep -q '"result":{}' /tmp/ping.json
+
+      - name: Test McDonald's preview search
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS --max-time 15 \
+            -X POST "$BASE_URL/mcp" \
+            -H 'content-type: application/json' \
+            --data '{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"大麥克","brand":"McDonald\u0027s","dataset_channel":"preview","limit":10}}}' \
+            | tee /tmp/mcdonalds-preview.json
+          grep -q 'food:tw:menu:mcdonalds:big-mac' /tmp/mcdonalds-preview.json
+          grep -q '"status":"draft"' /tmp/mcdonalds-preview.json

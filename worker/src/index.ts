@@ -10,6 +10,7 @@ type FoodKind = "packaged_food" | "menu_item" | "generic_food";
 type NutritionBasis = "per_serving" | "per_100g" | "per_100ml";
 type Unit = "g" | "ml" | "piece" | "package" | "serving";
 type DraftAction = "create_food" | "correct_food" | "new_revision" | "report_outdated" | "deprecate_food";
+type DatasetChannel = "stable" | "preview";
 
 type NutritionValues = Partial<Record<
   | "energy_kcal"
@@ -27,7 +28,7 @@ type NutritionValues = Partial<Record<
 interface RuntimeFood {
   id: string;
   title: string;
-  status: "stable" | "deprecated";
+  status: "draft" | "stable" | "deprecated";
   kind: FoodKind;
   brand?: string;
   name: string;
@@ -53,6 +54,8 @@ interface DatasetManifest {
   dataset_version: string;
   source_commit: string;
   stable_documents: number;
+  draft_documents?: number;
+  preview_documents?: number;
   stale_documents: number;
   last_deployment: string;
   documents?: RuntimeFood[];
@@ -96,43 +99,57 @@ function queryTerms(value: string): string[] {
   return [...new Set(segmented.length > 0 ? segmented : whitespace)];
 }
 
-function publicManifest(manifest: DatasetManifest) {
+function publicManifest(manifest: DatasetManifest, channel: DatasetChannel) {
   return {
+    dataset_channel: channel,
     dataset_version: manifest.dataset_version,
     source_commit: manifest.source_commit,
     stable_documents: manifest.stable_documents,
+    ...(typeof manifest.draft_documents === "number" ? { draft_documents: manifest.draft_documents } : {}),
+    ...(typeof manifest.preview_documents === "number" ? { preview_documents: manifest.preview_documents } : {}),
     stale_documents: manifest.stale_documents,
     last_deployment: manifest.last_deployment,
+    ...(channel === "preview" ? { warning: "Preview includes unreviewed draft records and must not be treated as stable publication." } : {}),
   };
 }
 
-async function loadManifest(env: Env): Promise<DatasetManifest> {
+function datasetChannel(args: Record<string, unknown>): DatasetChannel {
+  const value = args.dataset_channel ?? "stable";
+  if (value !== "stable" && value !== "preview") throw new Error("dataset_channel must be stable or preview");
+  return value;
+}
+
+async function loadManifest(env: Env, channel: DatasetChannel = "stable"): Promise<DatasetManifest> {
   if (!env.DATASET) {
     return {
       dataset_version: "unconfigured",
       source_commit: "unknown",
       stable_documents: 0,
+      ...(channel === "preview" ? { draft_documents: 0, preview_documents: 0 } : {}),
       stale_documents: 0,
       last_deployment: "unknown",
       documents: [],
     };
   }
-  const version = await env.DATASET.get("dataset:current");
-  if (!version) throw new Error("dataset:current is not configured");
-  const manifest = await env.DATASET.get<DatasetManifest>(`manifest:${version}`, "json");
-  if (!manifest) throw new Error(`manifest:${version} was not found`);
+  const pointer = channel === "preview" ? "dataset:preview" : "dataset:current";
+  const version = await env.DATASET.get(pointer);
+  if (!version) throw new Error(`${pointer} is not configured`);
+  const manifestKey = channel === "preview" ? `preview-manifest:${version}` : `manifest:${version}`;
+  const manifest = await env.DATASET.get<DatasetManifest>(manifestKey, "json");
+  if (!manifest) throw new Error(`${manifestKey} was not found`);
   return manifest;
 }
 
-async function loadFoods(env: Env): Promise<{ manifest: DatasetManifest; foods: RuntimeFood[] }> {
-  const manifest = await loadManifest(env);
+async function loadFoods(env: Env, channel: DatasetChannel = "stable"): Promise<{ manifest: DatasetManifest; foods: RuntimeFood[] }> {
+  const manifest = await loadManifest(env, channel);
   if (manifest.documents) return { manifest, foods: manifest.documents };
   if (!env.DATASET) return { manifest, foods: [] };
 
+  const prefix = channel === "preview" ? `preview-doc:${manifest.dataset_version}:` : `doc:${manifest.dataset_version}:`;
   const foods: RuntimeFood[] = [];
   let cursor: string | undefined;
   do {
-    const page = await env.DATASET.list({ prefix: `doc:${manifest.dataset_version}:`, cursor });
+    const page = await env.DATASET.list({ prefix, cursor });
     const pageFoods = await Promise.all(page.keys.map((key) => env.DATASET!.get<RuntimeFood>(key.name, "json")));
     foods.push(...pageFoods.filter((food): food is RuntimeFood => Boolean(food)));
     cursor = page.list_complete ? undefined : page.cursor;
@@ -433,52 +450,68 @@ async function createDraft(args: Record<string, unknown>, env: Env, request: Req
 }
 
 async function callTool(name: string, args: Record<string, unknown>, env: Env, request: Request) {
-  if (name === "get_dataset_status") return publicManifest(await loadManifest(env));
+  if (name === "get_dataset_status") {
+    const channel = datasetChannel(args);
+    return publicManifest(await loadManifest(env, channel), channel);
+  }
   if (name === "create_draft") return createDraft(args, env, request);
   if (!["search_food", "get_food", "calculate_nutrition", "compare_foods"].includes(name)) throw new Error(`unknown tool: ${name}`);
 
-  const { manifest, foods } = await loadFoods(env);
+  if (name === "search_food" || name === "get_food") {
+    const channel = datasetChannel(args);
+    const { manifest, foods } = await loadFoods(env, channel);
+    const readable = (food: RuntimeFood) => channel === "preview" ? food.status === "stable" || food.status === "draft" : food.status === "stable";
 
-  if (name === "search_food") {
-    const query = String(args.query ?? "").trim();
-    if (!query || query.length > 100) throw new Error("query must contain 1-100 characters");
-    const parsedLimit = Number(args.limit ?? 10);
-    if (!Number.isInteger(parsedLimit)) throw new Error("limit must be an integer");
-    const limit = Math.min(Math.max(parsedLimit, 1), 25);
-    const results = foods
-      .filter((food) => food.status === "stable")
-      .filter((food) => !args.kind || food.kind === args.kind)
-      .filter((food) => !args.brand || normalize(food.brand ?? "") === normalize(String(args.brand)))
-      .map((food) => ({ food, score: scoreFood(food, query, args.brand ? String(args.brand) : undefined) }))
-      .filter((result) => result.score > 0)
-      .sort((a, b) => b.score - a.score || a.food.id.localeCompare(b.food.id))
-      .slice(0, limit)
-      .map(({ food, score }) => ({
-        food_id: food.id,
-        title: food.title,
-        brand: food.brand,
-        kind: food.kind,
-        barcode: food.barcode,
-        score,
-        trust_tier: food.trust_tier,
-        last_verified: food.last_verified,
-        stale: food.stale,
+    if (name === "search_food") {
+      const query = String(args.query ?? "").trim();
+      if (!query || query.length > 100) throw new Error("query must contain 1-100 characters");
+      const parsedLimit = Number(args.limit ?? 10);
+      if (!Number.isInteger(parsedLimit)) throw new Error("limit must be an integer");
+      const limit = Math.min(Math.max(parsedLimit, 1), 25);
+      const results = foods
+        .filter(readable)
+        .filter((food) => !args.kind || food.kind === args.kind)
+        .filter((food) => !args.brand || normalize(food.brand ?? "") === normalize(String(args.brand)))
+        .map((food) => ({ food, score: scoreFood(food, query, args.brand ? String(args.brand) : undefined) }))
+        .filter((result) => result.score > 0)
+        .sort((a, b) => b.score - a.score || a.food.id.localeCompare(b.food.id))
+        .slice(0, limit)
+        .map(({ food, score }) => ({
+          food_id: food.id,
+          title: food.title,
+          brand: food.brand,
+          kind: food.kind,
+          status: food.status,
+          barcode: food.barcode,
+          score,
+          trust_tier: food.trust_tier,
+          last_verified: food.last_verified,
+          stale: food.stale,
+          dataset_channel: channel,
+          dataset_version: manifest.dataset_version,
+        }));
+      return {
+        results,
+        dataset_channel: channel,
         dataset_version: manifest.dataset_version,
-      }));
-    return { results, dataset_version: manifest.dataset_version };
-  }
+        ...(channel === "preview" ? { warning: "Preview results may include unreviewed draft records and are not stable publication." } : {}),
+      };
+    }
 
-  if (name === "get_food") {
-    const food = foods.find((candidate) => candidate.id === args.food_id && candidate.status === "stable");
-    if (!food) throw new Error("food was not found in the stable dataset");
+    const food = foods.find((candidate) => candidate.id === args.food_id && readable(candidate));
+    if (!food) throw new Error(`food was not found in the ${channel} dataset`);
     return {
       ...food,
-      freshness_warnings: food.stale
-        ? ["資料可能已過期；若涉及過敏原，請核對最新實體包裝或品牌資訊。"]
-        : [],
+      freshness_warnings: [
+        ...(food.stale ? ["資料可能已過期；若涉及過敏原，請核對最新實體包裝或品牌資訊。"] : []),
+        ...(channel === "preview" && food.status === "draft" ? ["此為未經真人審核的 preview draft，不代表 stable publication。"] : []),
+      ],
+      dataset_channel: channel,
       dataset_version: manifest.dataset_version,
     };
   }
+
+  const { manifest, foods } = await loadFoods(env, "stable");
 
   if (name === "calculate_nutrition") {
     if (!Array.isArray(args.items) || args.items.length === 0 || args.items.length > 50) throw new Error("items must contain 1-50 entries");
@@ -544,12 +577,13 @@ async function callTool(name: string, args: Record<string, unknown>, env: Env, r
   };
 }
 
+const channelProperty = { enum: ["stable", "preview"] };
 const toolDefinitions = [
-  { name: "search_food", description: "Search stable Taiwan food documents by name, brand, barcode, ID, alias, ingredient, or allergen.", inputSchema: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string", minLength: 1, maxLength: 100 }, brand: { type: "string" }, kind: { enum: ["packaged_food", "menu_item", "generic_food"] }, limit: { type: "integer", minimum: 1, maximum: 25 } } } },
-  { name: "get_food", description: "Get one stable food document with source, verification, revision, nutrition, ingredients, allergens, and freshness warnings.", inputSchema: { type: "object", additionalProperties: false, required: ["food_id"], properties: { food_id: { type: "string" } } } },
+  { name: "search_food", description: "Search stable Taiwan food documents, or explicitly query the preview channel to inspect unreviewed drafts.", inputSchema: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string", minLength: 1, maxLength: 100 }, brand: { type: "string" }, kind: { enum: ["packaged_food", "menu_item", "generic_food"] }, limit: { type: "integer", minimum: 1, maximum: 25 }, dataset_channel: channelProperty } } },
+  { name: "get_food", description: "Get one food document from the stable dataset, or explicitly inspect a draft from the preview channel.", inputSchema: { type: "object", additionalProperties: false, required: ["food_id"], properties: { food_id: { type: "string" }, dataset_channel: channelProperty } } },
   { name: "calculate_nutrition", description: "Deterministically calculate nutrition from stable calculation-enabled records without treating unknown fields as zero.", inputSchema: { type: "object", additionalProperties: false, required: ["items"], properties: { items: { type: "array", minItems: 1, maxItems: 50, items: { type: "object", additionalProperties: false, required: ["food_id", "quantity", "unit"], properties: { food_id: { type: "string" }, quantity: { type: "number", exclusiveMinimum: 0 }, unit: { enum: ["g", "ml", "serving"] } } } } } } },
-  { name: "compare_foods", description: "Compare 2-10 foods only when each has nutrition on the same requested or evidence-convertible basis.", inputSchema: { type: "object", additionalProperties: false, required: ["food_ids", "basis"], properties: { food_ids: { type: "array", minItems: 2, maxItems: 10, items: { type: "string" } }, basis: { enum: ["per_serving", "per_100g", "per_100ml"] } } } },
-  { name: "get_dataset_status", description: "Return dataset version, source commit, document counts, stale count, and deployment time.", inputSchema: { type: "object", additionalProperties: false, properties: {} } },
+  { name: "compare_foods", description: "Compare 2-10 stable foods only when each has nutrition on the same requested or evidence-convertible basis.", inputSchema: { type: "object", additionalProperties: false, required: ["food_ids", "basis"], properties: { food_ids: { type: "array", minItems: 2, maxItems: 10, items: { type: "string" } }, basis: { enum: ["per_serving", "per_100g", "per_100ml"] } } } },
+  { name: "get_dataset_status", description: "Return stable or preview dataset version, source commit, document counts, stale count, and deployment time.", inputSchema: { type: "object", additionalProperties: false, properties: { dataset_channel: channelProperty } } },
   { name: "create_draft", description: "Authenticated write entrypoint that validates and checks a draft before creating a GitHub branch and pull request for human review.", inputSchema: { type: "object", required: ["action", "food", "evidence"], properties: { action: { enum: ["create_food", "correct_food", "new_revision", "report_outdated", "deprecate_food"] }, food: { type: "object" }, serving: { type: "object" }, nutrition: { type: "array" }, ingredients: { type: "array" }, allergens: { type: "array" }, evidence: { type: "array", minItems: 1 }, submitter_note: { type: "string", maxLength: 2000 } } } },
 ];
 
@@ -611,7 +645,8 @@ export default {
     if (url.pathname === "/health") return json({ status: "ok", service: "TWFoodMCP", time: new Date().toISOString() });
     if (url.pathname === "/dataset") {
       try {
-        return json(publicManifest(await loadManifest(env)));
+        const channel = url.searchParams.get("channel") === "preview" ? "preview" : "stable";
+        return json(publicManifest(await loadManifest(env, channel), channel));
       } catch (caught) {
         return json({ status: "unavailable", error: caught instanceof Error ? caught.message : "unknown" }, 503);
       }

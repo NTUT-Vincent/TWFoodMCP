@@ -10,7 +10,7 @@ on:
       - "references/**"
       - "config/**"
       - "scripts/**"
-      - "tests/dataset-build.test.mjs"
+      - "tests/**"
       - "package.json"
       - "worker/**"
       - ".github/workflows/publish-dataset.yml"
@@ -52,31 +52,45 @@ jobs:
             echo "::warning::Dataset was built but not published. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository Actions secrets."
           fi
 
-      - name: Publish versioned entries and switch current dataset
+      - name: Deploy Worker compatible with stable and preview datasets
+        if: steps.credentials.outputs.available == 'true'
+        run: npm run deploy
+
+      - name: Publish versioned entries and switch stable and preview datasets
         if: steps.credentials.outputs.available == 'true'
         run: npm run publish:dataset
 
-      - name: Verify production dataset and search
+      - name: Verify production stable and preview datasets
         if: steps.credentials.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
           expected_version="$(cat dist/kv/current-version.txt)"
           expected_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/kv/manifest.json", "utf8")).stable_documents)')"
+          expected_preview_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/kv/preview-manifest.json", "utf8")).preview_documents)')"
 
           for attempt in {1..12}; do
+            stable_ok=false
+            preview_ok=false
             if curl --fail --silent --show-error "$PRODUCTION_BASE_URL/dataset" > /tmp/dataset.json; then
               if EXPECTED_VERSION="$expected_version" EXPECTED_COUNT="$expected_count" node --input-type=module -e '
                 import fs from "node:fs";
                 const body = JSON.parse(fs.readFileSync("/tmp/dataset.json", "utf8"));
-                if (body.dataset_version !== process.env.EXPECTED_VERSION || body.stable_documents !== Number(process.env.EXPECTED_COUNT)) process.exit(1);
-              '; then
-                break
-              fi
+                if (body.dataset_channel !== "stable" || body.dataset_version !== process.env.EXPECTED_VERSION || body.stable_documents !== Number(process.env.EXPECTED_COUNT)) process.exit(1);
+              '; then stable_ok=true; fi
             fi
+            if curl --fail --silent --show-error "$PRODUCTION_BASE_URL/dataset?channel=preview" > /tmp/preview-dataset.json; then
+              if EXPECTED_VERSION="$expected_version" EXPECTED_PREVIEW_COUNT="$expected_preview_count" node --input-type=module -e '
+                import fs from "node:fs";
+                const body = JSON.parse(fs.readFileSync("/tmp/preview-dataset.json", "utf8"));
+                if (body.dataset_channel !== "preview" || body.dataset_version !== process.env.EXPECTED_VERSION || body.preview_documents !== Number(process.env.EXPECTED_PREVIEW_COUNT)) process.exit(1);
+              '; then preview_ok=true; fi
+            fi
+            if [[ "$stable_ok" == "true" && "$preview_ok" == "true" ]]; then break; fi
             if [[ "$attempt" == "12" ]]; then
-              echo "Production dataset did not converge to $expected_version" >&2
+              echo "Production datasets did not converge to $expected_version" >&2
               cat /tmp/dataset.json 2>/dev/null || true
+              cat /tmp/preview-dataset.json 2>/dev/null || true
               exit 1
             fi
             sleep 10
@@ -96,4 +110,19 @@ jobs:
             if (!Array.isArray(content?.results) || content.results.length < 1) throw new Error("search_food returned no Fami results");
           '
 
-          echo "Verified dataset $expected_version and search_food in production."
+          curl --fail --silent --show-error \
+            -X POST "$PRODUCTION_BASE_URL/mcp" \
+            -H "content-type: application/json" \
+            --data '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"大麥克","brand":"McDonald\u0027s","dataset_channel":"preview","limit":10}}}' \
+            > /tmp/preview-search.json
+
+          EXPECTED_VERSION="$expected_version" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/preview-search.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("preview search returned the wrong dataset");
+            const bigMac = content?.results?.find((item) => item.food_id === "food:tw:menu:mcdonalds:big-mac");
+            if (!bigMac || bigMac.status !== "draft") throw new Error("preview search did not return the McDonald's Big Mac draft");
+          '
+
+          echo "Verified stable and preview dataset $expected_version in production."

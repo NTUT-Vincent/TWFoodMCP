@@ -41,19 +41,21 @@ try {
     "--remote",
   ]);
 
-  console.log("Switching dataset:current after all versioned entries completed...");
-  wrangler([
-    "kv",
-    "key",
-    "put",
-    "dataset:current",
-    version,
-    "--binding",
-    binding,
-    "--remote",
-  ]);
+  console.log("Switching stable and preview dataset pointers after all versioned entries completed...");
+  for (const pointer of ["dataset:current", "dataset:preview"]) {
+    wrangler([
+      "kv",
+      "key",
+      "put",
+      pointer,
+      version,
+      "--binding",
+      binding,
+      "--remote",
+    ]);
+  }
 
-  console.log(`Published dataset ${version}.`);
+  console.log(`Published stable and preview dataset ${version}.`);
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;

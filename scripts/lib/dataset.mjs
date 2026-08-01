@@ -300,7 +300,14 @@ export async function buildDataset(options = {}) {
     .map(({ data }) => toRuntimeFood(data, now))
     .sort((a, b) => a.id.localeCompare(b.id));
 
+  const previewFoods = sourceDocuments
+    .filter(({ data }) => data.status !== "deprecated" && data.access?.classification === "public")
+    .map(({ data }) => toRuntimeFood(data, now))
+    .sort((a, b) => a.id.localeCompare(b.id));
+
   const staleDocuments = runtimeFoods.filter((food) => food.stale).length;
+  const previewStaleDocuments = previewFoods.filter((food) => food.stale).length;
+  const draftDocuments = previewFoods.filter((food) => food.status === "draft").length;
   const manifest = {
     dataset_version: version,
     source_commit: sourceCommit,
@@ -308,10 +315,21 @@ export async function buildDataset(options = {}) {
     stale_documents: staleDocuments,
     last_deployment: now.toISOString(),
   };
+  const previewManifest = {
+    dataset_version: version,
+    source_commit: sourceCommit,
+    stable_documents: runtimeFoods.length,
+    draft_documents: draftDocuments,
+    preview_documents: previewFoods.length,
+    stale_documents: previewStaleDocuments,
+    last_deployment: now.toISOString(),
+  };
   const stats = {
     ...manifest,
     source_documents: sourceDocuments.length,
     published_documents: runtimeFoods.length,
+    preview_documents: previewFoods.length,
+    draft_documents: draftDocuments,
     excluded_documents: sourceDocuments.length - runtimeFoods.length,
   };
   const versionedEntries = [
@@ -319,7 +337,12 @@ export async function buildDataset(options = {}) {
       key: `doc:${version}:${food.id}`,
       value: JSON.stringify(food),
     })),
+    ...previewFoods.map((food) => ({
+      key: `preview-doc:${version}:${food.id}`,
+      value: JSON.stringify(food),
+    })),
     { key: `manifest:${version}`, value: JSON.stringify(manifest) },
+    { key: `preview-manifest:${version}`, value: JSON.stringify(previewManifest) },
     { key: `stats:${version}`, value: JSON.stringify(stats) },
   ];
 
@@ -329,7 +352,9 @@ export async function buildDataset(options = {}) {
     generatedAt: now.toISOString(),
     sourceDocuments,
     runtimeFoods,
+    previewFoods,
     manifest,
+    previewManifest,
     stats,
     versionedEntries,
   };
