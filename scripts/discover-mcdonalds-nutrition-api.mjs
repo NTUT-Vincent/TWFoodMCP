@@ -14,24 +14,9 @@ async function curlText(url) {
   const { stdout } = await execFileAsync(
     'curl',
     [
-      '--http1.1',
-      '--location',
-      '--compressed',
-      '--silent',
-      '--show-error',
-      '--fail-with-body',
-      '--retry',
-      '3',
-      '--retry-all-errors',
-      '--connect-timeout',
-      '20',
-      '--max-time',
-      '90',
-      '--user-agent',
-      USER_AGENT,
-      '--header',
-      'Accept-Language: zh-TW,zh;q=0.9,en;q=0.7',
-      url,
+      '--http1.1', '--location', '--compressed', '--silent', '--show-error', '--fail-with-body',
+      '--retry', '3', '--retry-all-errors', '--connect-timeout', '20', '--max-time', '90',
+      '--user-agent', USER_AGENT, '--header', 'Accept-Language: zh-TW,zh;q=0.9,en;q=0.7', url,
     ],
     { encoding: 'utf8', maxBuffer: 30 * 1024 * 1024 },
   );
@@ -92,17 +77,8 @@ async function main() {
         byte_length: Buffer.byteLength(body),
         body,
         contexts: contexts(body, [
-          'fetch\\(',
-          '\\$\\.ajax',
-          'XMLHttpRequest',
-          'nutrition',
-          'nutrient',
-          'productId',
-          'productCode',
-          'api',
-          '\\.json',
-          'servlet',
-          'graphql',
+          'fetch\\(', '\\$\\.ajax', 'XMLHttpRequest', 'nutrition', 'nutrient',
+          'productId', 'productCode', 'api', '\\.json', 'servlet', 'graphql',
         ]),
         quoted_paths: unique(
           [...body.matchAll(/["']([^"']*(?:nutrition|nutrient|product|api|json|servlet)[^"']*)["']/gi)]
@@ -115,9 +91,8 @@ async function main() {
     }
   }
 
-  const componentTags = [...html.matchAll(/<[^>]+data-component=["']nutrients-table["'][^>]*>/gi)].map(
-    (match) => match[0],
-  );
+  const componentTags = [...html.matchAll(/<[^>]+data-component=["']nutrients-table["'][^>]*>/gi)]
+    .map((match) => match[0]);
 
   const diagnostic = {
     retrieved_at: new Date().toISOString(),
@@ -127,15 +102,9 @@ async function main() {
     nutrition_script_urls: nutritionScripts,
     component_tags: componentTags,
     html_contexts: contexts(html, [
-      'data-component=["\\']nutrients-table',
-      'data-nutrition-ids',
-      'productId',
-      'productCode',
-      'nutrition',
-      'nutrient',
-      'api',
-      '\\.json',
-      'servlet',
+      "data-component=[\\\"']nutrients-table",
+      'data-nutrition-ids', 'productId', 'productCode', 'nutrition', 'nutrient',
+      'api', '\\.json', 'servlet',
     ], 1_500, 120),
     html_quoted_paths: unique(
       [...html.matchAll(/["']([^"']*(?:nutrition|nutrient|product|api|json|servlet)[^"']*)["']/gi)]
