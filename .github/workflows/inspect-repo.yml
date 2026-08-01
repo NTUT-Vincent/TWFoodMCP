@@ -14,11 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create complete repository archive
-        run: tar --exclude=.git --exclude=repository.tar.gz -czf repository.tar.gz .
+        run: tar --exclude=.git -czf /tmp/repository.tar.gz .
       - name: Upload repository archive
         uses: actions/upload-artifact@v4
         with:
           name: repository-inspection
-          path: repository.tar.gz
+          path: /tmp/repository.tar.gz
           if-no-files-found: error
           retention-days: 1
