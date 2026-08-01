@@ -6,6 +6,7 @@ on:
     paths:
       - scripts/scrape-mcdonalds-tw.mjs
       - scripts/scrape-mcdonalds-tw-http1.mjs
+      - scripts/discover-mcdonalds-nutrition-api.mjs
       - .github/workflows/mcdonalds-scrape.yml
 
 permissions:
@@ -25,10 +26,16 @@ jobs:
       - name: Install project dependencies
         run: npm install --package-lock=false
 
-      - name: Crawl source with forced HTTP/1.1
+      - name: Discover official nutrition data endpoint
         continue-on-error: true
         run: |
           mkdir -p artifacts
+          node scripts/discover-mcdonalds-nutrition-api.mjs \
+            artifacts/mcdonalds-nutrition-api-diagnostic.json
+
+      - name: Crawl source with forced HTTP/1.1
+        continue-on-error: true
+        run: |
           node scripts/scrape-mcdonalds-tw-http1.mjs \
             --output artifacts/mcdonalds-tw-nutrition.http1.raw.json
 
