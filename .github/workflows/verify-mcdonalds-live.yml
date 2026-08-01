@@ -79,7 +79,7 @@ jobs:
             const body = JSON.parse(fs.readFileSync("/tmp/get.json", "utf8"));
             const content = body?.result?.structuredContent;
             if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("wrong get_food dataset");
-            if (content?.food_id !== "food:tw:menu:mcdonalds:big-mac") throw new Error("wrong food");
+            if (content?.id !== "food:tw:menu:mcdonalds:big-mac") throw new Error("wrong food");
             if (content?.status !== "draft") throw new Error("missing draft status");
             if (content?.nutrition?.[0]?.values?.energy_kcal !== 503.17) throw new Error("unexpected energy value");
             if (content?.serving?.amount !== 211.64) throw new Error("unexpected serving amount");
