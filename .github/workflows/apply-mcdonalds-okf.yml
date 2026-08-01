@@ -25,8 +25,7 @@ jobs:
           set -euo pipefail
           cat .github/import/mcdonalds-okf.part* | base64 -d > /tmp/mcdonalds-okf.tar.xz
           tar -xJf /tmp/mcdonalds-okf.tar.xz
-          rm -f .github/workflows/inspect-repo.yml
-          rm -f .github/workflows/apply-mcdonalds-okf.yml
+          git checkout HEAD -- .github/workflows
           rm -rf .github/import
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
