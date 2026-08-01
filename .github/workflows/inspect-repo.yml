@@ -18,12 +18,14 @@ jobs:
         with:
           name: repository-inspection
           path: |
+            .github/workflows
             knowledge
             schemas
             scripts
             tests
             worker
             config
+            README.md
             package.json
             tsconfig*.json
           if-no-files-found: warn
