@@ -35,6 +35,7 @@ jobs:
       DAILYDIETITIAN_MAX_CATEGORY_PAGES: "8"
       DAILYDIETITIAN_MAX_ARTICLES: ${{ inputs.max_articles || '0' }}
       DAILYDIETITIAN_REQUEST_DELAY_MS: "850"
+      DAILYDIETITIAN_USER_AGENT: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/151.0 Safari/537.36 TWFoodMCP/0.1"
       IMPORT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
     steps:
@@ -53,18 +54,46 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Crawl, compare, and generate draft candidates
-        run: npm run import:dailydietitian
-
-      - name: Reject empty or blocked crawl results
+      - name: Crawl, compare, and reject empty responses
+        shell: bash
         run: |
-          node --input-type=module <<'NODE'
+          set -euo pipefail
+          success=0
+          for attempt in 1 2 3; do
+            echo "DailyDietitian crawl attempt ${attempt}/3"
+            npm run import:dailydietitian
+            if node --input-type=module <<'NODE'
           import { readFile } from "node:fs/promises";
           const summary = JSON.parse(await readFile("reports/dailydietitian/summary.json", "utf8"));
           if (summary.article_links_discovered < 10 || summary.articles_processed < 10 || summary.candidates_extracted < 1) {
-            throw new Error(`Unsafe crawl result; refusing to replace reports: ${JSON.stringify(summary)}`);
+            console.error(`Unsafe crawl result: ${JSON.stringify(summary)}`);
+            process.exit(1);
           }
           NODE
+            then
+              success=1
+              break
+            fi
+            if [ "${attempt}" -lt 3 ]; then
+              cooldown=$((attempt * 60))
+              echo "Received an empty or blocked response; cooling down for ${cooldown} seconds."
+              sleep "${cooldown}"
+            fi
+          done
+          if [ "${success}" -ne 1 ]; then
+            echo "All crawl attempts were empty or blocked; refusing to replace any committed report."
+            exit 1
+          fi
+
+      - name: Upload complete crawl evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: dailydietitian-crawl-${{ github.run_id }}
+          path: |
+            references/discovery/dailydietitian
+            reports/dailydietitian
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Normalize OKF v0.2 documents
         run: npm run format:okf
@@ -75,7 +104,7 @@ jobs:
       - name: Run regression tests
         run: npm test
 
-      - name: Commit generated discovery data and drafts
+      - name: Commit summary and generated OKF drafts
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         shell: bash
         run: |
@@ -83,14 +112,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            references/discovery/dailydietitian \
-            reports/dailydietitian \
+            reports/dailydietitian/summary.json \
+            reports/dailydietitian/verified-new-drafts.json \
             knowledge/menu-items/dailydietitian-verified \
             knowledge/index.md \
             knowledge/log.md \
             knowledge/menu-items/index.md
           if git diff --cached --quiet; then
-            echo "No generated changes to commit."
+            echo "No generated summary or OKF draft changes to commit."
             exit 0
           fi
           git commit -m "data: import DailyDietitian candidates [skip ci]"
