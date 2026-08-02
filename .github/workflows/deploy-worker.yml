@@ -2,14 +2,6 @@ name: deploy-worker
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "worker/**"
-      - "wrangler.jsonc"
-      - "package.json"
-      - ".github/workflows/deploy-worker.yml"
 
 permissions:
   contents: read
@@ -36,17 +28,15 @@ jobs:
       - run: npm run check:deploy
 
       - name: Check Cloudflare credentials
-        id: credentials
         shell: bash
         run: |
-          if [[ -n "$CLOUDFLARE_API_TOKEN" && -n "$CLOUDFLARE_ACCOUNT_ID" ]]; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "available=false" >> "$GITHUB_OUTPUT"
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
             echo "::error::CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are required."
             exit 1
           fi
 
+      - name: Apply D1 migrations
+        run: npm run migrate:dataset
+
       - name: Deploy Worker
-        if: steps.credentials.outputs.available == 'true'
         run: npm run deploy
