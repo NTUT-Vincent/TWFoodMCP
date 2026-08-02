@@ -1,0 +1,101 @@
+---
+type: Food Product
+title: 未分類 科學麵 （40g）
+description: 從日日營養文章表格逐列抽取的未驗證食品營養 draft。
+resource: https://dailydietitian.com.tw/%e6%b3%a1%e9%ba%b5%e7%87%9f%e9%a4%8a-%e7%86%b1%e9%87%8f-%e8%84%82%e8%82%aa-%e8%9b%8b%e7%99%bd%e8%b3%aa-%e9%88%89/
+tags:
+  - 未分類
+  - 日日營養
+  - 第三方資料
+  - 待人工審核
+  - 份量基準待確認
+generated:
+  by: twfoodmcp-dailydietitian-importer/2.0.0
+  at: 2026-08-02T06:20:30.483Z
+status: draft
+stale_after: 2027-02-02
+sources:
+  - id: dailydietitian-8f01f0452121
+    resource: https://dailydietitian.com.tw/%e6%b3%a1%e9%ba%b5%e7%87%9f%e9%a4%8a-%e7%86%b1%e9%87%8f-%e8%84%82%e8%82%aa-%e8%9b%8b%e7%99%bd%e8%b3%aa-%e9%88%89/
+    title: 2026 最新》Top 10 熱門泡麵口味營養解析！熱量／脂肪／蛋白質／碳水／鈉含量
+    author: dailydietitian/website
+    source_class: expert_interpretation
+    last_modified: 2026-07-14
+    retrieved_at: 2026-08-02T05:23:09.523Z
+access:
+  classification: public
+food:
+  id: food:tw:menu:dailydietitian:8f350a79fcf2badf0bad
+  kind: menu_item
+  market: TW
+  brand: 未分類
+  name: 科學麵 （40g）
+  aliases:
+    - 科學麵 （40g）
+    - 未分類科學麵 （40g）
+    - 未分類 科學麵 （40g）
+revision:
+  revision_id: dailydietitian-2026-08-02-8f350a79fcf2
+serving:
+  amount: 40
+  unit: g
+  description: 科學麵 (40g)
+nutrition:
+  - basis: per_serving
+    values:
+      energy_kcal: 192
+      fat_g: 8.3
+      protein_g: 4.6
+      carbohydrate_g: 24.6
+      sodium_mg: 720
+quality:
+  data_quality: third_party_database
+  completeness: nutrition_complete
+  confidence: low
+  calculation_allowed: false
+extraction:
+  source_system: 日日營養 DailyDietitian
+  candidate_id: dd:8f350a79fcf2badf0bad
+  snapshot_retrieved_at: 2026-08-02T05:23:09.523Z
+  article_estimation_disclosure: false
+  table_index: 0
+  row_index: 3
+  basis_inferred: true
+  source_headers:
+    - 品項名稱
+    - 熱量
+    - 脂肪
+    - 蛋白質
+    - 碳水
+    - 鈉含量
+  source_row:
+    - 科學麵 （40g）
+    - "192"
+    - "8.3"
+    - "4.6"
+    - "24.6"
+    - "720"
+official_review_hint:
+  status: not_compared_or_no_match
+limitations:
+  - 此文件只表示日日營養文章中曾出現這筆資料，不代表品牌、政府或 TWFoodMCP 已確認其正確性。
+  - 此 draft 沒有 verified 欄位，依 OKF v0.2 應視為 unverified。
+  - 在真人確認產品身分、份量基準與營養數值前，不得用於營養計算或升為 stable。
+  - 來源表格沒有明示 per-serving 或 per-100 基準，目前 basis 是抽取器推定值。
+---
+
+# Summary
+
+此文件逐列保存日日營養文章中的食品名稱與營養表格數值。[^dailydietitian-8f01f0452121] 它是未驗證 draft，不代表官方標示或 TWFoodMCP 的正式判定。
+
+# Source Row
+
+| 品項名稱 | 熱量 | 脂肪 | 蛋白質 | 碳水 | 鈉含量 |
+| --- | --- | --- | --- | --- | --- |
+| 科學麵 （40g） | 192 | 8.3 | 4.6 | 24.6 | 720 |
+
+# Review Required
+
+升為 stable 前，真人 reviewer 必須確認精確產品、規格、份量基準、營養欄位、文章版本及可追溯證據。此 draft 的 `quality.calculation_allowed` 固定為 `false`。
+
+[^dailydietitian-8f01f0452121]: 2026 最新》Top 10 熱門泡麵口味營養解析！熱量／脂肪／蛋白質／碳水／鈉含量

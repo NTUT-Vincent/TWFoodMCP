@@ -1,0 +1,106 @@
+---
+type: Food Product
+title: SUBWAY 白巧克力夏威夷豆
+description: 從日日營養文章表格逐列抽取的未驗證食品營養 draft。
+resource: https://dailydietitian.com.tw/subway%e7%86%b1%e9%87%8f%e6%8e%92%e8%a1%8c%e6%a6%9c/
+tags:
+  - SUBWAY
+  - 日日營養
+  - 第三方資料
+  - 待人工審核
+  - 份量基準待確認
+generated:
+  by: twfoodmcp-dailydietitian-importer/2.0.0
+  at: 2026-08-02T06:20:30.483Z
+status: draft
+stale_after: 2027-02-02
+sources:
+  - id: dailydietitian-845e02fda73f
+    resource: https://dailydietitian.com.tw/subway%e7%86%b1%e9%87%8f%e6%8e%92%e8%a1%8c%e6%a6%9c/
+    title: 2026 Subway熱量圖鑑｜潛艇堡、麵包、醬料一次看＋常見點餐問答
+    author: dailydietitian/website
+    source_class: expert_interpretation
+    last_modified: 2025-05-30
+    retrieved_at: 2026-08-02T05:23:09.523Z
+access:
+  classification: public
+food:
+  id: food:tw:menu:dailydietitian:9d3efd2a05ffdfefbe2e
+  kind: menu_item
+  market: TW
+  brand: SUBWAY
+  name: 白巧克力夏威夷豆
+  aliases:
+    - 白巧克力夏威夷豆
+    - SUBWAY白巧克力夏威夷豆
+    - SUBWAY 白巧克力夏威夷豆
+revision:
+  revision_id: dailydietitian-2026-08-02-9d3efd2a05ff
+nutrition:
+  - basis: per_serving
+    values:
+      energy_kcal: 217
+      protein_g: 2
+      fat_g: 10.8
+      saturated_fat_g: 5.4
+      trans_fat_g: 0.1
+      carbohydrate_g: 28
+      sugar_g: 18
+quality:
+  data_quality: third_party_database
+  completeness: nutrition_complete
+  confidence: low
+  calculation_allowed: false
+extraction:
+  source_system: 日日營養 DailyDietitian
+  candidate_id: dd:9d3efd2a05ffdfefbe2e
+  snapshot_retrieved_at: 2026-08-02T05:23:09.523Z
+  article_estimation_disclosure: false
+  table_index: 8
+  row_index: 0
+  basis_inferred: true
+  source_headers:
+    - 品項名稱
+    - 價格
+    - 熱量(kcal)
+    - 蛋白質(g)
+    - 總脂肪(g)
+    - 飽和脂肪(g)
+    - 反式脂肪(g)
+    - 碳水(g)
+    - 糖(g)
+  source_row:
+    - 白巧克力夏威夷豆
+    - "25"
+    - "217"
+    - "2"
+    - "10.8"
+    - "5.4"
+    - "0.1"
+    - "28"
+    - "18"
+official_review_hint:
+  status: not_compared_or_no_match
+limitations:
+  - 此文件只表示日日營養文章中曾出現這筆資料，不代表品牌、政府或 TWFoodMCP 已確認其正確性。
+  - 此 draft 沒有 verified 欄位，依 OKF v0.2 應視為 unverified。
+  - 在真人確認產品身分、份量基準與營養數值前，不得用於營養計算或升為 stable。
+  - 來源表格沒有明示 per-serving 或 per-100 基準，目前 basis 是抽取器推定值。
+  - 來源沒有可重現的 serving amount。
+---
+
+# Summary
+
+此文件逐列保存日日營養文章中的食品名稱與營養表格數值。[^dailydietitian-845e02fda73f] 它是未驗證 draft，不代表官方標示或 TWFoodMCP 的正式判定。
+
+# Source Row
+
+| 品項名稱 | 價格 | 熱量(kcal) | 蛋白質(g) | 總脂肪(g) | 飽和脂肪(g) | 反式脂肪(g) | 碳水(g) | 糖(g) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 白巧克力夏威夷豆 | 25 | 217 | 2 | 10.8 | 5.4 | 0.1 | 28 | 18 |
+
+# Review Required
+
+升為 stable 前，真人 reviewer 必須確認精確產品、規格、份量基準、營養欄位、文章版本及可追溯證據。此 draft 的 `quality.calculation_allowed` 固定為 `false`。
+
+[^dailydietitian-845e02fda73f]: 2026 Subway熱量圖鑑｜潛艇堡、麵包、醬料一次看＋常見點餐問答

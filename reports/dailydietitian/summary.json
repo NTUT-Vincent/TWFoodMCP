@@ -1,20 +1,22 @@
 {
   "run_date": "2026-08-02",
-  "retrieved_at": "2026-08-02T05:23:09.523Z",
-  "category_url": "https://dailydietitian.com.tw/category/calorie-guide/",
-  "category_pages_requested": 8,
+  "generated_at": "2026-08-02T06:20:30.483Z",
+  "input_mode": "saved_crawl_snapshot",
+  "snapshot_root": "/home/runner/work/_temp/dailydietitian-snapshot/references/discovery/dailydietitian",
+  "snapshot_retrieved_at": "2026-08-02T05:23:09.523Z",
   "article_links_discovered": 80,
   "articles_processed": 80,
   "candidates_extracted": 4495,
+  "new_okf_drafts": 4495,
   "existing_official_matches": 40,
-  "new_okf_drafts": 0,
   "conflicts": 9,
-  "pending_verification": 4446,
+  "unmatched_official": 4446,
+  "pending_human_review": 4495,
   "crawl_errors": 0,
   "policy": {
-    "discovery_source": "日日營養 DailyDietitian",
-    "draft_gate": "A draft is generated only when an existing primary official OKF record corroborates it or an allowlisted official page contains the normalized item name and every extracted nutrient value.",
-    "stable_gate": "No human:* verification is generated. All newly generated OKF documents remain draft.",
-    "copyright_boundary": "Article prose and images are not stored; only article metadata and factual table cells needed for source comparison are retained."
+    "source_of_record_for_draft": "日日營養 DailyDietitian",
+    "draft_gate": "Every extracted nutrition candidate becomes an unverified OKF draft sourced from its DailyDietitian article.",
+    "verification_state": "No verified field is generated; trust tier is unverified under OKF v0.2.",
+    "stable_gate": "No human:* verification is generated. Drafts remain excluded from stable publication and nutrition calculation."
   }
 }
