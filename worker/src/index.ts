@@ -478,10 +478,21 @@ async function callTool(name: string, args: Record<string, unknown>, env: Env, r
   if (!["search_food", "get_food", "calculate_nutrition", "compare_foods"].includes(name)) throw new Error(`unknown tool: ${name}`);
 
   if (name === "search_food" || name === "get_food") {
-    const status = discoveryStatus(args);
-    const channel = discoveryChannel(status);
-    const { manifest, foods } = await loadFoods(env, channel);
-    const readable = (food: RuntimeFood) =>
+  const status = discoveryStatus(args);
+  let channel = discoveryChannel(status);
+  let loaded: { manifest: DatasetManifest; foods: RuntimeFood[] };
+  try {
+    loaded = await loadFoods(env, channel);
+  } catch (caught) {
+    const message = caught instanceof Error ? caught.message : "";
+    const previewUnavailable = channel === "preview"
+      && (message === "dataset:preview is not configured" || /^preview-manifest:.+ was not found$/u.test(message));
+    if (status !== "all" || !previewUnavailable) throw caught;
+    channel = "stable";
+    loaded = await loadFoods(env, channel);
+  }
+  const { manifest, foods } = loaded;
+  const readable = (food: RuntimeFood) =>
       food.status !== "deprecated" && (status === "all" || food.status === status);
 
     if (name === "search_food") {

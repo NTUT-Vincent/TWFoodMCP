@@ -62,8 +62,8 @@ async function callTool(name, args) {
   return response.json();
 }
 
-test("stable search does not expose McDonald's draft records", async () => {
-  const body = await callTool("search_food", { query: "大麥克" });
+test("status stable does not expose McDonald's draft records", async () => {
+  const body = await callTool("search_food", { query: "大麥克", status: "stable" });
   assert.equal(body.result.structuredContent.results.length, 0);
   assert.equal(body.result.structuredContent.dataset_channel, "stable");
 });
