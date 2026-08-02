@@ -6,10 +6,12 @@
   "observability": {
     "enabled": true
   },
-  "kv_namespaces": [
+  "d1_databases": [
     {
-      "binding": "DATASET",
-      "id": "287fcf25f7944885b0e5f290f7942ed6"
+      "binding": "DB",
+      "database_name": "twfoodmcp",
+      "database_id": "e76c47b2-4fec-41d7-96b2-b0be6cf221f6",
+      "migrations_dir": "migrations"
     }
   ],
   "vars": {
