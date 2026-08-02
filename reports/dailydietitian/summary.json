@@ -1,0 +1,20 @@
+{
+  "run_date": "2026-08-02",
+  "retrieved_at": "2026-08-02T05:09:04.985Z",
+  "category_url": "https://dailydietitian.com.tw/category/calorie-guide/",
+  "category_pages_requested": 8,
+  "article_links_discovered": 0,
+  "articles_processed": 0,
+  "candidates_extracted": 0,
+  "existing_official_matches": 0,
+  "new_okf_drafts": 0,
+  "conflicts": 0,
+  "pending_verification": 0,
+  "crawl_errors": 0,
+  "policy": {
+    "discovery_source": "日日營養 DailyDietitian",
+    "draft_gate": "A draft is generated only when an existing primary official OKF record corroborates it or an allowlisted official page contains the normalized item name and every extracted nutrient value.",
+    "stable_gate": "No human:* verification is generated. All newly generated OKF documents remain draft.",
+    "copyright_boundary": "Article prose and images are not stored; only article metadata and factual table cells needed for source comparison are retained."
+  }
+}
