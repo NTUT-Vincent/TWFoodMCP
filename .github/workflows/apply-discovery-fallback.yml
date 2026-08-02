@@ -24,16 +24,18 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
           index_path = Path('worker/src/index.ts')
           source = index_path.read_text()
-          old = '''  if (name === "search_food" || name === "get_food") {
-            const status = discoveryStatus(args);
-            const channel = discoveryChannel(status);
-            const { manifest, foods } = await loadFoods(env, channel);
-            const readable = (food: RuntimeFood) =>
-          '''
-          new = '''  if (name === "search_food" || name === "get_food") {
+          pattern = re.compile(
+              r'  if \(name === "search_food" \|\| name === "get_food"\) \{\n'
+              r'\s+const status = discoveryStatus\(args\);\n'
+              r'\s+const channel = discoveryChannel\(status\);\n'
+              r'\s+const \{ manifest, foods \} = await loadFoods\(env, channel\);\n'
+              r'\s+const readable = \(food: RuntimeFood\) =>\n'
+          )
+          replacement = '''  if (name === "search_food" || name === "get_food") {
             const status = discoveryStatus(args);
             let channel = discoveryChannel(status);
             let loaded: { manifest: DatasetManifest; foods: RuntimeFood[] };
@@ -50,21 +52,24 @@ jobs:
             const { manifest, foods } = loaded;
             const readable = (food: RuntimeFood) =>
           '''
-          if source.count(old) != 1:
+          source, count = pattern.subn(replacement, source, count=1)
+          if count != 1:
               raise SystemExit('expected one search/get load block')
-          index_path.write_text(source.replace(old, new))
+          index_path.write_text(source)
 
           test_path = Path('tests/mcdonalds-preview.test.mjs')
           test_source = test_path.read_text()
-          old_test = '''test("stable search does not expose McDonald's draft records", async () => {
-            const body = await callTool("search_food", { query: "大麥克" });
-          '''
-          new_test = '''test("status stable does not expose McDonald's draft records", async () => {
+          test_pattern = re.compile(
+              r'test\("stable search does not expose McDonald\'s draft records", async \(\) => \{\n'
+              r'\s+const body = await callTool\("search_food", \{ query: "大麥克" \}\);\n'
+          )
+          test_replacement = '''test("status stable does not expose McDonald's draft records", async () => {
             const body = await callTool("search_food", { query: "大麥克", status: "stable" });
           '''
-          if test_source.count(old_test) != 1:
+          test_source, count = test_pattern.subn(test_replacement, test_source, count=1)
+          if count != 1:
               raise SystemExit('expected one McDonald stable search test')
-          test_path.write_text(test_source.replace(old_test, new_test))
+          test_path.write_text(test_source)
           PY
       - name: Commit runtime compatibility fix
         shell: bash
