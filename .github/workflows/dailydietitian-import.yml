@@ -16,6 +16,14 @@ on:
     branches:
       - main
     types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/dailydietitian-import.yml
+      - config/dailydietitian-sources.json
+      - docs/DAILYDIETITIAN_IMPORT.md
+      - package.json
+      - scripts/import-dailydietitian.mjs
+      - scripts/lib/dailydietitian.mjs
+      - tests/dailydietitian-import.test.mjs
 
 permissions:
   contents: write
