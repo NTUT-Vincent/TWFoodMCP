@@ -1,0 +1,105 @@
+{
+  "source": {
+    "name": "日日營養 DailyDietitian",
+    "category_url": "https://dailydietitian.com.tw/category/calorie-guide/",
+    "purpose": "Candidate discovery only. Third-party values never become stable evidence by themselves."
+  },
+  "brands": [
+    {
+      "slug": "mcdonalds",
+      "name": "麥當勞",
+      "aliases": ["McDonald's", "McDonalds", "麥當勞台灣"],
+      "official_hosts": ["mcdonalds.com"]
+    },
+    {
+      "slug": "burger-king",
+      "name": "漢堡王",
+      "aliases": ["Burger King", "BK"],
+      "official_hosts": ["burgerking.com.tw"]
+    },
+    {
+      "slug": "kfc",
+      "name": "肯德基",
+      "aliases": ["KFC"],
+      "official_hosts": ["kfcclub.com.tw"]
+    },
+    {
+      "slug": "mos-burger",
+      "name": "摩斯漢堡",
+      "aliases": ["MOS Burger", "MOS", "摩斯"],
+      "official_hosts": ["mos.com.tw"]
+    },
+    {
+      "slug": "starbucks",
+      "name": "星巴克",
+      "aliases": ["Starbucks", "Starbucks Taiwan"],
+      "official_hosts": ["starbucks.com.tw"]
+    },
+    {
+      "slug": "louisa",
+      "name": "路易莎咖啡",
+      "aliases": ["路易莎", "Louisa Coffee", "LOUISA COFFEE"],
+      "official_hosts": ["louisacoffee.co", "louisagroup.com"]
+    },
+    {
+      "slug": "8yotea",
+      "name": "八曜和茶",
+      "aliases": ["八曜", "8YOTEA"],
+      "official_hosts": ["8yotea.com"]
+    },
+    {
+      "slug": "21plus",
+      "name": "21世紀風味館",
+      "aliases": ["21世紀風味館", "21世紀", "21PLUS"],
+      "official_hosts": []
+    },
+    {
+      "slug": "familymart",
+      "name": "全家便利商店",
+      "aliases": ["全家", "FamilyMart", "Fami!ce"],
+      "official_hosts": ["family.com.tw"]
+    },
+    {
+      "slug": "7-eleven",
+      "name": "7-ELEVEN",
+      "aliases": ["7-11", "小七", "統一超商"],
+      "official_hosts": ["7-11.com.tw"]
+    },
+    {
+      "slug": "hilife",
+      "name": "萊爾富",
+      "aliases": ["Hi-Life", "HiLife"],
+      "official_hosts": ["hilife.com.tw"]
+    },
+    {
+      "slug": "dominos",
+      "name": "達美樂",
+      "aliases": ["Domino's", "Dominos"],
+      "official_hosts": ["dominos.com.tw"]
+    },
+    {
+      "slug": "pizza-hut",
+      "name": "必勝客",
+      "aliases": ["Pizza Hut"],
+      "official_hosts": ["pizzahut.com.tw"]
+    },
+    {
+      "slug": "subway",
+      "name": "SUBWAY",
+      "aliases": ["Subway", "賽百味"],
+      "official_hosts": ["subway.com.tw"]
+    },
+    {
+      "slug": "marugame",
+      "name": "丸龜製麵",
+      "aliases": ["丸龜", "Marugame Udon"],
+      "official_hosts": []
+    },
+    {
+      "slug": "generic-fruit",
+      "name": "一般水果",
+      "aliases": ["Top 10 水果熱量", "水果熱量高低排行"],
+      "official_hosts": []
+    }
+  ]
+}

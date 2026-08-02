@@ -1,0 +1,109 @@
+---
+type: Food Product
+title: |-
+  更新】 清心福全菜單 蜜茶
+  （中）
+description: 從日日營養文章表格逐列抽取的未驗證食品營養 draft。
+resource: https://dailydietitian.com.tw/%e6%b8%85%e5%bf%83%e7%a6%8f%e5%85%a8%e7%86%b1%e9%87%8f-%e7%b3%96%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
+tags:
+  - 更新】 清心福全菜單
+  - 日日營養
+  - 第三方資料
+  - 待人工審核
+  - 份量基準待確認
+generated:
+  by: twfoodmcp-dailydietitian-importer/2.0.0
+  at: 2026-08-02T06:39:27.145Z
+status: draft
+stale_after: 2027-02-02
+sources:
+  - id: dailydietitian-cb2f61c49e77
+    resource: https://dailydietitian.com.tw/%e6%b8%85%e5%bf%83%e7%a6%8f%e5%85%a8%e7%86%b1%e9%87%8f-%e7%b3%96%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
+    title: 【2026 更新】 清心福全菜單｜熱量／糖量／價目表＋營養師建議
+    author: dailydietitian/website
+    source_class: expert_interpretation
+    last_modified: 2025-10-24
+    retrieved_at: 2026-08-02T05:23:09.523Z
+access:
+  classification: public
+food:
+  id: food:tw:menu:dailydietitian:0fae3a4d5ff1c9c6195b
+  kind: menu_item
+  market: TW
+  brand: 更新】 清心福全菜單
+  name: |-
+    蜜茶
+    （中）
+  aliases:
+    - |-
+      蜜茶
+      （中）
+    - |-
+      更新】 清心福全菜單蜜茶
+      （中）
+    - |-
+      更新】 清心福全菜單 蜜茶
+      （中）
+revision:
+  revision_id: dailydietitian-2026-08-02-0fae3a4d5ff1
+nutrition:
+  - basis: per_serving
+    values:
+      sugar_g: 36
+      energy_kcal: 168
+quality:
+  data_quality: third_party_database
+  completeness: partial
+  confidence: low
+  calculation_allowed: false
+extraction:
+  source_system: 日日營養 DailyDietitian
+  candidate_id: dd:0fae3a4d5ff1c9c6195b
+  snapshot_retrieved_at: 2026-08-02T05:23:09.523Z
+  article_estimation_disclosure: false
+  table_index: 4
+  row_index: 20
+  basis_inferred: true
+  source_headers:
+    - 品名
+    - |-
+      糖量
+      （克）
+    - |-
+      總熱量
+      （大卡）
+    - |-
+      價格
+      （元）
+  source_row:
+    - |-
+      蜜茶
+      （中）
+    - "36"
+    - "168"
+    - "35"
+official_review_hint:
+  status: not_compared_or_no_match
+limitations:
+  - 此文件只表示日日營養文章中曾出現這筆資料，不代表品牌、政府或 TWFoodMCP 已確認其正確性。
+  - 此 draft 沒有 verified 欄位，依 OKF v0.2 應視為 unverified。
+  - 在真人確認產品身分、份量基準與營養數值前，不得用於營養計算或升為 stable。
+  - 來源表格沒有明示 per-serving 或 per-100 基準，目前 basis 是抽取器推定值。
+  - 來源沒有可重現的 serving amount。
+---
+
+# Summary
+
+此文件逐列保存日日營養文章中的食品名稱與營養表格數值。[^dailydietitian-cb2f61c49e77] 它是未驗證 draft，不代表官方標示或 TWFoodMCP 的正式判定。
+
+# Source Row
+
+| 品名 | 糖量<br>（克） | 總熱量<br>（大卡） | 價格<br>（元） |
+| --- | --- | --- | --- |
+| 蜜茶<br>（中） | 36 | 168 | 35 |
+
+# Review Required
+
+升為 stable 前，真人 reviewer 必須確認精確產品、規格、份量基準、營養欄位、文章版本及可追溯證據。此 draft 的 `quality.calculation_allowed` 固定為 `false`。
+
+[^dailydietitian-cb2f61c49e77]: 【2026 更新】 清心福全菜單｜熱量／糖量／價目表＋營養師建議

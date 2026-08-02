@@ -1,0 +1,144 @@
+name: Import DailyDietitian drafts
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/dailydietitian-import.yml
+      - config/dailydietitian-sources.json
+      - docs/DAILYDIETITIAN_IMPORT.md
+      - package.json
+      - scripts/import-dailydietitian.mjs
+      - scripts/build-dailydietitian-drafts.mjs
+      - scripts/rename-dailydietitian-okf-files.mjs
+      - scripts/lib/dailydietitian.mjs
+      - tests/dailydietitian-import.test.mjs
+
+permissions:
+  actions: read
+  contents: write
+
+concurrency:
+  group: dailydietitian-import-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      IMPORT_BRANCH: ${{ github.head_ref || github.ref_name }}
+      SNAPSHOT_RUN_ID: "30734022098"
+      SNAPSHOT_ARTIFACT: "dailydietitian-crawl-30734022098"
+
+    steps:
+      - name: Check out import branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.IMPORT_BRANCH }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download the complete saved DailyDietitian crawl
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SNAPSHOT_ARTIFACT }}
+          path: ${{ runner.temp }}/dailydietitian-snapshot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SNAPSHOT_RUN_ID }}
+
+      - name: Generate one unverified OKF draft per saved source row
+        env:
+          DAILYDIETITIAN_SNAPSHOT_ROOT: ${{ runner.temp }}/dailydietitian-snapshot/references/discovery/dailydietitian
+        run: npm run build:dailydietitian-drafts
+
+      - name: Verify complete draft coverage and readable concept filenames
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile, readdir } from "node:fs/promises";
+          import path from "node:path";
+
+          async function markdownFiles(root) {
+            const files = [];
+            async function walk(current) {
+              for (const entry of await readdir(current, { withFileTypes: true })) {
+                const resolved = path.join(current, entry.name);
+                if (entry.isDirectory()) await walk(resolved);
+                else if (entry.isFile() && entry.name.endsWith(".md")) files.push(resolved);
+              }
+            }
+            await walk(root);
+            return files;
+          }
+
+          const summary = JSON.parse(await readFile("reports/dailydietitian/summary.json", "utf8"));
+          const files = await markdownFiles("knowledge/menu-items/dailydietitian");
+          const readablePattern = /^.+--[a-f0-9]{12}\.md$/u;
+          const unreadable = files.filter((file) => !readablePattern.test(path.basename(file)));
+          const safe = summary.input_mode === "saved_crawl_snapshot"
+            && summary.article_links_discovered === 80
+            && summary.articles_processed === 80
+            && summary.candidates_extracted === 4495
+            && summary.new_okf_drafts === summary.candidates_extracted
+            && summary.pending_human_review === summary.new_okf_drafts
+            && files.length === summary.new_okf_drafts
+            && unreadable.length === 0;
+          if (!safe) {
+            console.error(`Incomplete snapshot conversion: ${JSON.stringify(summary)}`);
+            console.error(`Concept files: ${files.length}; unreadable filenames: ${JSON.stringify(unreadable.slice(0, 20))}`);
+            process.exit(1);
+          }
+          NODE
+
+      - name: Upload complete source evidence and generated drafts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dailydietitian-drafts-${{ github.run_id }}
+          path: |
+            references/discovery/dailydietitian
+            reports/dailydietitian
+            knowledge/menu-items/dailydietitian
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Normalize OKF v0.2 documents
+        run: npm run format:okf
+
+      - name: Validate all OKF data
+        run: npm run validate:data
+
+      - name: Run regression tests
+        run: npm test
+
+      - name: Commit summary and all generated OKF drafts
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f --ignore-unmatch reports/dailydietitian/verified-new-drafts.json
+          git add \
+            reports/dailydietitian/summary.json \
+            knowledge/menu-items/dailydietitian \
+            knowledge/index.md \
+            knowledge/log.md \
+            knowledge/menu-items/index.md
+          if git diff --cached --quiet; then
+            echo "No generated summary or OKF draft changes to commit."
+            exit 0
+          fi
+          git commit -m "data: use readable DailyDietitian OKF filenames [skip ci]"
+          git push origin "HEAD:${IMPORT_BRANCH}"

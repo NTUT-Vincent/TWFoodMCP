@@ -85,6 +85,7 @@ Human / Agent
 
 - [MVP Technical Specification](docs/MVP_SPEC.md)
 - [OKF v0.2 Conformance Profile](docs/OKF_CONFORMANCE.md)
+- [DailyDietitian Discovery and Verification Policy](docs/DAILYDIETITIAN_IMPORT.md)
 - [Official Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
 
 ## Current Status
@@ -96,9 +97,10 @@ Human / Agent
 - Cloudflare KV versioned stable / preview dataset 發布。
 - 7 筆已人工審核的全家 Fami!ce stable records。
 - 99 筆由麥當勞台灣官方 API 轉換的 draft OKF records，可在 preview channel 搜尋與查詢。
+- 日日營養「熱量圖鑑」候選抽取、推估辨識、官方來源比對、衝突報告與 OKF draft 產生管線。
 - `create_draft` GitHub branch / PR workflow。
 
-麥當勞資料仍需真人逐項或批次審核後，才能加入 stable dataset 與營養計算。
+麥當勞與其他自動匯入資料仍需真人逐項或批次審核後，才能加入 stable dataset 與營養計算。
 
 ## Safety Boundary
 
