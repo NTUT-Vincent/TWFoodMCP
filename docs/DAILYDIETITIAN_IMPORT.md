@@ -1,28 +1,51 @@
-# DailyDietitian discovery and official-source verification
+# DailyDietitian source-draft import
 
-This pipeline uses the DailyDietitian calorie-guide category as a **candidate discovery source**. It does not treat a third-party article, a dietitian estimate, or an AI estimate as authoritative nutrition evidence.
+This pipeline converts every nutrition row extracted from the DailyDietitian calorie-guide category into an **unverified OKF draft**.
 
-Before this implementation was written, the latest official Open Knowledge Format `okf/README.md` and `okf/SPEC.md` were re-read on 2026-08-02. The official version remained **OKF v0.2**.
+Before this policy was implemented, the latest official Open Knowledge Format `okf/README.md` and `okf/SPEC.md` were re-read on 2026-08-02. The official version remained **OKF v0.2**.
 
-## Trust boundary
+## Draft policy
 
-A discovered row can have one of four outcomes:
+Every extracted row becomes one OKF concept under:
 
-1. `corroborated_existing`: the item name, serving basis, and published nutrients match an existing official-label, official-brand, or government OKF record. No duplicate OKF document is created.
-2. `new_okf_draft`: an allowlisted official brand page contains the normalized item name and every extracted nutrient value. A `status: draft` OKF document is generated with `verified.by: process:official-source-matcher`.
-3. `conflict`: an official record has the same identity but materially different nutrition values. The discrepancy is written to a report and no draft is generated.
-4. `pending`: no sufficiently strong official corroboration was found, the article declares estimated values, the serving basis is uncertain, or the identity is ambiguous.
+```text
+knowledge/menu-items/dailydietitian/<brand>/<candidate-id>.md
+```
 
-The importer never writes `human:*` verification. A human reviewer must open the official source and confirm product version, serving basis, context, and freshness before promotion to stable.
+The concept uses:
+
+- `status: draft`
+- one `sources` entry pointing to the exact DailyDietitian article
+- no `verified` field, so the OKF v0.2 trust tier is `unverified`
+- `quality.data_quality: third_party_database` for published third-party tables
+- `quality.data_quality: estimated` when the article contains an estimation disclosure
+- `quality.calculation_allowed: false` for every generated draft
+- the extracted table headers and source row in producer-defined frontmatter fields
+- a stable source candidate ID in `food.id`
+
+The importer does not claim that DailyDietitian values are official. Official or existing OKF comparisons are retained only as review hints and reports; they do not block draft creation.
+
+## Stable publication boundary
+
+Generated drafts remain excluded from the stable dataset, `calculate_nutrition`, and `compare_foods`.
+
+Promotion to `stable` still requires an authorized `human:*` reviewer to confirm:
+
+- exact product identity and market version
+- serving size and nutrition basis
+- nutrition values and source context
+- freshness and revision information
+- whether the record is suitable for calculations
+
+The importer never creates `human:*` verification.
 
 ## Copyright and crawl boundary
 
-- The crawler follows `robots.txt` independently for DailyDietitian and each official origin.
+- The crawler follows DailyDietitian `robots.txt`.
 - Requests are sequential and delayed by default.
 - It does not download or retain images.
 - It does not retain complete article prose.
-- It retains article metadata and factual table cells needed for identity and nutrition comparison.
-- DailyDietitian remains cited as the discovery source; the official page is the nutrition evidence for any generated draft.
+- It retains article metadata, factual nutrition table cells, and the exact extracted source row needed to reproduce the draft.
 
 ## Outputs
 
@@ -33,15 +56,17 @@ references/discovery/dailydietitian/
 
 reports/dailydietitian/
   summary.json
+  generated-drafts.json
   existing-official-matches.json
-  verified-new-drafts.json
   conflicts.json
-  pending-verification.json
+  unmatched-official.json
   crawl-errors.json
 
-knowledge/menu-items/dailydietitian-verified/
-  <brand>/<item>.md
+knowledge/menu-items/dailydietitian/
+  <brand>/<candidate-id>.md
 ```
+
+The GitHub pull request commits `summary.json` and all generated OKF drafts. Complete discovery records and review reports are also uploaded as a GitHub Actions artifact.
 
 ## Run
 
