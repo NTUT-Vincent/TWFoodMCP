@@ -58,12 +58,13 @@ function frontmatterFor(item, snapshot) {
     type: "Food Product",
     title: `麥當勞 ${item.name}`,
     description: `麥當勞台灣官方品項「${item.name}」的每份營養資料，來源為官方 itemDetails API。`,
+    resource: item.source_url,
     status: "draft",
     stale_after: "2027-02-01",
     access: { classification: "public" },
     tags,
     generated: {
-      by: "agent:chatgpt-mcdonalds-official-api-import",
+      by: "twfoodmcp-mcdonalds-importer/1.0.0",
       at: snapshot.source.retrieved_at,
     },
     sources: [
@@ -72,7 +73,7 @@ function frontmatterFor(item, snapshot) {
         resource: item.source_url,
         api_resource: item.source_api_url,
         title: "麥當勞台灣官方營養資料",
-        author: "organization:mcdonalds-tw",
+        author: "mcdonalds-tw/2026-08-01",
         source_class: "primary_official",
         retrieved_at: snapshot.source.retrieved_at,
         snapshot: snapshotResource,
@@ -121,7 +122,8 @@ for (const item of snapshot.items) {
   if (ids.has(frontmatter.food.id)) throw new Error(`Duplicate generated food ID: ${frontmatter.food.id}`);
   ids.add(frontmatter.food.id);
   const slug = frontmatter.food.id.split(":").at(-1);
-  const markdown = `---\n${stringify(frontmatter, { lineWidth: 0 }).trimEnd()}\n---\n\n# Summary\n\n官方 API 提供每份重量與九項營養數值；本文件保留原始每份基準，未自行換算或補齊缺值。\n`;
+  const source = frontmatter.sources[0];
+  const markdown = `---\n${stringify(frontmatter, { lineWidth: 0 }).trimEnd()}\n---\n\n# Summary\n\n官方 API 提供每份重量與九項營養數值；本文件保留原始每份基準，未自行換算或補齊缺值。[^${source.id}]\n\n[^${source.id}]: ${source.title}\n`;
   await writeFile(path.join(outputDir, `${slug}.md`), markdown, "utf8");
 }
 

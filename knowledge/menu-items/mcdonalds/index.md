@@ -1,0 +1,101 @@
+# McDonald's Taiwan Menu Items
+
+* [麥當勞 大蛋捲冰淇淋](ice-cream-cone-large.md) - 麥當勞台灣官方品項「大蛋捲冰淇淋」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 大麥克](big-mac.md) - 麥當勞台灣官方品項「大麥克」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 水果袋(芭樂)](sliced-guava.md) - 麥當勞台灣官方品項「水果袋(芭樂)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 火腿蛋堡](egg-burger-with-canadian-bacon.md) - 麥當勞台灣官方品項「火腿蛋堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 可口可樂](coke.md) - 麥當勞台灣官方品項「可口可樂」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 可口可樂zero](coke-zero.md) - 麥當勞台灣官方品項「可口可樂zero」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 台灣鮮榨柳丁汁(瓶裝)](taiwan-fresh-orange-juice.md) - 麥當勞台灣官方品項「台灣鮮榨柳丁汁(瓶裝)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 四季沙拉](salad-large.md) - 麥當勞台灣官方品項「四季沙拉」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 四盎司牛肉堡](classic-angus-beef-burger.md) - 麥當勞台灣官方品項「四盎司牛肉堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 四盎司牛肉堡(辣味)](spicy-classic-angus-beef-burger.md) - 麥當勞台灣官方品項「四盎司牛肉堡(辣味)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 奶茶 (冰)](iced-milk-tea-large.md) - 麥當勞台灣官方品項「奶茶 (冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 奶茶 (熱)](hot-milk-tea-medium.md) - 麥當勞台灣官方品項「奶茶 (熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 巧克力榛果可頌](croissant-chocolate.md) - 麥當勞台灣官方品項「巧克力榛果可頌」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 玉米杯](corn-cup.md) - 麥當勞台灣官方品項「玉米杯」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 玉米湯](corn-soup-small.md) - 麥當勞台灣官方品項「玉米湯」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 吉事蛋堡](egg-burger.md) - 麥當勞台灣官方品項「吉事蛋堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 吉事漢堡](cheese-burger.md) - 麥當勞台灣官方品項「吉事漢堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 早餐麥香魚](filet-o-fish-breakfast.md) - 麥當勞台灣官方品項「早餐麥香魚」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 早餐雙層麥香魚](double-filet-o-fish-breakfast.md) - 麥當勞台灣官方品項「早餐雙層麥香魚」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 肉桂捲](cinnamon-swirl.md) - 麥當勞台灣官方品項「肉桂捲」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 帕瑪森主廚鷄腿堡](parmesan-crispy-chicken-burger.md) - 麥當勞台灣官方品項「帕瑪森主廚鷄腿堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 帕瑪森安格斯牛肉堡](parmesan-angus-beef-burger.md) - 麥當勞台灣官方品項「帕瑪森安格斯牛肉堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 金選那堤(冰)](200335.md) - 麥當勞台灣官方品項「金選那堤(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 金選那堤(熱)](200333.md) - 麥當勞台灣官方品項「金選那堤(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 金選美式咖啡(冰)](200334.md) - 麥當勞台灣官方品項「金選美式咖啡(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 金選美式咖啡(冰)-大杯](200339.md) - 麥當勞台灣官方品項「金選美式咖啡(冰)-大杯」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 金選美式咖啡(熱)](200332.md) - 麥當勞台灣官方品項「金選美式咖啡(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 青蔬滿福堡](muffin-with-vegetables.md) - 麥當勞台灣官方品項「青蔬滿福堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 勁辣香鷄翅(2塊)](spicy-chicken-wing-2-pieces.md) - 麥當勞台灣官方品項「勁辣香鷄翅(2塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 勁辣香鷄翅(6塊)](spicy-chicken-wing-6-pieces.md) - 麥當勞台灣官方品項「勁辣香鷄翅(6塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 勁辣鷄腿堡](spicy-chicken-filet-burger.md) - 麥當勞台灣官方品項「勁辣鷄腿堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 紅茶(熱)](hot-black-tea.md) - 麥當勞台灣官方品項「紅茶(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 香草奶昔](200337.md) - 麥當勞台灣官方品項「香草奶昔」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 原味可頌](croissant.md) - 麥當勞台灣官方品項「原味可頌」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 原味麥脆鷄腿](200182.md) - 麥當勞台灣官方品項「原味麥脆鷄腿」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 原味麥脆鷄腿(2塊)](chicken-mccrispy-2-pieces.md) - 麥當勞台灣官方品項「原味麥脆鷄腿(2塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 原味麥脆鷄腿(大腿)](200179.md) - 麥當勞台灣官方品項「原味麥脆鷄腿(大腿)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 草莓奶昔](200338.md) - 麥當勞台灣官方品項「草莓奶昔」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 現烤焙果](plain-bagel.md) - 麥當勞台灣官方品項「現烤焙果」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蛋捲冰淇淋](ice-cream-cone.md) - 麥當勞台灣官方品項「蛋捲冰淇淋」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雪碧(小)](sprite.md) - 麥當勞台灣官方品項「雪碧(小)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克雙牛堡](mcdouble.md) - 麥當勞台灣官方品項「麥克雙牛堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克鷄塊(10塊)](chicken-mcnuggets-10-pieces-breakfast.md) - 麥當勞台灣官方品項「麥克鷄塊(10塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克鷄塊(10塊)](chicken-mcnuggets-10-pieces.md) - 麥當勞台灣官方品項「麥克鷄塊(10塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克鷄塊(4塊)](chicken-mcnuggets-4-pieces.md) - 麥當勞台灣官方品項「麥克鷄塊(4塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克鷄塊(6塊/早餐)](chicken-mcnuggets-6-pieces-breakfast.md) - 麥當勞台灣官方品項「麥克鷄塊(6塊/早餐)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥克鷄塊®(6塊)](chicken-mcnuggets-6-pieces.md) - 麥當勞台灣官方品項「麥克鷄塊®(6塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥香魚®](filet-o-fish.md) - 麥當勞台灣官方品項「麥香魚®」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥香鷄](mcchicken-breakfast.md) - 麥當勞台灣官方品項「麥香鷄」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 麥香鷄](mcchicken.md) - 麥當勞台灣官方品項「麥香鷄」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 無敵豬肉滿福堡加蛋](mega-mcmuffin.md) - 麥當勞台灣官方品項「無敵豬肉滿福堡加蛋」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 無糖紅茶 (冰)](iced-black-tea-sugar-free.md) - 麥當勞台灣官方品項「無糖紅茶 (冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 無糖綠茶 (冰)](iced-green-tea-sugar-free.md) - 麥當勞台灣官方品項「無糖綠茶 (冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 焦糖冰奶茶](caramel-milk-tea-iced.md) - 麥當勞台灣官方品項「焦糖冰奶茶」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 番茄嫩蛋焙果堡](bagel-burger-with-cheese.md) - 麥當勞台灣官方品項「番茄嫩蛋焙果堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典卡布奇諾(冰)](iced-cappuccino.md) - 麥當勞台灣官方品項「經典卡布奇諾(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典卡布奇諾(熱)](cappuccino.md) - 麥當勞台灣官方品項「經典卡布奇諾(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典那堤(冰)](iced-latte.md) - 麥當勞台灣官方品項「經典那堤(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典那堤(熱)](latte.md) - 麥當勞台灣官方品項「經典那堤(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典美式咖啡(冰)](iced-americano.md) - 麥當勞台灣官方品項「經典美式咖啡(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 經典美式咖啡(熱)](americano.md) - 麥當勞台灣官方品項「經典美式咖啡(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 義式濃縮咖啡(熱)](espresso.md) - 麥當勞台灣官方品項「義式濃縮咖啡(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蜂蜜奶茶(冰)](honey-milk-tea-iced.md) - 麥當勞台灣官方品項「蜂蜜奶茶(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蜂蜜奶茶(熱)](honey-milk-tea-hot.md) - 麥當勞台灣官方品項「蜂蜜奶茶(熱)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蜂蜜紅茶(冰)](honey-black-tea-iced.md) - 麥當勞台灣官方品項「蜂蜜紅茶(冰)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 嫩煎鷄腿堡](grilled-bbq-chicken-burger.md) - 麥當勞台灣官方品項「嫩煎鷄腿堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 滿福堡](egg-mcmuffin.md) - 麥當勞台灣官方品項「滿福堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 漢堡](hamburger.md) - 麥當勞台灣官方品項「漢堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 辣味麥脆鷄腿](200181.md) - 麥當勞台灣官方品項「辣味麥脆鷄腿」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 辣味麥脆鷄腿(2塊)](spicy-chicken-mccrispy-2-pieces.md) - 麥當勞台灣官方品項「辣味麥脆鷄腿(2塊)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 辣味麥脆鷄腿(大腿)](200180.md) - 麥當勞台灣官方品項「辣味麥脆鷄腿(大腿)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 豬肉蛋堡](egg-burger-with-sausage.md) - 麥當勞台灣官方品項「豬肉蛋堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 豬肉滿福堡](sausage-mcmuffin.md) - 麥當勞台灣官方品項「豬肉滿福堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 豬肉滿福堡加蛋](sausage-mcmuffin-with-egg.md) - 麥當勞台灣官方品項「豬肉滿福堡加蛋」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 豬肉鬆餅](hotcakes-with-sausage.md) - 麥當勞台灣官方品項「豬肉鬆餅」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蕈菇主廚鷄腿堡](mushroom-crispy-chicken-burger.md) - 麥當勞台灣官方品項「蕈菇主廚鷄腿堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蕈菇安格斯牛肉堡](mushroom-angus-beef-burger.md) - 麥當勞台灣官方品項「蕈菇安格斯牛肉堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蕈菇起司嫩蛋焙果堡](bagel-burger-with-mushroom.md) - 麥當勞台灣官方品項「蕈菇起司嫩蛋焙果堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 薯條(小)](french-fries-small.md) - 麥當勞台灣官方品項「薯條(小)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 薯餅](hash-browns.md) - 麥當勞台灣官方品項「薯餅」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 鮮乳(盒裝)](milk.md) - 麥當勞台灣官方品項「鮮乳(盒裝)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 檸檬風味紅茶(冰)(小)](iced-black-tea-lemon-flavor.md) - 麥當勞台灣官方品項「檸檬風味紅茶(冰)(小)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙倍OREO冰炫風](double-oreo-mcflurry.md) - 麥當勞台灣官方品項「雙倍OREO冰炫風」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙層牛肉吉事堡](double-cheese-burger.md) - 麥當勞台灣官方品項「雙層牛肉吉事堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙層四盎司牛肉堡](double-classic-angus-beef-burger.md) - 麥當勞台灣官方品項「雙層四盎司牛肉堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙層四盎司牛肉堡(辣味)](spicy-classic-double-angus-beef-burger.md) - 麥當勞台灣官方品項「雙層四盎司牛肉堡(辣味)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙層麥香魚](double-filet-o-fish-regular.md) - 麥當勞台灣官方品項「雙層麥香魚」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 雙層麥香鷄](double-mcchicken.md) - 麥當勞台灣官方品項「雙層麥香鷄」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 鬆餅(3片)](hotcakes-3-pieces.md) - 麥當勞台灣官方品項「鬆餅(3片)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 藜麥沙拉(大)](200323.md) - 麥當勞台灣官方品項「藜麥沙拉(大)」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 藜麥烤鷄沙拉](200325.md) - 麥當勞台灣官方品項「藜麥烤鷄沙拉」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 藜麥辣脆鷄沙拉](200326.md) - 麥當勞台灣官方品項「藜麥辣脆鷄沙拉」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 藜麥鱈魚沙拉](200324.md) - 麥當勞台灣官方品項「藜麥鱈魚沙拉」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 蘋果派](apple-pie.md) - 麥當勞台灣官方品項「蘋果派」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 鷄塊鬆餅大早餐](grand-breakfast.md) - 麥當勞台灣官方品項「鷄塊鬆餅大早餐」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 BLT 安格斯牛肉堡](blt-angus-beef-burger.md) - 麥當勞台灣官方品項「BLT 安格斯牛肉堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 BLT 嫩煎鷄腿堡](blt-grilled-chicken-burger.md) - 麥當勞台灣官方品項「BLT 嫩煎鷄腿堡」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 McC Evian天然礦泉水](evian-water.md) - 麥當勞台灣官方品項「McC Evian天然礦泉水」的每份營養資料，來源為官方 itemDetails API。
+* [麥當勞 OREO冰炫風](mcflurry.md) - 麥當勞台灣官方品項「OREO冰炫風」的每份營養資料，來源為官方 itemDetails API。
