@@ -13,6 +13,7 @@ on:
       - package.json
       - scripts/import-dailydietitian.mjs
       - scripts/build-dailydietitian-drafts.mjs
+      - scripts/rename-dailydietitian-okf-files.mjs
       - scripts/lib/dailydietitian.mjs
       - tests/dailydietitian-import.test.mjs
 
@@ -63,19 +64,40 @@ jobs:
           DAILYDIETITIAN_SNAPSHOT_ROOT: ${{ runner.temp }}/dailydietitian-snapshot/references/discovery/dailydietitian
         run: npm run build:dailydietitian-drafts
 
-      - name: Verify complete draft coverage
+      - name: Verify complete draft coverage and readable concept filenames
         run: |
           node --input-type=module <<'NODE'
-          import { readFile } from "node:fs/promises";
+          import { readFile, readdir } from "node:fs/promises";
+          import path from "node:path";
+
+          async function markdownFiles(root) {
+            const files = [];
+            async function walk(current) {
+              for (const entry of await readdir(current, { withFileTypes: true })) {
+                const resolved = path.join(current, entry.name);
+                if (entry.isDirectory()) await walk(resolved);
+                else if (entry.isFile() && entry.name.endsWith(".md")) files.push(resolved);
+              }
+            }
+            await walk(root);
+            return files;
+          }
+
           const summary = JSON.parse(await readFile("reports/dailydietitian/summary.json", "utf8"));
+          const files = await markdownFiles("knowledge/menu-items/dailydietitian");
+          const readablePattern = /^.+--[a-f0-9]{12}\.md$/u;
+          const unreadable = files.filter((file) => !readablePattern.test(path.basename(file)));
           const safe = summary.input_mode === "saved_crawl_snapshot"
             && summary.article_links_discovered === 80
             && summary.articles_processed === 80
             && summary.candidates_extracted === 4495
             && summary.new_okf_drafts === summary.candidates_extracted
-            && summary.pending_human_review === summary.new_okf_drafts;
+            && summary.pending_human_review === summary.new_okf_drafts
+            && files.length === summary.new_okf_drafts
+            && unreadable.length === 0;
           if (!safe) {
             console.error(`Incomplete snapshot conversion: ${JSON.stringify(summary)}`);
+            console.error(`Concept files: ${files.length}; unreadable filenames: ${JSON.stringify(unreadable.slice(0, 20))}`);
             process.exit(1);
           }
           NODE
@@ -118,5 +140,5 @@ jobs:
             echo "No generated summary or OKF draft changes to commit."
             exit 0
           fi
-          git commit -m "data: add all DailyDietitian rows as unverified drafts [skip ci]"
+          git commit -m "data: use readable DailyDietitian OKF filenames [skip ci]"
           git push origin "HEAD:${IMPORT_BRANCH}"
