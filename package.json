@@ -13,8 +13,9 @@
     "publish:dataset": "node scripts/publish-kv-dataset.mjs",
     "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
     "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs",
-    "import:dailydietitian": "node scripts/import-dailydietitian.mjs",
-    "build:dailydietitian-drafts": "node scripts/build-dailydietitian-drafts.mjs",
+    "rename:dailydietitian-okf": "node scripts/rename-dailydietitian-okf-files.mjs",
+    "import:dailydietitian": "node scripts/import-dailydietitian.mjs && npm run rename:dailydietitian-okf",
+    "build:dailydietitian-drafts": "node scripts/build-dailydietitian-drafts.mjs && npm run rename:dailydietitian-okf",
     "format:okf": "node scripts/format-okf-v0.2.mjs"
   },
   "devDependencies": {
