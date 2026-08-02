@@ -27,17 +27,21 @@ function render(record) {
   return `---\n${JSON.stringify(record)}\n---\n\n# Summary\n\nTest.[^source]\n\n[^source]: Test source\n`;
 }
 
-test("reserved index/log files are not parsed as concepts and bare verified mapping is accepted", async () => {
+async function writeFixture(record) {
   const root = await mkdtemp(path.join(os.tmpdir(), "twfood-okf-"));
   const knowledgeRoot = path.join(root, "knowledge");
   await mkdir(knowledgeRoot, { recursive: true });
   await writeFile(path.join(knowledgeRoot, "index.md"), '---\nokf_version: "0.2"\n---\n\n# Index\n', "utf8");
   await writeFile(path.join(knowledgeRoot, "log.md"), "# Log\n\n## 2026-08-02\n", "utf8");
-  await writeFile(path.join(knowledgeRoot, "test.md"), render(baseRecord), "utf8");
+  await writeFile(path.join(knowledgeRoot, "test.md"), render(record), "utf8");
   const reviewersPath = path.join(root, "reviewers.json");
   await writeFile(reviewersPath, JSON.stringify({ reviewers: ["human:reviewer"] }), "utf8");
+  return { knowledgeRoot, reviewersPath };
+}
 
-  const documents = await loadOkfDocuments({ knowledgeRoot, reviewersPath });
+test("reserved index/log files are not parsed as concepts and bare verified mapping is accepted", async () => {
+  const fixture = await writeFixture(baseRecord);
+  const documents = await loadOkfDocuments(fixture);
   assert.equal(documents.length, 1);
   assert.equal(toRuntimeFood(documents[0].data, new Date("2026-08-01T16:00:00Z")).trust_tier, "human-reviewed");
 });
@@ -46,4 +50,15 @@ test("stale_after is stale on the boundary date in Asia/Taipei", () => {
   const runtime = toRuntimeFood(baseRecord, new Date("2026-08-01T16:00:00Z"));
   assert.equal(runtime.stale, true);
   assert.equal(runtime.stale_after, "2026-08-02");
+});
+
+test("verifier identities must follow the OKF actor convention", async () => {
+  const fixture = await writeFixture({
+    ...baseRecord,
+    verified: { by: "agent:legacy-verifier", at: "2026-08-01T01:00:00Z" },
+  });
+  await assert.rejects(
+    () => loadOkfDocuments(fixture),
+    /verified\[0\]\.by must follow the OKF actor convention/u,
+  );
 });
