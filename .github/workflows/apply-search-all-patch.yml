@@ -22,6 +22,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Escape nested generated template literal
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.github/scripts/apply-search-all-patch.mjs')
+          source = path.read_text()
+          old = '    if (!food) throw new Error(`food was not found for status filter ${status}`);'
+          new = '    if (!food) throw new Error("food was not found for status filter " + status);'
+          if source.count(old) != 1:
+              raise SystemExit('expected one nested template literal')
+          path.write_text(source.replace(old, new))
+          PY
       - run: node .github/scripts/apply-search-all-patch.mjs
       - name: Commit patched runtime files
         shell: bash
