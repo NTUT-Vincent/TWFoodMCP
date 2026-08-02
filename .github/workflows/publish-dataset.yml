@@ -122,7 +122,7 @@ jobs:
             const content = body?.result?.structuredContent;
             if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("preview search returned the wrong dataset");
             const bigMac = content?.results?.find((item) => item.food_id === "food:tw:menu:mcdonalds:big-mac");
-            if (!bigMac || bigMac.status !== "draft") throw new Error("preview search did not return the McDonald's Big Mac draft");
+            if (!bigMac || bigMac.status !== "draft") throw new Error("preview search did not return the McDonald\u0027s Big Mac draft");
           '
 
           echo "Verified stable and preview dataset $expected_version in production."
