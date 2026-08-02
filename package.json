@@ -14,6 +14,7 @@
     "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
     "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs",
     "import:dailydietitian": "node scripts/import-dailydietitian.mjs",
+    "build:dailydietitian-drafts": "node scripts/build-dailydietitian-drafts.mjs",
     "format:okf": "node scripts/format-okf-v0.2.mjs"
   },
   "devDependencies": {
