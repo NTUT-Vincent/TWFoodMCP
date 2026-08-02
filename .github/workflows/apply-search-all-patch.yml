@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Escape nested generated template literal
+      - name: Prepare one-time patch script
         shell: bash
         run: |
           python3 - <<'PY'
@@ -33,7 +33,11 @@ jobs:
           new = '    if (!food) throw new Error("food was not found for status filter " + status);'
           if source.count(old) != 1:
               raise SystemExit('expected one nested template literal')
-          path.write_text(source.replace(old, new))
+          source = source.replace(old, new)
+          start = source.index("const workflowPath = '.github/workflows/publish-dataset.yml';")
+          end = source.index("console.log('Applied default all-status discovery patch.');", start)
+          source = source[:start] + source[end:]
+          path.write_text(source)
           PY
       - run: node .github/scripts/apply-search-all-patch.mjs
       - name: Commit patched runtime files
@@ -43,7 +47,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm .patches/search-all.trigger
-          git add worker/src/index.ts package.json .github/workflows/publish-dataset.yml
+          git add worker/src/index.ts package.json
           git diff --cached --check
           git commit -m "feat: discover stable and draft foods by default [skip ci]"
           git push origin HEAD:feat/search-all-records-20260802
