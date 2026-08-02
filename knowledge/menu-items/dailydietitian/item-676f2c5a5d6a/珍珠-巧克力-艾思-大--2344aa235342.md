@@ -15,7 +15,7 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-02T08:51:10.740Z
 status: draft
 stale_after: 2027-02-02
 sources:
