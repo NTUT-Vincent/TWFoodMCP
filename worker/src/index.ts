@@ -11,6 +11,7 @@ type NutritionBasis = "per_serving" | "per_100g" | "per_100ml";
 type Unit = "g" | "ml" | "piece" | "package" | "serving";
 type DraftAction = "create_food" | "correct_food" | "new_revision" | "report_outdated" | "deprecate_food";
 type DatasetChannel = "stable" | "preview";
+type DiscoveryStatus = "all" | "stable" | "draft";
 
 type NutritionValues = Partial<Record<
   | "energy_kcal"
@@ -117,6 +118,25 @@ function datasetChannel(args: Record<string, unknown>): DatasetChannel {
   const value = args.dataset_channel ?? "stable";
   if (value !== "stable" && value !== "preview") throw new Error("dataset_channel must be stable or preview");
   return value;
+}
+
+function discoveryStatus(args: Record<string, unknown>): DiscoveryStatus {
+  const explicit = args.status;
+  if (explicit !== undefined) {
+    if (explicit !== "all" && explicit !== "stable" && explicit !== "draft") {
+      throw new Error("status must be all, stable, or draft");
+    }
+    return explicit;
+  }
+
+  const legacyChannel = args.dataset_channel;
+  if (legacyChannel === undefined || legacyChannel === "preview") return "all";
+  if (legacyChannel === "stable") return "stable";
+  throw new Error("dataset_channel must be stable or preview");
+}
+
+function discoveryChannel(status: DiscoveryStatus): DatasetChannel {
+  return status === "stable" ? "stable" : "preview";
 }
 
 async function loadManifest(env: Env, channel: DatasetChannel = "stable"): Promise<DatasetManifest> {
@@ -458,9 +478,11 @@ async function callTool(name: string, args: Record<string, unknown>, env: Env, r
   if (!["search_food", "get_food", "calculate_nutrition", "compare_foods"].includes(name)) throw new Error(`unknown tool: ${name}`);
 
   if (name === "search_food" || name === "get_food") {
-    const channel = datasetChannel(args);
+    const status = discoveryStatus(args);
+    const channel = discoveryChannel(status);
     const { manifest, foods } = await loadFoods(env, channel);
-    const readable = (food: RuntimeFood) => channel === "preview" ? food.status === "stable" || food.status === "draft" : food.status === "stable";
+    const readable = (food: RuntimeFood) =>
+      food.status !== "deprecated" && (status === "all" || food.status === status);
 
     if (name === "search_food") {
       const query = String(args.query ?? "").trim();
@@ -485,27 +507,35 @@ async function callTool(name: string, args: Record<string, unknown>, env: Env, r
           barcode: food.barcode,
           score,
           trust_tier: food.trust_tier,
+          data_quality: food.quality.data_quality,
+          confidence: food.quality.confidence,
+          calculation_allowed: food.quality.calculation_allowed,
           last_verified: food.last_verified,
           stale: food.stale,
           dataset_channel: channel,
           dataset_version: manifest.dataset_version,
         }));
+      const includesDraft = results.some((result) => result.status === "draft");
       return {
         results,
+        status_filter: status,
         dataset_channel: channel,
         dataset_version: manifest.dataset_version,
-        ...(channel === "preview" ? { warning: "Preview results may include unreviewed draft records and are not stable publication." } : {}),
+        ...(includesDraft
+          ? { warning: "Results include unreviewed draft records. Inspect status, trust_tier, data_quality, confidence, calculation_allowed, and sources before use." }
+          : {}),
       };
     }
 
     const food = foods.find((candidate) => candidate.id === args.food_id && readable(candidate));
-    if (!food) throw new Error(`food was not found in the ${channel} dataset`);
+    if (!food) throw new Error("food was not found for status filter " + status);
     return {
       ...food,
       freshness_warnings: [
         ...(food.stale ? ["資料可能已過期；若涉及過敏原，請核對最新實體包裝或品牌資訊。"] : []),
-        ...(channel === "preview" && food.status === "draft" ? ["此為未經真人審核的 preview draft，不代表 stable publication。"] : []),
+        ...(food.status === "draft" ? ["此為未經真人審核的 draft，不代表 stable publication。請依來源、品質與信任欄位自行判斷。"] : []),
       ],
+      status_filter: status,
       dataset_channel: channel,
       dataset_version: manifest.dataset_version,
     };
@@ -577,10 +607,18 @@ async function callTool(name: string, args: Record<string, unknown>, env: Env, r
   };
 }
 
-const channelProperty = { enum: ["stable", "preview"] };
+const channelProperty = {
+  enum: ["stable", "preview"],
+  description: "Dataset publication channel. Stable is reviewed publication; preview also contains drafts.",
+};
+const statusProperty = {
+  enum: ["all", "stable", "draft"],
+  default: "all",
+  description: "Discovery filter. all searches stable and draft records; stable or draft restricts results to that status.",
+};
 const toolDefinitions = [
-  { name: "search_food", description: "Search stable Taiwan food documents, or explicitly query the preview channel to inspect unreviewed drafts.", inputSchema: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string", minLength: 1, maxLength: 100 }, brand: { type: "string" }, kind: { enum: ["packaged_food", "menu_item", "generic_food"] }, limit: { type: "integer", minimum: 1, maximum: 25 }, dataset_channel: channelProperty } } },
-  { name: "get_food", description: "Get one food document from the stable dataset, or explicitly inspect a draft from the preview channel.", inputSchema: { type: "object", additionalProperties: false, required: ["food_id"], properties: { food_id: { type: "string" }, dataset_channel: channelProperty } } },
+  { name: "search_food", description: "Search all discoverable Taiwan food records by default, including clearly labeled drafts. Use status to restrict results.", inputSchema: { type: "object", additionalProperties: false, required: ["query"], properties: { query: { type: "string", minLength: 1, maxLength: 100 }, brand: { type: "string" }, kind: { enum: ["packaged_food", "menu_item", "generic_food"] }, limit: { type: "integer", minimum: 1, maximum: 25 }, status: statusProperty } } },
+  { name: "get_food", description: "Get one complete food document regardless of draft or stable status by default. Drafts include explicit trust and warning fields.", inputSchema: { type: "object", additionalProperties: false, required: ["food_id"], properties: { food_id: { type: "string" }, status: statusProperty } } },
   { name: "calculate_nutrition", description: "Deterministically calculate nutrition from stable calculation-enabled records without treating unknown fields as zero.", inputSchema: { type: "object", additionalProperties: false, required: ["items"], properties: { items: { type: "array", minItems: 1, maxItems: 50, items: { type: "object", additionalProperties: false, required: ["food_id", "quantity", "unit"], properties: { food_id: { type: "string" }, quantity: { type: "number", exclusiveMinimum: 0 }, unit: { enum: ["g", "ml", "serving"] } } } } } } },
   { name: "compare_foods", description: "Compare 2-10 stable foods only when each has nutrition on the same requested or evidence-convertible basis.", inputSchema: { type: "object", additionalProperties: false, required: ["food_ids", "basis"], properties: { food_ids: { type: "array", minItems: 2, maxItems: 10, items: { type: "string" } }, basis: { enum: ["per_serving", "per_100g", "per_100ml"] } } } },
   { name: "get_dataset_status", description: "Return stable or preview dataset version, source commit, document counts, stale count, and deployment time.", inputSchema: { type: "object", additionalProperties: false, properties: { dataset_channel: channelProperty } } },
@@ -606,7 +644,7 @@ async function handleMcp(request: Request, env: Env) {
       result: {
         protocolVersion: "2025-06-18",
         capabilities: { tools: { listChanged: false } },
-        serverInfo: { name: "TWFoodMCP", version: "0.1.0" },
+        serverInfo: { name: "TWFoodMCP", version: "0.2.0" },
       },
     });
   }
