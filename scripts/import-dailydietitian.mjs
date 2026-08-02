@@ -5,15 +5,12 @@ import crypto from "node:crypto";
 import { stringify } from "yaml";
 import { loadOkfDocuments } from "./lib/dataset.mjs";
 import {
-  corroborateWithOfficialPage,
   extractCategoryArticleUrls,
   extractModifiedDate,
   extractNutritionCandidates,
   extractTitle,
   inferBrand,
   matchAgainstOfficialDocuments,
-  normalizeText,
-  officialLinksForArticle,
   parseRobots,
   robotsAllows,
   slugify,
@@ -26,7 +23,7 @@ const REQUEST_DELAY_MS = nonNegativeInteger(process.env.DAILYDIETITIAN_REQUEST_D
 const CONFIG_PATH = process.env.DAILYDIETITIAN_CONFIG ?? "config/dailydietitian-sources.json";
 const DISCOVERY_ROOT = process.env.DAILYDIETITIAN_DISCOVERY_ROOT ?? "references/discovery/dailydietitian";
 const REPORT_ROOT = process.env.DAILYDIETITIAN_REPORT_ROOT ?? "reports/dailydietitian";
-const OKF_ROOT = process.env.DAILYDIETITIAN_OKF_ROOT ?? "knowledge/menu-items/dailydietitian-verified";
+const OKF_ROOT = process.env.DAILYDIETITIAN_OKF_ROOT ?? "knowledge/menu-items/dailydietitian";
 const USER_AGENT = process.env.DAILYDIETITIAN_USER_AGENT
   ?? "TWFoodMCP/0.1 (+https://github.com/NTUT-Vincent/TWFoodMCP; factual nutrition discovery crawler)";
 const RUN_DATE = process.env.DAILYDIETITIAN_RUN_DATE ?? taipeiDate(new Date());
@@ -104,104 +101,95 @@ function articleFileName(url) {
   return `${safe || "article"}-${digest}.json`;
 }
 
-function sourceId(prefix, url) {
-  return `${prefix}-${crypto.createHash("sha1").update(url).digest("hex").slice(0, 12)}`;
+function sourceId(url) {
+  return `dailydietitian-${crypto.createHash("sha1").update(url).digest("hex").slice(0, 12)}`;
 }
 
-function sourceIsPrimary(source) {
-  return ["primary_label", "primary_government", "primary_official"].includes(source?.source_class);
+function candidateDigest(candidate) {
+  const fromId = String(candidate.id ?? "").replace(/^dd:/u, "");
+  if (/^[a-f0-9]{12,64}$/u.test(fromId)) return fromId;
+  return crypto.createHash("sha256")
+    .update(`${candidate.article.url}\n${candidate.table_index}\n${candidate.row_index}\n${candidate.item_name}`)
+    .digest("hex")
+    .slice(0, 20);
 }
 
-function deriveOfficialHosts(documents, brand) {
-  const brandNames = [brand?.name, ...(brand?.aliases ?? [])].filter(Boolean).map(normalizeText);
-  const hosts = new Set();
-  for (const document of documents) {
-    const data = document.data;
-    const officialBrand = normalizeText(data?.food?.brand ?? data?.title ?? "");
-    if (brandNames.length > 0 && !brandNames.some((name) => name && (officialBrand.includes(name) || name.includes(officialBrand)))) continue;
-    for (const source of data?.sources ?? []) {
-      if (!sourceIsPrimary(source) || typeof source.resource !== "string") continue;
-      try {
-        const host = new URL(source.resource).hostname.toLowerCase().replace(/^www\./u, "");
-        hosts.add(host);
-      } catch {
-        // Bundle-relative sources do not contribute web hosts.
-      }
-    }
-  }
-  return [...hosts];
+function safeSegment(value, fallback = "unclassified") {
+  const segment = slugify(value).replace(/[^A-Za-z0-9._-]/gu, "-").replace(/^-+|-+$/gu, "");
+  return segment || fallback;
 }
 
-function officialAuthor(brand) {
-  const candidate = String(brand?.slug ?? "official-source").replace(/[^A-Za-z0-9._-]/gu, "-").replace(/^-+|-+$/gu, "");
-  return `${candidate || "official-source"}/website`;
+function completenessFor(candidate) {
+  const count = Object.keys(candidate.nutrition ?? {}).length;
+  if (count >= 5) return "nutrition_complete";
+  if (count >= 2) return "partial";
+  return "minimal";
 }
 
-function okfFrontmatter(candidate, officialUrl, brand, match) {
-  const brandSlug = String(brand?.slug ?? slugify(brand?.name ?? candidate.brand ?? "brand"))
-    .replace(/[^A-Za-z0-9._-]/gu, "-")
-    .replace(/^-+|-+$/gu, "") || "brand";
-  const itemSlug = slugify(candidate.item_name).replace(/[^A-Za-z0-9._-]/gu, "-").replace(/^-+|-+$/gu, "")
-    || crypto.createHash("sha1").update(candidate.item_name).digest("hex").slice(0, 12);
-  const officialSourceId = sourceId("official", officialUrl);
-  const discoverySourceId = sourceId("dailydietitian", candidate.article.url);
-  const nutrientCount = Object.keys(candidate.nutrition).filter((key) => key !== "caffeine_mg").length;
-  const completeness = nutrientCount >= 5 ? "nutrition_complete" : nutrientCount >= 2 ? "partial" : "minimal";
-  const calculationAllowed = !candidate.basis_inferred && Boolean(candidate.serving);
+function comparisonMetadata(existing) {
+  if (!existing || existing.status === "no_match") return { status: "not_compared_or_no_match" };
+  return {
+    status: existing.status,
+    ...(existing.food_id ? { existing_food_id: existing.food_id } : {}),
+    ...(existing.title ? { existing_title: existing.title } : {}),
+    ...(existing.file_path ? { existing_file_path: existing.file_path } : {}),
+    ...(existing.comparison ? { comparison: existing.comparison } : {}),
+  };
+}
+
+function draftFrontmatter(candidate, existing) {
+  const digest = candidateDigest(candidate);
+  const brandName = candidate.brand || "未分類";
+  const source = sourceId(candidate.article.url);
   const aliases = [...new Set([
     candidate.item_name,
-    `${brand?.name ?? candidate.brand ?? ""}${candidate.item_name}`,
-    `${brand?.name ?? candidate.brand ?? ""} ${candidate.item_name}`,
+    `${brandName}${candidate.item_name}`,
+    `${brandName} ${candidate.item_name}`,
   ].map((value) => value.trim()).filter(Boolean))];
+  const estimated = Boolean(candidate.article.estimated);
+  const basisUncertain = Boolean(candidate.basis_inferred);
 
   return {
     type: "Food Product",
-    title: `${brand?.name ?? candidate.brand ?? ""} ${candidate.item_name}`.trim(),
-    description: "由日日營養發現，並以品牌官方頁面逐欄比對成功的台灣食品營養 draft。",
-    resource: officialUrl,
-    tags: [...new Set([brand?.name, "日日營養", "官方來源佐證", "待人工審核"].filter(Boolean))],
+    title: `${brandName} ${candidate.item_name}`.trim(),
+    description: "從日日營養文章表格逐列抽取的未驗證食品營養 draft。",
+    resource: candidate.article.url,
+    tags: [...new Set([
+      brandName,
+      "日日營養",
+      "第三方資料",
+      "待人工審核",
+      ...(estimated ? ["推估資料"] : []),
+      ...(basisUncertain ? ["份量基準待確認"] : []),
+    ].filter(Boolean))],
     generated: {
-      by: "twfoodmcp-dailydietitian-importer/1.0.0",
+      by: "twfoodmcp-dailydietitian-importer/2.0.0",
       at: RETRIEVED_AT,
     },
-    verified: [
-      {
-        by: "process:official-source-matcher",
-        at: RETRIEVED_AT,
-      },
-    ],
     status: "draft",
     stale_after: addMonths(RUN_DATE, 6),
     sources: [
       {
-        id: officialSourceId,
-        resource: officialUrl,
-        title: `${brand?.name ?? candidate.brand ?? "品牌"}官方頁面`,
-        author: officialAuthor(brand),
-        source_class: "primary_official",
-        retrieved_at: RETRIEVED_AT,
-      },
-      {
-        id: discoverySourceId,
+        id: source,
         resource: candidate.article.url,
         title: candidate.article.title,
         author: "dailydietitian/website",
-        source_class: "expert_interpretation",
+        source_class: estimated ? "estimated_or_untraceable" : "expert_interpretation",
         ...(candidate.article.modified_at ? { last_modified: candidate.article.modified_at } : {}),
         retrieved_at: RETRIEVED_AT,
       },
     ],
     access: { classification: "public" },
     food: {
-      id: `food:tw:menu:${brandSlug}:${itemSlug}`,
+      id: `food:tw:menu:dailydietitian:${digest}`,
       kind: "menu_item",
       market: "TW",
-      ...(brand?.name || candidate.brand ? { brand: brand?.name ?? candidate.brand } : {}),
+      brand: brandName,
       name: candidate.item_name,
       aliases,
     },
     revision: {
-      revision_id: `official-web-${RUN_DATE}`,
+      revision_id: `dailydietitian-${RUN_DATE}-${digest.slice(0, 12)}`,
     },
     ...(candidate.serving ? { serving: candidate.serving } : {}),
     nutrition: [
@@ -211,38 +199,47 @@ function okfFrontmatter(candidate, officialUrl, brand, match) {
       },
     ],
     quality: {
-      data_quality: "official_brand",
-      completeness,
-      confidence: "high",
-      calculation_allowed: calculationAllowed,
+      data_quality: estimated ? "estimated" : "third_party_database",
+      completeness: completenessFor(candidate),
+      confidence: estimated || basisUncertain ? "low" : "medium",
+      calculation_allowed: false,
     },
-    discovery: {
-      via: "日日營養 DailyDietitian",
-      source_url: candidate.article.url,
+    extraction: {
+      source_system: "日日營養 DailyDietitian",
       candidate_id: candidate.id,
-      article_estimation_disclosure: candidate.article.estimated,
+      article_estimation_disclosure: estimated,
       table_index: candidate.table_index,
       row_index: candidate.row_index,
+      basis_inferred: basisUncertain,
+      source_headers: candidate.source_headers,
+      source_row: candidate.source_row,
     },
-    machine_comparison: {
-      method: "normalized-item-name-and-all-published-nutrition-values-present-on-official-page",
-      matched_name: match.matched_name,
-      matched_fields: match.matched_fields,
-    },
+    official_review_hint: comparisonMetadata(existing),
     limitations: [
-      "此文件由程式進行官方頁面文字比對後產生，仍須真人確認產品版本、份量基準及官方頁面上下文。",
-      "日日營養僅作為候選食品的發現來源；正式營養證據指向品牌官方頁面。",
-      ...(candidate.basis_inferred ? ["來源表格未明示 per-serving 或 per-100 基準，本文件暫以 per_serving 保存且禁止計算。"] : []),
-      ...(!candidate.serving ? ["來源未提供可重現的 serving amount；人工審核前不得用於營養計算。"] : []),
-      ...(candidate.article.estimated ? ["發現文章標示含推估資料；本 draft 只因所有數值亦可在官方頁面找到而建立。"] : []),
+      "此文件只表示日日營養文章中曾出現這筆資料，不代表品牌、政府或 TWFoodMCP 已確認其正確性。",
+      "此 draft 沒有 verified 欄位，依 OKF v0.2 應視為 unverified。",
+      "在真人確認產品身分、份量基準與營養數值前，不得用於營養計算或升為 stable。",
+      ...(estimated ? ["來源文章含推估或估算聲明，營養值可能不是實驗或官方標示結果。"] : []),
+      ...(basisUncertain ? ["來源表格沒有明示 per-serving 或 per-100 基準，目前 basis 是抽取器推定值。"] : []),
+      ...(!candidate.serving ? ["來源沒有可重現的 serving amount。"] : []),
     ],
   };
 }
 
+function markdownCell(value) {
+  return String(value ?? "")
+    .replace(/\|/gu, "\\|")
+    .replace(/\r?\n/gu, "<br>");
+}
+
 function renderOkf(frontmatter) {
-  const official = frontmatter.sources[0];
-  const discovery = frontmatter.sources[1];
-  return `---\n${stringify(frontmatter, { lineWidth: 0 }).trimEnd()}\n---\n\n# Summary\n\n此食品由日日營養文章發現，營養數值已由自動流程在品牌官方頁面找到相同品名與全部已發布數值。[^${official.id}] 發現文章只作為候選來源，不取代官方證據。[^${discovery.id}]\n\n# Review Required\n\n合併至 stable 前，真人 reviewer 必須重新開啟官方來源，確認產品版本、份量基準、營養欄位上下文與是否存在改版。\n\n[^${official.id}]: ${official.title}\n[^${discovery.id}]: ${discovery.title}\n`;
+  const source = frontmatter.sources[0];
+  const headers = frontmatter.extraction.source_headers ?? [];
+  const row = frontmatter.extraction.source_row ?? [];
+  const table = headers.length > 0
+    ? `\n# Source Row\n\n| ${headers.map(markdownCell).join(" | ")} |\n| ${headers.map(() => "---").join(" | ")} |\n| ${headers.map((_, index) => markdownCell(row[index])).join(" | ")} |\n`
+    : "";
+  return `---\n${stringify(frontmatter, { lineWidth: 0 }).trimEnd()}\n---\n\n# Summary\n\n此文件逐列保存日日營養文章中的食品名稱與營養表格數值。[^${source.id}] 它是未驗證 draft，不代表官方標示或 TWFoodMCP 的正式判定。\n${table}\n# Review Required\n\n升為 stable 前，真人 reviewer 必須確認精確產品、規格、份量基準、營養欄位、文章版本及可追溯證據。此 draft 的 \`quality.calculation_allowed\` 固定為 \`false\`。\n\n[^${source.id}]: ${source.title}\n`;
 }
 
 function reportCandidate(candidate, extra = {}) {
@@ -323,7 +320,6 @@ async function main() {
 
   const articleIndex = [];
   const allCandidates = [];
-  const articleContexts = new Map();
 
   for (const [index, articleUrl] of selectedArticleUrls.entries()) {
     if (!robotsAllows(articleUrl, robotsRules)) {
@@ -342,9 +338,6 @@ async function main() {
         html: response.text,
         brand,
       });
-      const derivedHosts = deriveOfficialHosts(documents, brand);
-      const officialLinks = officialLinksForArticle(response.text, response.finalUrl, brand, derivedHosts);
-      articleContexts.set(response.finalUrl, { brand, officialLinks });
       allCandidates.push(...candidates);
       const record = {
         url: response.finalUrl,
@@ -354,7 +347,6 @@ async function main() {
         brand,
         estimated: candidates.some((candidate) => candidate.article.estimated),
         candidate_count: candidates.length,
-        official_links: officialLinks,
         candidates,
       };
       const file = `articles/${articleFileName(response.finalUrl)}`;
@@ -366,73 +358,32 @@ async function main() {
     }
   }
 
-  const verified = [];
-  const conflicts = [];
-  const pending = [];
+  const drafts = [];
   const existingMatches = [];
-  const officialPageCache = new Map();
+  const conflicts = [];
+  const unmatched = [];
   const generatedIds = new Set();
 
   for (const candidate of allCandidates) {
     const existing = matchAgainstOfficialDocuments(candidate, documents);
-    if (existing.status === "corroborated_existing") {
-      existingMatches.push(reportCandidate(candidate, { verification: existing }));
-      continue;
-    }
-    if (existing.status === "conflict_existing") {
-      conflicts.push(reportCandidate(candidate, { verification: existing, reason: "official_record_conflict" }));
-      continue;
-    }
+    if (existing.status === "corroborated_existing") existingMatches.push(reportCandidate(candidate, { comparison: existing }));
+    else if (existing.status === "conflict_existing") conflicts.push(reportCandidate(candidate, { comparison: existing }));
+    else unmatched.push(reportCandidate(candidate, { comparison: existing }));
 
-    const context = articleContexts.get(candidate.article.url);
-    let pageMatch;
-    let matchedOfficialUrl;
-    for (const link of context?.officialLinks ?? []) {
-      try {
-        const officialRobots = await rulesFor(link.url);
-        if (!robotsAllows(link.url, officialRobots)) continue;
-        let officialPage = officialPageCache.get(link.url);
-        if (!officialPage) {
-          officialPage = await fetchText(link.url, { retries: 1 });
-          officialPageCache.set(link.url, officialPage);
-        }
-        const result = corroborateWithOfficialPage(candidate, officialPage.text);
-        if (result.corroborated) {
-          pageMatch = result;
-          matchedOfficialUrl = officialPage.finalUrl;
-          break;
-        }
-      } catch (error) {
-        crawlErrors.push({ url: link.url, stage: "official", candidate_id: candidate.id, error: error instanceof Error ? error.message : String(error) });
-      }
-    }
-
-    if (!pageMatch || !matchedOfficialUrl) {
-      pending.push(reportCandidate(candidate, {
-        reason: candidate.article.estimated ? "estimated_article_without_official_corroboration" : "no_official_corroboration",
-        identity_match: existing.status,
-        official_links_checked: (context?.officialLinks ?? []).map(({ url }) => url),
-      }));
-      continue;
-    }
-
-    const frontmatter = okfFrontmatter(candidate, matchedOfficialUrl, context?.brand, pageMatch);
-    if (documents.some(({ data }) => data.food.id === frontmatter.food.id) || generatedIds.has(frontmatter.food.id)) {
-      pending.push(reportCandidate(candidate, { reason: "duplicate_food_id", proposed_food_id: frontmatter.food.id }));
-      continue;
-    }
+    const frontmatter = draftFrontmatter(candidate, existing);
+    if (generatedIds.has(frontmatter.food.id)) throw new Error(`Duplicate generated food.id: ${frontmatter.food.id}`);
     generatedIds.add(frontmatter.food.id);
-    const brandDir = frontmatter.food.id.split(":").at(-2);
-    const itemFile = `${frontmatter.food.id.split(":").at(-1)}.md`;
+
+    const digest = candidateDigest(candidate);
+    const brandDir = safeSegment(candidate.brand_slug || candidate.brand || "unclassified");
     await mkdir(path.join(OKF_ROOT, brandDir), { recursive: true });
-    const filePath = path.join(OKF_ROOT, brandDir, itemFile);
+    const filePath = path.join(OKF_ROOT, brandDir, `${digest}.md`);
     await writeFile(filePath, renderOkf(frontmatter), "utf8");
-    verified.push(reportCandidate(candidate, {
-      result: "new_okf_draft",
+    drafts.push(reportCandidate(candidate, {
+      result: "dailydietitian_source_draft",
       food_id: frontmatter.food.id,
       okf_path: filePath.replaceAll(path.sep, "/"),
-      official_url: matchedOfficialUrl,
-      machine_comparison: pageMatch,
+      official_review_hint: frontmatter.official_review_hint,
     }));
   }
 
@@ -444,26 +395,28 @@ async function main() {
     article_links_discovered: articleUrls.length,
     articles_processed: articleIndex.length,
     candidates_extracted: allCandidates.length,
+    new_okf_drafts: drafts.length,
     existing_official_matches: existingMatches.length,
-    new_okf_drafts: verified.length,
     conflicts: conflicts.length,
-    pending_verification: pending.length,
+    unmatched_official: unmatched.length,
+    pending_human_review: drafts.length,
     crawl_errors: crawlErrors.length,
     policy: {
-      discovery_source: "日日營養 DailyDietitian",
-      draft_gate: "A draft is generated only when an existing primary official OKF record corroborates it or an allowlisted official page contains the normalized item name and every extracted nutrient value.",
-      stable_gate: "No human:* verification is generated. All newly generated OKF documents remain draft.",
-      copyright_boundary: "Article prose and images are not stored; only article metadata and factual table cells needed for source comparison are retained.",
+      source_of_record_for_draft: "日日營養 DailyDietitian",
+      draft_gate: "Every extracted nutrition candidate becomes an unverified OKF draft sourced from its DailyDietitian article.",
+      verification_state: "No verified field is generated; trust tier is unverified under OKF v0.2.",
+      stable_gate: "No human:* verification is generated. Drafts remain excluded from stable publication and nutrition calculation.",
+      copyright_boundary: "Article prose and images are not stored; article metadata, factual table cells, and the exact extracted source row are retained.",
     },
   };
 
   articleIndex.sort((a, b) => a.url.localeCompare(b.url));
   await writeFile(path.join(DISCOVERY_ROOT, "index.json"), stableJson({ ...summary, articles: articleIndex }), "utf8");
   await writeFile(path.join(REPORT_ROOT, "summary.json"), stableJson(summary), "utf8");
+  await writeFile(path.join(REPORT_ROOT, "generated-drafts.json"), stableJson(drafts), "utf8");
   await writeFile(path.join(REPORT_ROOT, "existing-official-matches.json"), stableJson(existingMatches), "utf8");
-  await writeFile(path.join(REPORT_ROOT, "verified-new-drafts.json"), stableJson(verified), "utf8");
   await writeFile(path.join(REPORT_ROOT, "conflicts.json"), stableJson(conflicts), "utf8");
-  await writeFile(path.join(REPORT_ROOT, "pending-verification.json"), stableJson(pending), "utf8");
+  await writeFile(path.join(REPORT_ROOT, "unmatched-official.json"), stableJson(unmatched), "utf8");
   await writeFile(path.join(REPORT_ROOT, "crawl-errors.json"), stableJson(crawlErrors), "utf8");
 
   console.log(JSON.stringify(summary, null, 2));
