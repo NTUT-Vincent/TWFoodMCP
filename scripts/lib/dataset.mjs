@@ -224,7 +224,7 @@ function validateDocument(data, filePath, authorizedReviewers) {
     const prefix = `${filePath}: verified[${index}]`;
     assert(isRecord(verification), `${prefix} must be an object`, errors);
     if (!isRecord(verification)) continue;
-    assert(nonEmptyString(verification.by), `${prefix}.by is required`, errors);
+    assert(isActor(verification.by), `${prefix}.by must follow the OKF actor convention`, errors);
     assert(Boolean(normalizeTimestamp(verification.at)), `${prefix}.at must be a valid timestamp`, errors);
     if (nonEmptyString(verification.by) && verification.by.startsWith("human:")) {
       assert(authorizedReviewers.has(verification.by), `${prefix}.by is not an authorized reviewer`, errors);
