@@ -150,39 +150,61 @@ function indexEntry(relativePath, data) {
 }
 
 async function writeIndexes(concepts) {
-  await mkdir(path.join(BUNDLE_ROOT, "menu-items", "mcdonalds"), { recursive: true });
+  const menuRoot = path.join(BUNDLE_ROOT, "menu-items");
+  const mcdonaldsRoot = path.join(menuRoot, "mcdonalds");
+  const familymartRoot = path.join(menuRoot, "familymart");
+  const familymartSoftcreamRoot = path.join(familymartRoot, "softcream");
+  await mkdir(mcdonaldsRoot, { recursive: true });
+  await mkdir(familymartSoftcreamRoot, { recursive: true });
 
   await writeFile(
     path.join(BUNDLE_ROOT, "index.md"),
-    `---\nokf_version: "0.2"\n---\n\n# TWFoodMCP Knowledge Bundle\n\n* [Menu items](menu-items/) - 台灣包裝食品與連鎖餐飲品項的營養、成分及過敏原知識。\n\n本 bundle 依循 [Open Knowledge Format v0.2](${OFFICIAL_SPEC})。\n`,
+    `---\nokf_version: "0.2"\n---\n\n# TWFoodMCP Knowledge Bundle\n\n* [Menu items](menu-items/) - 依品牌與食品品類整理的台灣連鎖餐飲品項。\n\n本 bundle 依循 [Open Knowledge Format v0.2](${OFFICIAL_SPEC})。\n`,
     "utf8",
   );
 
-  const familymart = concepts
-    .filter(({ filePath }) => path.dirname(filePath) === path.join(BUNDLE_ROOT, "menu-items"))
-    .sort((a, b) => a.data.title.localeCompare(b.data.title, "zh-Hant"));
   await writeFile(
-    path.join(BUNDLE_ROOT, "menu-items", "index.md"),
+    path.join(menuRoot, "index.md"),
     [
       "# Menu Items",
       "",
-      "## Brands",
-      "",
+      "* [FamilyMart](familymart/) - 全家便利商店食品品項。",
       "* [McDonald's](mcdonalds/) - 麥當勞台灣官方營養資料轉換的餐點概念。",
       "",
-      "## FamilyMart Fami!ce",
+    ].join("\n"),
+    "utf8",
+  );
+
+  await writeFile(
+    path.join(familymartRoot, "index.md"),
+    [
+      "# FamilyMart",
       "",
-      ...familymart.map(({ filePath, data }) => indexEntry(path.basename(filePath), data)),
+      "* [Softcream](softcream/) - 全家 Fami!ce 霜淇淋、口味與餅皮品項。",
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const familymartSoftcream = concepts
+    .filter(({ filePath }) => path.dirname(filePath) === familymartSoftcreamRoot)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title, "zh-Hant"));
+  await writeFile(
+    path.join(familymartSoftcreamRoot, "index.md"),
+    [
+      "# FamilyMart Fami!ce Softcream",
+      "",
+      ...familymartSoftcream.map(({ filePath, data }) => indexEntry(path.basename(filePath), data)),
       "",
     ].join("\n"),
     "utf8",
   );
 
   const mcdonalds = concepts
-    .filter(({ filePath }) => path.dirname(filePath) === path.join(BUNDLE_ROOT, "menu-items", "mcdonalds"))
+    .filter(({ filePath }) => path.dirname(filePath) === mcdonaldsRoot)
     .sort((a, b) => a.data.title.localeCompare(b.data.title, "zh-Hant"));
   await writeFile(
-    path.join(BUNDLE_ROOT, "menu-items", "mcdonalds", "index.md"),
+    path.join(mcdonaldsRoot, "index.md"),
     ["# McDonald's Taiwan Menu Items", "", ...mcdonalds.map(({ filePath, data }) => indexEntry(path.basename(filePath), data)), ""].join("\n"),
     "utf8",
   );

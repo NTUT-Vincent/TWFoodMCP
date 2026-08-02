@@ -28,3 +28,7 @@ Official OKF requires only a non-empty `type` for a concept. TWFoodMCP intention
 Before any future OKF format change, re-read the latest official [OKF README](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/README.md) and [OKF specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). If the official version changes, update this profile, `knowledge/index.md`, formatter, validator, tests, and existing concepts together.
 
 Run `npm run format:okf` after adding or importing concepts. The formatter is idempotent: running it repeatedly must produce the same working tree.
+
+## Brand and category hierarchy
+
+Concept paths should carry useful domain meaning. Menu-item concepts are organized first by brand and then by a stable food category when one is known. For example, FamilyMart Fami!ce concepts live under `knowledge/menu-items/familymart/softcream/`. The filesystem path is the OKF concept ID; the domain `food.id` remains stable when a concept is reorganized.
