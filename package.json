@@ -12,7 +12,8 @@
     "build:dataset": "node scripts/build-kv-dataset.mjs",
     "publish:dataset": "node scripts/publish-kv-dataset.mjs",
     "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
-    "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs"
+    "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs",
+    "format:okf": "node scripts/format-okf-v0.2.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260728.1",

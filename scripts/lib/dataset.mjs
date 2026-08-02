@@ -4,6 +4,8 @@ import path from "node:path";
 import { parse } from "yaml";
 
 const LIFECYCLE = new Set(["draft", "stable", "deprecated"]);
+const RESERVED_MARKDOWN = new Set(["index.md", "log.md"]);
+const ACTOR_PATTERN = /^(?:(?:human|process):[A-Za-z0-9][A-Za-z0-9._-]*|[A-Za-z0-9][A-Za-z0-9._-]*\/[A-Za-z0-9][A-Za-z0-9._-]*)$/u;
 const FOOD_KINDS = new Set(["packaged_food", "menu_item", "generic_food"]);
 const UNITS = new Set(["g", "ml", "piece", "package", "serving"]);
 const NUTRITION_BASES = new Set(["per_serving", "per_100g", "per_100ml"]);
@@ -38,6 +40,15 @@ function asArray(value) {
   return Array.isArray(value) ? value : [];
 }
 
+function asVerificationList(value) {
+  if (Array.isArray(value)) return value;
+  return isRecord(value) ? [value] : [];
+}
+
+function isActor(value) {
+  return nonEmptyString(value) && ACTOR_PATTERN.test(value);
+}
+
 function assert(condition, message, errors) {
   if (!condition) errors.push(message);
 }
@@ -51,6 +62,24 @@ function normalizeTimestamp(value) {
   if (!nonEmptyString(value)) return undefined;
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? undefined : parsed.toISOString();
+}
+
+function normalizeDate(value) {
+  const date = value instanceof Date ? value.toISOString().slice(0, 10) : value;
+  if (!nonEmptyString(date) || !/^\d{4}-\d{2}-\d{2}$/u.test(date)) return undefined;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== date ? undefined : date;
+}
+
+function dateInTaipei(value) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(value);
+  const values = Object.fromEntries(parts.map(({ type, value: part }) => [type, part]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 export function extractFrontmatter(markdown, filePath = "document") {
@@ -75,7 +104,7 @@ export async function listMarkdownFiles(rootDir) {
     for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
       const resolved = path.join(current, entry.name);
       if (entry.isDirectory()) await walk(resolved);
-      else if (entry.isFile() && entry.name.endsWith(".md")) files.push(resolved);
+      else if (entry.isFile() && entry.name.endsWith(".md") && !RESERVED_MARKDOWN.has(entry.name)) files.push(resolved);
     }
   }
   await walk(rootDir);
@@ -93,7 +122,7 @@ export async function loadAuthorizedReviewers(filePath = "config/authorized-revi
 }
 
 function deriveTrustTier(verified) {
-  const actors = asArray(verified)
+  const actors = asVerificationList(verified)
     .map((entry) => (isRecord(entry) ? entry.by : undefined))
     .filter(nonEmptyString);
   if (actors.some((actor) => actor.startsWith("human:"))) return "human-reviewed";
@@ -102,7 +131,7 @@ function deriveTrustTier(verified) {
 }
 
 function latestVerification(verified) {
-  const timestamps = asArray(verified)
+  const timestamps = asVerificationList(verified)
     .map((entry) => (isRecord(entry) ? normalizeTimestamp(entry.at) : undefined))
     .filter(Boolean)
     .sort();
@@ -132,7 +161,7 @@ function validateDocument(data, filePath, authorizedReviewers) {
   assert(nonEmptyString(data.title), `${filePath}: title is required`, errors);
   assert(LIFECYCLE.has(data.status), `${filePath}: explicit status draft|stable|deprecated is required`, errors);
   assert(data.trust_tier === undefined, `${filePath}: trust_tier is derived and must not be authored`, errors);
-  assert(isRecord(data.generated) && nonEmptyString(data.generated.by) && normalizeTimestamp(data.generated.at), `${filePath}: generated.by and generated.at are required`, errors);
+  assert(isRecord(data.generated) && isActor(data.generated.by) && normalizeTimestamp(data.generated.at), `${filePath}: generated.by must follow the OKF actor convention and generated.at must be an ISO 8601 timestamp`, errors);
   assert(Array.isArray(data.sources) && data.sources.length > 0, `${filePath}: at least one source is required`, errors);
 
   for (const [index, source] of asArray(data.sources).entries()) {
@@ -142,6 +171,7 @@ function validateDocument(data, filePath, authorizedReviewers) {
     assert(nonEmptyString(source.id), `${prefix}.id is required`, errors);
     assert(nonEmptyString(source.resource), `${prefix}.resource is required`, errors);
     assert(SOURCE_CLASSES.has(source.source_class), `${prefix}.source_class is invalid`, errors);
+    if (source.author !== undefined) assert(isActor(source.author), `${prefix}.author must follow the OKF actor convention`, errors);
   }
 
   assert(isRecord(data.food), `${filePath}: food is required`, errors);
@@ -186,10 +216,10 @@ function validateDocument(data, filePath, authorizedReviewers) {
   }
 
   if (data.stale_after !== undefined) {
-    assert(Boolean(normalizeTimestamp(data.stale_after)), `${filePath}: stale_after must be a valid date`, errors);
+    assert(Boolean(normalizeDate(data.stale_after)), `${filePath}: stale_after must be an absolute YYYY-MM-DD date`, errors);
   }
 
-  const verified = asArray(data.verified);
+  const verified = asVerificationList(data.verified);
   for (const [index, verification] of verified.entries()) {
     const prefix = `${filePath}: verified[${index}]`;
     assert(isRecord(verification), `${prefix} must be an object`, errors);
@@ -238,9 +268,9 @@ export async function loadOkfDocuments({
 }
 
 export function toRuntimeFood(data, now = new Date()) {
-  const staleAfter = normalizeTimestamp(data.stale_after);
-  const stale = Boolean(staleAfter && new Date(staleAfter).getTime() < now.getTime());
-  const verified = asArray(data.verified);
+  const staleAfter = normalizeDate(data.stale_after);
+  const stale = Boolean(staleAfter && dateInTaipei(now) >= staleAfter);
+  const verified = asVerificationList(data.verified);
   return {
     id: data.food.id,
     title: data.title,
@@ -263,7 +293,7 @@ export function toRuntimeFood(data, now = new Date()) {
     },
     trust_tier: deriveTrustTier(verified),
     stale,
-    ...(staleAfter ? { stale_after: staleAfter.slice(0, 10) } : {}),
+    ...(staleAfter ? { stale_after: staleAfter } : {}),
     ...(latestVerification(verified) ? { last_verified: latestVerification(verified) } : {}),
     ...(isRecord(data.revision) ? { revision: data.revision } : {}),
     sources: asArray(data.sources),

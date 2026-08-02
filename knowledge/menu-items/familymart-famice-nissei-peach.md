@@ -2,10 +2,7 @@
 type: Food Product
 title: 全家 Fami!ce 日世霜淇淋－水蜜桃
 description: 全家便利商店台灣門市販售之日世水蜜桃風味霜淇淋，資料取自全家官方 Fami!ce 商品頁。
-status: stable
-stale_after: 2027-02-01
-access:
-  classification: public
+resource: https://event.family.com.tw/ice_cream/products.html
 tags:
   - 全家
   - Fami!ce
@@ -13,19 +10,23 @@ tags:
   - 水蜜桃
   - 奶素
 generated:
-  by: agent:chatgpt-official-page-import
+  by: twfoodmcp-familymart-importer/1.0.0
   at: 2026-08-01T01:25:00+08:00
 verified:
   - by: human:ntut-vincent
     at: 2026-08-01T01:37:00+08:00
+status: stable
+stale_after: 2027-02-01
 sources:
   - id: familymart-famice-products-2026-08-01
     resource: https://event.family.com.tw/ice_cream/products.html
     title: 全家 Fami!ce 霜淇淋商品與營養標示
-    author: organization:familymart-tw
+    author: familymart-tw/2026-08-01
     source_class: primary_official
     retrieved_at: 2026-08-01T01:25:00+08:00
     snapshot: references/source-snapshots/familymart-famice-products-2026-08-01.json
+access:
+  classification: public
 food:
   id: food:tw:menu:familymart:famice-nissei-peach
   kind: menu_item
@@ -58,7 +59,7 @@ nutrition:
       energy_kcal: 137
       protein_g: 2.1
       fat_g: 3.7
-      saturated_fat_g: 3.0
+      saturated_fat_g: 3
       trans_fat_g: 0
       carbohydrate_g: 23.9
       sugar_g: 20.4
@@ -118,4 +119,6 @@ limitations:
 
 # Summary
 
-官方頁面提供每份與每 100 公克的完整八大營養標示、成分及共線過敏原資訊。
+官方頁面提供每份與每 100 公克的完整八大營養標示、成分及共線過敏原資訊。[^familymart-famice-products-2026-08-01]
+
+[^familymart-famice-products-2026-08-01]: 全家 Fami!ce 霜淇淋商品與營養標示

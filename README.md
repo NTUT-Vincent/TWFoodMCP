@@ -84,6 +84,8 @@ Human / Agent
 完整產品與技術規格：
 
 - [MVP Technical Specification](docs/MVP_SPEC.md)
+- [OKF v0.2 Conformance Profile](docs/OKF_CONFORMANCE.md)
+- [Official Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
 
 ## Current Status
 
