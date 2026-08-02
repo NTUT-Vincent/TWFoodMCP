@@ -7,11 +7,6 @@ on:
         description: Optional article limit; 0 means all discovered articles
         required: false
         default: "0"
-  push:
-    branches:
-      - feat/dailydietitian-import-pipeline-20260802
-    paths:
-      - .github/workflows/dailydietitian-import.yml
   pull_request:
     branches:
       - main
@@ -61,6 +56,16 @@ jobs:
       - name: Crawl, compare, and generate draft candidates
         run: npm run import:dailydietitian
 
+      - name: Reject empty or blocked crawl results
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile } from "node:fs/promises";
+          const summary = JSON.parse(await readFile("reports/dailydietitian/summary.json", "utf8"));
+          if (summary.article_links_discovered < 10 || summary.articles_processed < 10 || summary.candidates_extracted < 1) {
+            throw new Error(`Unsafe crawl result; refusing to replace reports: ${JSON.stringify(summary)}`);
+          }
+          NODE
+
       - name: Normalize OKF v0.2 documents
         run: npm run format:okf
 
@@ -89,4 +94,6 @@ jobs:
             exit 0
           fi
           git commit -m "data: import DailyDietitian candidates [skip ci]"
+          git fetch origin "${IMPORT_BRANCH}"
+          git rebase "origin/${IMPORT_BRANCH}"
           git push origin "HEAD:${IMPORT_BRANCH}"
