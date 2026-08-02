@@ -2,15 +2,26 @@
 
 This pipeline converts every nutrition row extracted from the DailyDietitian calorie-guide category into an **unverified OKF draft**.
 
-Before this policy was implemented, the latest official Open Knowledge Format `okf/README.md` and `okf/SPEC.md` were re-read on 2026-08-02. The official version remained **OKF v0.2**.
+Before this filename policy was implemented, the latest official Open Knowledge Format `okf/README.md` and `okf/SPEC.md` were re-read on 2026-08-02. The official version remained **OKF v0.2**.
 
 ## Draft policy
 
 Every extracted row becomes one OKF concept under:
 
 ```text
-knowledge/menu-items/dailydietitian/<brand>/<candidate-id>.md
+knowledge/menu-items/dailydietitian/<brand>/<readable-food-name>--<12-character-short-id>.md
 ```
+
+Examples:
+
+```text
+knowledge/menu-items/dailydietitian/starbucks/抹茶那堤-大杯--a31c42e62d8b.md
+knowledge/menu-items/dailydietitian/mcdonalds/豬肉蛋堡--5c0dd820115c.md
+```
+
+Under OKF v0.2, the concept ID is the bundle-relative file path without `.md`. Therefore the filename starts with a human-readable food name instead of exposing only an opaque hash.
+
+The 12-character suffix remains deterministic and prevents same-name rows from colliding. Renaming a file does **not** change the domain identifier stored in `food.id`, the DailyDietitian candidate ID, nutrition values, or provenance.
 
 The concept uses:
 
@@ -24,6 +35,19 @@ The concept uses:
 - a stable source candidate ID in `food.id`
 
 The importer does not claim that DailyDietitian values are official. Official or existing OKF comparisons are retained only as review hints and reports; they do not block draft creation.
+
+## Filename normalization
+
+After generation, `rename:dailydietitian-okf` performs a deterministic filename pass:
+
+1. normalize `food.name` with Unicode NFKC
+2. preserve Unicode letters and numbers, including Chinese names
+3. replace punctuation and whitespace with `-`
+4. limit the readable stem to 80 Unicode characters
+5. append `--` and the first 12 hexadecimal characters of the stable source ID
+6. update `generated-drafts.json` so its `okf_path` points to the readable path
+
+The suffix is retained because different articles, serving sizes, or table rows may use the same visible food name.
 
 ## Stable publication boundary
 
@@ -63,7 +87,7 @@ reports/dailydietitian/
   crawl-errors.json
 
 knowledge/menu-items/dailydietitian/
-  <brand>/<candidate-id>.md
+  <brand>/<readable-food-name>--<12-character-short-id>.md
 ```
 
 The GitHub pull request commits `summary.json` and all generated OKF drafts. Complete discovery records and review reports are also uploaded as a GitHub Actions artifact.
@@ -76,6 +100,8 @@ npm run format:okf
 npm run validate:data
 npm test
 ```
+
+Both `import:dailydietitian` and `build:dailydietitian-drafts` automatically run the filename normalization step.
 
 Optional environment variables:
 
