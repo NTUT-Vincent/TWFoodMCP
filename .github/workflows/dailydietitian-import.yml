@@ -12,12 +12,16 @@ on:
       - feat/dailydietitian-import-pipeline-20260802
     paths:
       - .github/workflows/dailydietitian-import.yml
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 concurrency:
-  group: dailydietitian-import-${{ github.ref }}
+  group: dailydietitian-import-${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -28,12 +32,13 @@ jobs:
       DAILYDIETITIAN_MAX_CATEGORY_PAGES: "8"
       DAILYDIETITIAN_MAX_ARTICLES: ${{ inputs.max_articles || '0' }}
       DAILYDIETITIAN_REQUEST_DELAY_MS: "850"
+      IMPORT_BRANCH: ${{ github.head_ref || github.ref_name }}
 
     steps:
       - name: Check out import branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ env.IMPORT_BRANCH }}
           fetch-depth: 0
 
       - name: Set up Node.js
@@ -58,6 +63,7 @@ jobs:
         run: npm test
 
       - name: Commit generated discovery data and drafts
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         shell: bash
         run: |
           set -euo pipefail
@@ -75,4 +81,4 @@ jobs:
             exit 0
           fi
           git commit -m "data: import DailyDietitian candidates [skip ci]"
-          git push origin "HEAD:${{ github.ref_name }}"
+          git push origin "HEAD:${IMPORT_BRANCH}"
