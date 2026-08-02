@@ -2,11 +2,6 @@ name: Import DailyDietitian drafts
 
 on:
   workflow_dispatch:
-    inputs:
-      max_articles:
-        description: Optional article limit; 0 means all discovered articles
-        required: false
-        default: "0"
   pull_request:
     branches:
       - main
@@ -17,10 +12,12 @@ on:
       - docs/DAILYDIETITIAN_IMPORT.md
       - package.json
       - scripts/import-dailydietitian.mjs
+      - scripts/build-dailydietitian-drafts.mjs
       - scripts/lib/dailydietitian.mjs
       - tests/dailydietitian-import.test.mjs
 
 permissions:
+  actions: read
   contents: write
 
 concurrency:
@@ -32,11 +29,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      DAILYDIETITIAN_MAX_CATEGORY_PAGES: "8"
-      DAILYDIETITIAN_MAX_ARTICLES: ${{ inputs.max_articles || '0' }}
-      DAILYDIETITIAN_REQUEST_DELAY_MS: "850"
-      DAILYDIETITIAN_USER_AGENT: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/151.0 Safari/537.36 TWFoodMCP/0.1"
       IMPORT_BRANCH: ${{ github.head_ref || github.ref_name }}
+      SNAPSHOT_RUN_ID: "30734022098"
+      SNAPSHOT_ARTIFACT: "dailydietitian-crawl-30734022098"
 
     steps:
       - name: Check out import branch
@@ -54,43 +49,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Crawl and generate every DailyDietitian row as a draft
-        shell: bash
+      - name: Download the complete saved DailyDietitian crawl
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SNAPSHOT_ARTIFACT }}
+          path: ${{ runner.temp }}/dailydietitian-snapshot
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SNAPSHOT_RUN_ID }}
+
+      - name: Generate one unverified OKF draft per saved source row
+        env:
+          DAILYDIETITIAN_SNAPSHOT_ROOT: ${{ runner.temp }}/dailydietitian-snapshot/references/discovery/dailydietitian
+        run: npm run build:dailydietitian-drafts
+
+      - name: Verify complete draft coverage
         run: |
-          set -euo pipefail
-          success=0
-          for attempt in 1 2 3; do
-            echo "DailyDietitian crawl attempt ${attempt}/3"
-            npm run import:dailydietitian
-            if node --input-type=module <<'NODE'
+          node --input-type=module <<'NODE'
           import { readFile } from "node:fs/promises";
           const summary = JSON.parse(await readFile("reports/dailydietitian/summary.json", "utf8"));
-          const safe = summary.article_links_discovered >= 10
-            && summary.articles_processed >= 10
-            && summary.candidates_extracted >= 1
+          const safe = summary.input_mode === "saved_crawl_snapshot"
+            && summary.article_links_discovered === 80
+            && summary.articles_processed === 80
+            && summary.candidates_extracted === 4495
             && summary.new_okf_drafts === summary.candidates_extracted
             && summary.pending_human_review === summary.new_okf_drafts;
           if (!safe) {
-            console.error(`Unsafe or incomplete crawl result: ${JSON.stringify(summary)}`);
+            console.error(`Incomplete snapshot conversion: ${JSON.stringify(summary)}`);
             process.exit(1);
           }
           NODE
-            then
-              success=1
-              break
-            fi
-            if [ "${attempt}" -lt 3 ]; then
-              cooldown=$((attempt * 60))
-              echo "Received an empty or incomplete response; cooling down for ${cooldown} seconds."
-              sleep "${cooldown}"
-            fi
-          done
-          if [ "${success}" -ne 1 ]; then
-            echo "All crawl attempts were empty or incomplete; refusing to replace committed drafts."
-            exit 1
-          fi
 
-      - name: Upload complete crawl evidence and generated drafts
+      - name: Upload complete source evidence and generated drafts
         uses: actions/upload-artifact@v4
         with:
           name: dailydietitian-drafts-${{ github.run_id }}
