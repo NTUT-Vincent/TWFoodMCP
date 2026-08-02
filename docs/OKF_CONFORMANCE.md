@@ -26,3 +26,5 @@ Official OKF requires only a non-empty `type` for a concept. TWFoodMCP intention
 ## Maintenance rule
 
 Before any future OKF format change, re-read the latest official [OKF README](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/README.md) and [OKF specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). If the official version changes, update this profile, `knowledge/index.md`, formatter, validator, tests, and existing concepts together.
+
+Run `npm run format:okf` after adding or importing concepts. The formatter is idempotent: running it repeatedly must produce the same working tree.
