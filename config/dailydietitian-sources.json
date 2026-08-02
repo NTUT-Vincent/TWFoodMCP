@@ -36,6 +36,24 @@
       "official_hosts": ["starbucks.com.tw"]
     },
     {
+      "slug": "louisa",
+      "name": "路易莎咖啡",
+      "aliases": ["路易莎", "Louisa Coffee", "LOUISA COFFEE"],
+      "official_hosts": ["louisacoffee.co", "louisagroup.com"]
+    },
+    {
+      "slug": "8yotea",
+      "name": "八曜和茶",
+      "aliases": ["八曜", "8YOTEA"],
+      "official_hosts": ["8yotea.com"]
+    },
+    {
+      "slug": "21plus",
+      "name": "21世紀風味館",
+      "aliases": ["21世紀風味館", "21世紀", "21PLUS"],
+      "official_hosts": []
+    },
+    {
       "slug": "familymart",
       "name": "全家便利商店",
       "aliases": ["全家", "FamilyMart", "Fami!ce"],
@@ -75,6 +93,12 @@
       "slug": "marugame",
       "name": "丸龜製麵",
       "aliases": ["丸龜", "Marugame Udon"],
+      "official_hosts": []
+    },
+    {
+      "slug": "generic-fruit",
+      "name": "一般水果",
+      "aliases": ["Top 10 水果熱量", "水果熱量高低排行"],
       "official_hosts": []
     }
   ]
