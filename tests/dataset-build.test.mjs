@@ -2,23 +2,33 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildDataset } from "../scripts/lib/dataset.mjs";
 
+const DAILYDIETITIAN_ID_PREFIX = "food:tw:menu:dailydietitian:";
+
+function splitSourceDocuments(dataset) {
+  const dailydietitian = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX));
+  const existing = dataset.sourceDocuments.filter(({ data }) => !data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX));
+  return { dailydietitian, existing };
+}
+
 test("builds reviewed public OKF records into versioned KV entries", async () => {
   const dataset = await buildDataset({
     sourceCommit: "0123456789abcdef0123456789abcdef01234567",
     version: "test-v1",
     generatedAt: "2026-08-01T02:00:00+08:00",
   });
+  const { dailydietitian, existing } = splitSourceDocuments(dataset);
 
-  assert.equal(dataset.sourceDocuments.length, 106);
+  assert.equal(existing.length, 106, "the pre-existing OKF corpus must remain intact");
+  assert.equal(dataset.sourceDocuments.length, existing.length + dailydietitian.length);
   assert.equal(dataset.runtimeFoods.length, 7);
   assert.equal(dataset.manifest.dataset_version, "test-v1");
   assert.equal(dataset.manifest.source_commit, "0123456789abcdef0123456789abcdef01234567");
   assert.equal(dataset.manifest.stable_documents, 7);
   assert.equal(dataset.manifest.stale_documents, 0);
-  assert.equal(dataset.previewFoods.length, 106);
-  assert.equal(dataset.previewManifest.draft_documents, 99);
-  assert.equal(dataset.previewManifest.preview_documents, 106);
-  assert.equal(dataset.versionedEntries.length, 116);
+  assert.equal(dataset.previewFoods.length, dataset.sourceDocuments.length);
+  assert.equal(dataset.previewManifest.draft_documents, 99 + dailydietitian.length);
+  assert.equal(dataset.previewManifest.preview_documents, dataset.previewFoods.length);
+  assert.equal(dataset.versionedEntries.length, dataset.runtimeFoods.length + dataset.previewFoods.length + 3);
   assert.equal(dataset.versionedEntries.some((entry) => entry.key === "dataset:current"), false);
 
   for (const food of dataset.runtimeFoods) {
@@ -28,6 +38,16 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
     assert.equal(food.quality.calculation_allowed, true);
     assert.equal(food.stale, false);
     assert.equal(food.last_verified, "2026-07-31T17:37:00.000Z");
+  }
+
+  for (const { data } of dailydietitian) {
+    assert.equal(data.status, "draft");
+    assert.equal(data.verified, undefined, "DailyDietitian source drafts must stay unverified");
+    assert.equal(data.sources.length, 1);
+    assert.equal(data.sources[0].author, "dailydietitian/website");
+    assert.ok(["expert_interpretation", "estimated_or_untraceable"].includes(data.sources[0].source_class));
+    assert.ok(["third_party_database", "estimated"].includes(data.quality.data_quality));
+    assert.equal(data.quality.calculation_allowed, false);
   }
 
   const peach = dataset.runtimeFoods.find((food) => food.id === "food:tw:menu:familymart:famice-nissei-peach");
@@ -55,8 +75,8 @@ test("marks records stale relative to the publication timestamp", async () => {
     generatedAt: "2027-03-01T00:00:00Z",
   });
 
-  assert.equal(dataset.manifest.stale_documents, 7);
-  assert.equal(dataset.previewManifest.stale_documents, 106);
+  assert.equal(dataset.manifest.stale_documents, dataset.runtimeFoods.length);
+  assert.equal(dataset.previewManifest.stale_documents, dataset.previewFoods.length);
   assert.equal(dataset.runtimeFoods.every((food) => food.stale), true);
   assert.equal(dataset.previewFoods.every((food) => food.stale), true);
 });
