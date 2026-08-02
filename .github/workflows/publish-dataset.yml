@@ -13,6 +13,7 @@ on:
       - "tests/**"
       - "package.json"
       - "worker/**"
+      - "wrangler.jsonc"
       - ".github/workflows/publish-dataset.yml"
 
 permissions:
@@ -25,7 +26,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -52,22 +53,26 @@ jobs:
             echo "::warning::Dataset was built but not published. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository Actions secrets."
           fi
 
-      - name: Deploy Worker compatible with stable and preview datasets
+      - name: Apply D1 migrations
         if: steps.credentials.outputs.available == 'true'
-        run: npm run deploy
+        run: npm run migrate:dataset
 
-      - name: Publish versioned entries and switch stable and preview datasets
+      - name: Synchronize stable and preview datasets to D1
         if: steps.credentials.outputs.available == 'true'
         run: npm run publish:dataset
+
+      - name: Deploy D1-backed Worker
+        if: steps.credentials.outputs.available == 'true'
+        run: npm run deploy
 
       - name: Verify production stable and preview datasets
         if: steps.credentials.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          expected_version="$(cat dist/kv/current-version.txt)"
-          expected_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/kv/manifest.json", "utf8")).stable_documents)')"
-          expected_preview_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/kv/preview-manifest.json", "utf8")).preview_documents)')"
+          expected_version="$(cat dist/d1/current-version.txt)"
+          expected_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/d1/manifest.json", "utf8")).stable_documents)')"
+          expected_preview_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/d1/preview-manifest.json", "utf8")).preview_documents)')"
 
           for attempt in {1..12}; do
             stable_ok=false
@@ -125,4 +130,4 @@ jobs:
             if (!bigMac || bigMac.status !== "draft") throw new Error("preview search did not return the McDonald\u0027s Big Mac draft");
           '
 
-          echo "Verified stable and preview dataset $expected_version in production."
+          echo "Verified stable and preview D1 dataset $expected_version in production."
