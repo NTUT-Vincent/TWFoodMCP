@@ -1,0 +1,119 @@
+name: Migrate FamilyMart OKF layout
+
+on:
+  push:
+    branches:
+      - chore/familymart-softcream-layout
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: ${{ !contains(github.event.head_commit.message, '[skip familymart-layout]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out migration branch
+        uses: actions/checkout@v4
+        with:
+          ref: chore/familymart-softcream-layout
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Move FamilyMart concepts into brand and category hierarchy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p knowledge/menu-items/familymart/softcream
+          git mv knowledge/menu-items/familymart-famice-cone-original.md knowledge/menu-items/familymart/softcream/cone-original.md
+          git mv knowledge/menu-items/familymart-famice-heart-cone.md knowledge/menu-items/familymart/softcream/heart-cone.md
+          git mv knowledge/menu-items/familymart-famice-nissei-belgian-chocolate.md knowledge/menu-items/familymart/softcream/nissei-belgian-chocolate.md
+          git mv knowledge/menu-items/familymart-famice-nissei-estate-milk.md knowledge/menu-items/familymart/softcream/nissei-estate-milk.md
+          git mv knowledge/menu-items/familymart-famice-nissei-peach.md knowledge/menu-items/familymart/softcream/nissei-peach.md
+          git mv knowledge/menu-items/familymart-famice-nissei-sweet-soy-sauce.md knowledge/menu-items/familymart/softcream/nissei-sweet-soy-sauce.md
+          git mv knowledge/menu-items/familymart-famice-nissei-wasabi.md knowledge/menu-items/familymart/softcream/nissei-wasabi.md
+
+      - name: Add hierarchy regression test and documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > tests/okf-layout.test.mjs <<'EOF'
+          import assert from "node:assert/strict";
+          import { readFile, readdir } from "node:fs/promises";
+          import path from "node:path";
+          import test from "node:test";
+
+          test("FamilyMart softcream concepts use brand and category hierarchy", async () => {
+            const menuRoot = "knowledge/menu-items";
+            const rootEntries = await readdir(menuRoot, { withFileTypes: true });
+            const misplaced = rootEntries
+              .filter((entry) => entry.isFile() && entry.name.startsWith("familymart-"))
+              .map((entry) => entry.name);
+            assert.deepEqual(misplaced, []);
+
+            const softcreamRoot = path.join(menuRoot, "familymart", "softcream");
+            const concepts = (await readdir(softcreamRoot))
+              .filter((name) => name.endsWith(".md") && name !== "index.md")
+              .sort();
+            assert.deepEqual(concepts, [
+              "cone-original.md",
+              "heart-cone.md",
+              "nissei-belgian-chocolate.md",
+              "nissei-estate-milk.md",
+              "nissei-peach.md",
+              "nissei-sweet-soy-sauce.md",
+              "nissei-wasabi.md",
+            ]);
+
+            const familymartIndex = await readFile(path.join(menuRoot, "familymart", "index.md"), "utf8");
+            const softcreamIndex = await readFile(path.join(softcreamRoot, "index.md"), "utf8");
+            assert.match(familymartIndex, /\[Softcream\]\(softcream\/\)/u);
+            assert.match(softcreamIndex, /nissei-peach\.md/u);
+          });
+          EOF
+
+          if ! grep -q "Brand and category hierarchy" docs/OKF_CONFORMANCE.md; then
+            cat >> docs/OKF_CONFORMANCE.md <<'EOF'
+
+          ## Brand and category hierarchy
+
+          Concept paths should carry useful domain meaning. Menu-item concepts are organized first by brand and then by a stable food category when one is known. For example, FamilyMart Fami!ce concepts live under `knowledge/menu-items/familymart/softcream/`. The filesystem path is the OKF concept ID; the domain `food.id` remains stable when a concept is reorganized.
+          EOF
+          fi
+
+          if ! grep -q "FamilyMart Fami!ce concepts" knowledge/log.md; then
+            cat >> knowledge/log.md <<'EOF'
+
+          ## 2026-08-02 — FamilyMart hierarchy
+
+          * **Reorganization**: Moved FamilyMart Fami!ce concepts from the generic `menu-items/` level into `menu-items/familymart/softcream/` and added progressive-disclosure indexes for the brand and category.
+          * **Identity**: Preserved every `food.id`; only the OKF concept paths changed.
+          EOF
+          fi
+
+      - name: Regenerate indexes and validate
+        run: |
+          npm run format:okf
+          npm run validate:data
+          npm test
+
+      - name: Remove one-time workflow
+        run: rm -f .github/workflows/familymart-layout-migration.yml
+
+      - name: Commit migrated hierarchy
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: move FamilyMart OKF into softcream hierarchy [skip familymart-layout]"
+          git push origin HEAD:chore/familymart-softcream-layout
