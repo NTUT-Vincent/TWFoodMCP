@@ -44,6 +44,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
       - name: Crawl official MWD nutrition data and build draft OKF
+        id: crawl
         env:
           MWD_MIN_PRODUCTS: "40"
           MWD_MIN_NUTRITION: "25"
@@ -54,17 +55,21 @@ jobs:
           export MWD_RETRIEVED_AT="$(TZ=Asia/Taipei date --iso-8601=seconds)"
           npm run import:mwd
       - name: Format and validate OKF v0.2 bundle
+        id: validate
         run: |
           npm run format:okf
           npm run validate:data
           npm test
       - name: Commit refreshed official data
+        id: commit_data
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -f reports/mwd-import-failure.md
           git add knowledge references/source-snapshots
+          git add -u reports 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No MWD data changes to commit."
           else
@@ -73,6 +78,7 @@ jobs:
           fi
           echo "DATASET_VERSION=git-$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Check Cloudflare credentials
+        id: credentials
         shell: bash
         run: |
           if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
@@ -80,14 +86,19 @@ jobs:
             exit 1
           fi
       - name: Build D1 dataset from committed OKF
+        id: build
         run: npm run build:dataset
       - name: Apply D1 migrations
+        id: migrate
         run: npm run migrate:dataset
       - name: Synchronize stable and preview datasets to D1
+        id: publish
         run: npm run publish:dataset
       - name: Deploy D1-backed Worker
+        id: deploy
         run: npm run deploy
       - name: Verify MWD records in production preview
+        id: verify
         shell: bash
         run: |
           set -euo pipefail
@@ -128,3 +139,30 @@ jobs:
           '
 
           echo "Verified MWD draft OKF records in production D1 preview dataset $expected_version."
+      - name: Record failed import or deployment
+        if: ${{ failure() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          cat > reports/mwd-import-failure.md <<EOF
+          # MWD import failure
+
+          - Run: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          - Trigger commit: ${GITHUB_SHA}
+          - Recorded at: $(date --iso-8601=seconds)
+          - crawl: ${{ steps.crawl.outcome }}
+          - validate: ${{ steps.validate.outcome }}
+          - commit_data: ${{ steps.commit_data.outcome }}
+          - credentials: ${{ steps.credentials.outcome }}
+          - build: ${{ steps.build.outcome }}
+          - migrate: ${{ steps.migrate.outcome }}
+          - publish: ${{ steps.publish.outcome }}
+          - deploy: ${{ steps.deploy.outcome }}
+          - verify: ${{ steps.verify.outcome }}
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/mwd-import-failure.md
+          git commit -m "ci: record MWD import failure" || exit 0
+          git push
