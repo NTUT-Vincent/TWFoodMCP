@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-0d1ee100fada
     resource: https://dailydietitian.com.tw/%e6%b8%9b%e8%82%a5%e5%81%a5%e8%ba%ab%e4%b9%9f%e8%83%bd%e5%96%9d%e6%98%9f%e5%b7%b4%e5%85%8b/
@@ -35,7 +35,7 @@ food:
     - 星巴克紅茶那堤
     - 星巴克 紅茶那堤
 revision:
-  revision_id: dailydietitian-2026-08-02-d6b9b7df8d3a
+  revision_id: dailydietitian-2026-08-03-d6b9b7df8d3a
 nutrition:
   - basis: per_serving
     values:

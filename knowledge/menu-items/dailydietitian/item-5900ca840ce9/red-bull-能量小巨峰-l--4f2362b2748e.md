@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-55f4e268df91
     resource: https://dailydietitian.com.tw/%e5%a4%a7%e8%8b%91%e5%ad%90%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e7%b3%96%e9%87%8f-%e5%92%96%e5%95%a1%e5%9b%a0-%e5%83%b9%e7%9b%ae%e8%a1%a8/
@@ -45,7 +45,7 @@ food:
       大苑子菜單 Red Bull
       能量小巨峰 (L)
 revision:
-  revision_id: dailydietitian-2026-08-02-4f2362b2748e
+  revision_id: dailydietitian-2026-08-03-4f2362b2748e
 nutrition:
   - basis: per_serving
     values:

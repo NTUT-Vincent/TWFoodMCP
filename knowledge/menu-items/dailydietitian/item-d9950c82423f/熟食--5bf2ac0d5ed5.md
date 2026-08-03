@@ -12,9 +12,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-44135f3c2acc
     resource: https://dailydietitian.com.tw/%e6%88%91%e5%ae%b6%e7%89%9b%e6%8e%92%e6%9c%80%e6%96%b0%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e8%9b%8b%e7%99%bd%e8%b3%aa/
@@ -36,7 +36,7 @@ food:
     - 我家牛排最新菜單熟食
     - 我家牛排最新菜單 熟食
 revision:
-  revision_id: dailydietitian-2026-08-02-5bf2ac0d5ed5
+  revision_id: dailydietitian-2026-08-03-5bf2ac0d5ed5
 nutrition:
   - basis: per_serving
     values:

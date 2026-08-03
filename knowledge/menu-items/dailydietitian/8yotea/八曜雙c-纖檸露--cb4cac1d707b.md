@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-41d5a663c3d7
     resource: https://dailydietitian.com.tw/%e5%85%ab%e6%9b%9c%e5%92%8c%e8%8c%b6%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%b3%96%e9%87%8f/
@@ -45,7 +45,7 @@ food:
       八曜和茶 八曜雙C
       纖檸露
 revision:
-  revision_id: dailydietitian-2026-08-02-cb4cac1d707b
+  revision_id: dailydietitian-2026-08-03-cb4cac1d707b
 nutrition:
   - basis: per_serving
     values:

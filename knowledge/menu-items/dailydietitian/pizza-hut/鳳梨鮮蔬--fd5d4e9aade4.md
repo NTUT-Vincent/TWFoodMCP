@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-0b3ddea372ae
     resource: https://dailydietitian.com.tw/%e5%bf%85%e5%8b%9d%e5%ae%a2%e6%8a%ab%e8%96%a9%e7%86%b1%e9%87%8f-%e7%87%9f%e9%a4%8a%e6%88%90%e5%88%86-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
@@ -35,7 +35,7 @@ food:
     - 必勝客鳳梨鮮蔬
     - 必勝客 鳳梨鮮蔬
 revision:
-  revision_id: dailydietitian-2026-08-02-fd5d4e9aade4
+  revision_id: dailydietitian-2026-08-03-fd5d4e9aade4
 nutrition:
   - basis: per_serving
     values:

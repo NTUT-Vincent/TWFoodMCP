@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-151e44ead2c9
     resource: https://dailydietitian.com.tw/coco%e7%86%b1%e9%87%8f%e5%9c%96%e9%91%91/
@@ -35,7 +35,7 @@ food:
     - CoCo都可熱量圖鑑擂擂穀麥奶茶（大）
     - CoCo都可熱量圖鑑 擂擂穀麥奶茶（大）
 revision:
-  revision_id: dailydietitian-2026-08-02-d4bc1dcca4a3
+  revision_id: dailydietitian-2026-08-03-d4bc1dcca4a3
 nutrition:
   - basis: per_serving
     values:

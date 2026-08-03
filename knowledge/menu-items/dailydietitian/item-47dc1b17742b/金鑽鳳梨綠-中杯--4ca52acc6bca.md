@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-8b4e53d4e6d4
     resource: https://dailydietitian.com.tw/%e8%90%ac%e6%b3%a2%e7%86%b1%e9%87%8f%e5%9c%96%e9%91%91-%e7%b3%96%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
@@ -45,7 +45,7 @@ food:
       萬波菜單 金鑽鳳梨綠
       (中杯)
 revision:
-  revision_id: dailydietitian-2026-08-02-4ca52acc6bca
+  revision_id: dailydietitian-2026-08-03-4ca52acc6bca
 nutrition:
   - basis: per_serving
     values:

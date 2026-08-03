@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-8f01f0452121
     resource: https://dailydietitian.com.tw/%e6%b3%a1%e9%ba%b5%e7%87%9f%e9%a4%8a-%e7%86%b1%e9%87%8f-%e8%84%82%e8%82%aa-%e8%9b%8b%e7%99%bd%e8%b3%aa-%e9%88%89/
@@ -35,7 +35,7 @@ food:
     - 未分類來一客 鮮蝦魚板 （碗）
     - 未分類 來一客 鮮蝦魚板 （碗）
 revision:
-  revision_id: dailydietitian-2026-08-02-a6e9bcf16bfc
+  revision_id: dailydietitian-2026-08-03-a6e9bcf16bfc
 nutrition:
   - basis: per_serving
     values:

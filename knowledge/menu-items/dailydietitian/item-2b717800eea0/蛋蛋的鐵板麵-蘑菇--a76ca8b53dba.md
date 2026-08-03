@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-6a5f37ead981
     resource: https://dailydietitian.com.tw/%e6%8b%89%e4%ba%9e%e6%bc%a2%e5%a0%a1%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e5%83%b9%e6%a0%bc/
@@ -35,7 +35,7 @@ food:
     - 拉亞漢堡菜單蛋蛋的鐵板麵(蘑菇)
     - 拉亞漢堡菜單 蛋蛋的鐵板麵(蘑菇)
 revision:
-  revision_id: dailydietitian-2026-08-02-a76ca8b53dba
+  revision_id: dailydietitian-2026-08-03-a76ca8b53dba
 nutrition:
   - basis: per_serving
     values:

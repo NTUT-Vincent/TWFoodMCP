@@ -12,9 +12,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-09982044a047
     resource: https://dailydietitian.com.tw/%e4%b8%b8%e9%be%9c%e8%8f%9c%e5%96%ae-%e5%84%aa%e6%83%a0-%e7%86%b1%e9%87%8f-%e6%8e%a8%e8%96%a6/
@@ -36,7 +36,7 @@ food:
     - 丸龜製麵時蔬豚肉烏龍麵（中）
     - 丸龜製麵 時蔬豚肉烏龍麵（中）
 revision:
-  revision_id: dailydietitian-2026-08-02-3af9eecc8c1c
+  revision_id: dailydietitian-2026-08-03-3af9eecc8c1c
 nutrition:
   - basis: per_serving
     values:

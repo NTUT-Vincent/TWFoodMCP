@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-845e02fda73f
     resource: https://dailydietitian.com.tw/subway%e7%86%b1%e9%87%8f%e6%8e%92%e8%a1%8c%e6%a6%9c/
@@ -35,7 +35,7 @@ food:
     - SUBWAY哈燒起司總匯
     - SUBWAY 哈燒起司總匯
 revision:
-  revision_id: dailydietitian-2026-08-02-d9c6c9aad86b
+  revision_id: dailydietitian-2026-08-03-d9c6c9aad86b
 nutrition:
   - basis: per_serving
     values:

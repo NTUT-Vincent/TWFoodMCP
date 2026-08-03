@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-e4e6d42d26c9
     resource: https://dailydietitian.com.tw/%e8%82%af%e5%be%b7%e5%9f%ba%e7%86%b1%e9%87%8f%e5%9c%96%e9%91%91/
@@ -35,7 +35,7 @@ food:
     - 肯德基雙層青花椒咔啦雞腿堡
     - 肯德基 雙層青花椒咔啦雞腿堡
 revision:
-  revision_id: dailydietitian-2026-08-02-a8fdbf7e03e8
+  revision_id: dailydietitian-2026-08-03-a8fdbf7e03e8
 nutrition:
   - basis: per_serving
     values:

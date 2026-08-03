@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-674ea9f148b9
     resource: https://dailydietitian.com.tw/%e9%ba%bb%e5%8f%a4%e7%86%b1%e9%87%8f%e5%9c%96%e9%91%91/
@@ -35,7 +35,7 @@ food:
     - 麻古熱量芝芝金萱雙Q
     - 麻古熱量 芝芝金萱雙Q
 revision:
-  revision_id: dailydietitian-2026-08-02-3c24ec6bf8cc
+  revision_id: dailydietitian-2026-08-03-3c24ec6bf8cc
 nutrition:
   - basis: per_serving
     values:

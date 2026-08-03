@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-6a5f37ead981
     resource: https://dailydietitian.com.tw/%e6%8b%89%e4%ba%9e%e6%bc%a2%e5%a0%a1%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e5%83%b9%e6%a0%bc/
@@ -35,7 +35,7 @@ food:
     - 拉亞漢堡菜單Nutella榛果可可×開心果雙醬炸雞芝加哥堡
     - 拉亞漢堡菜單 Nutella榛果可可×開心果雙醬炸雞芝加哥堡
 revision:
-  revision_id: dailydietitian-2026-08-02-acbe689e3159
+  revision_id: dailydietitian-2026-08-03-acbe689e3159
 nutrition:
   - basis: per_serving
     values:

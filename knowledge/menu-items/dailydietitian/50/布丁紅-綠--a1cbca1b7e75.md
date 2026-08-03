@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-fd774f2fd5f8
     resource: https://dailydietitian.com.tw/50%e5%b5%90%e7%86%b1%e9%87%8f-%e7%b3%96%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
@@ -35,7 +35,7 @@ food:
     - 50嵐菜單布丁紅/綠
     - 50嵐菜單 布丁紅/綠
 revision:
-  revision_id: dailydietitian-2026-08-02-a1cbca1b7e75
+  revision_id: dailydietitian-2026-08-03-a1cbca1b7e75
 nutrition:
   - basis: per_serving
     values:

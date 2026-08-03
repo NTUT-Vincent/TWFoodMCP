@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-9686c9d30839
     resource: https://dailydietitian.com.tw/%e5%85%ab%e6%96%b9%e9%9b%b2%e9%9b%86%e8%8f%9c%e5%96%ae-%e7%86%b1%e9%87%8f-%e5%83%b9%e6%a0%bc-%e7%87%9f%e9%a4%8a%e5%b8%ab%e5%bb%ba%e8%ad%b0/
@@ -45,7 +45,7 @@ food:
       八方雲集熱量表 紅油珍珠抄手
       小顆 8 顆
 revision:
-  revision_id: dailydietitian-2026-08-02-a6cb149cfbf8
+  revision_id: dailydietitian-2026-08-03-a6cb149cfbf8
 serving:
   amount: 8
   unit: piece

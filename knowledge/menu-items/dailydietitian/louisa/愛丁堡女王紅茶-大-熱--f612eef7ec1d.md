@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-6ad8baa5be39
     resource: https://dailydietitian.com.tw/%e8%b7%af%e6%98%93%e8%8e%8e%e7%86%b1%e9%87%8f-%e6%9c%80%e6%96%b0%e8%8f%9c%e5%96%ae%e5%83%b9%e6%a0%bc-%e5%90%ab%e7%b3%96%e9%87%8f-%e5%92%96%e5%95%a1%e5%9b%a0/
@@ -45,7 +45,7 @@ food:
       路易莎咖啡 愛丁堡女王紅茶
       (大/熱)
 revision:
-  revision_id: dailydietitian-2026-08-02-f612eef7ec1d
+  revision_id: dailydietitian-2026-08-03-f612eef7ec1d
 nutrition:
   - basis: per_serving
     values:

@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-516c91db03b4
     resource: https://dailydietitian.com.tw/%e6%9c%80%e6%96%b0%e8%8c%b6%e6%b9%af%e6%9c%83%e8%8f%9c%e5%96%ae%e5%83%b9%e6%a0%bc-%e7%86%b1%e9%87%8f-%e7%b3%96%e9%87%8f/
@@ -35,7 +35,7 @@ food:
     - 茶湯會菜單普洱翡翠綠
     - 茶湯會菜單 普洱翡翠綠
 revision:
-  revision_id: dailydietitian-2026-08-02-34eb9ecfff65
+  revision_id: dailydietitian-2026-08-03-34eb9ecfff65
 nutrition:
   - basis: per_serving
     values:

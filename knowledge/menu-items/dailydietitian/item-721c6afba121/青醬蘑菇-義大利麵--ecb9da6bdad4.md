@@ -13,9 +13,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-d5fa69119b78
     resource: https://dailydietitian.com.tw/%e9%ba%a5%e5%91%b3%e7%99%bb%e6%97%a9%e9%a4%90%e7%86%b1%e9%87%8f%e6%8e%92%e8%a1%8c%e6%a6%9c/
@@ -45,7 +45,7 @@ food:
       麥味登熱量表單 青醬蘑菇
       義大利麵
 revision:
-  revision_id: dailydietitian-2026-08-02-ecb9da6bdad4
+  revision_id: dailydietitian-2026-08-03-ecb9da6bdad4
 nutrition:
   - basis: per_serving
     values:

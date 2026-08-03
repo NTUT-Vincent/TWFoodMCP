@@ -11,9 +11,9 @@ tags:
   - 份量基準待確認
 generated:
   by: twfoodmcp-dailydietitian-importer/2.0.0
-  at: 2026-08-02T06:39:27.145Z
+  at: 2026-08-03T03:10:19.504Z
 status: draft
-stale_after: 2027-02-02
+stale_after: 2027-02-03
 sources:
   - id: dailydietitian-674ea9f148b9
     resource: https://dailydietitian.com.tw/%e9%ba%bb%e5%8f%a4%e7%86%b1%e9%87%8f%e5%9c%96%e9%91%91/
@@ -35,7 +35,7 @@ food:
     - 麻古熱量百香綠茶
     - 麻古熱量 百香綠茶
 revision:
-  revision_id: dailydietitian-2026-08-02-7fdfbbdc5a58
+  revision_id: dailydietitian-2026-08-03-7fdfbbdc5a58
 nutrition:
   - basis: per_serving
     values:
