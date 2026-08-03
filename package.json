@@ -15,6 +15,7 @@
     "publish:dataset": "wrangler d1 execute DB --remote --config worker/wrangler.jsonc --file dist/d1/sync.sql --yes",
     "publish:dataset:local": "wrangler d1 execute DB --local --config worker/wrangler.jsonc --file dist/d1/sync.sql --yes",
     "test": "node -e \"require('node:fs').rmSync('.test-dist',{recursive:true,force:true})\" && tsc -p tsconfig.test.json && node --test tests/*.test.mjs",
+    "test:dataset": "node --test tests/dataset-build.test.mjs",
     "import:mcdonalds-okf": "node scripts/import-mcdonalds-okf.mjs",
     "import:mwd": "node scripts/import-mwd-okf.mjs",
     "rename:dailydietitian-okf": "node scripts/rename-dailydietitian-okf-files.mjs",
