@@ -1,0 +1,4 @@
+beautifulsoup4>=4.12,<5
+opencv-python-headless>=4.10,<5
+pytesseract>=0.3.13,<0.4
+requests>=2.32,<3
