@@ -1,1 +1,1 @@
-PLACEHOLDER
+{"generated_at":"2026-08-03T15:53:00Z","record_count":174,"nutrition_records":101,"metadata_only_records":73,"status":"local_generation_complete","note":"All records were generated locally without GitHub Actions. Individual draft files are pending bulk repository materialization because the connected GitHub file API cannot upload a local directory as one operation.","output_roots":["knowledge/menu-items/louisa/foods/","knowledge/menu-items/louisa/drinks/"],"safety":{"lifecycle":"draft","calculation_allowed":false,"human_review_required":true}}
