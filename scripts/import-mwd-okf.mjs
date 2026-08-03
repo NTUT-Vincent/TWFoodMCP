@@ -423,6 +423,15 @@ async function main() {
     if (!hasTesseract) console.warn("Tesseract is unavailable; only calories explicitly present in official listing titles will be imported.");
 
     const enriched = await mapLimit(products, REQUEST_CONCURRENCY, async (item, index) => {
+      const hasDirectSingleCalorie = item.listing_calories_kcal.length === 1;
+      const explicitlyRequiresDetail = /營養標示請見內文/u.test(item.listing_title);
+      if (hasDirectSingleCalorie && !explicitlyRequiresDetail) {
+        if ((index + 1) % 20 === 0 || index + 1 === products.length) {
+          console.log(`Processed ${index + 1}/${products.length} MWD products.`);
+        }
+        return item;
+      }
+
       const detailHtml = await fetchWithRetry(item.source_url);
       const nutritionImageUrl = imageLinks(detailHtml, item.source_url)[0];
       const result = { ...item, nutrition_image_url: nutritionImageUrl };
@@ -432,7 +441,7 @@ async function main() {
         result.ocr = { ...ocr, validation };
       }
       if ((index + 1) % 20 === 0 || index + 1 === products.length) {
-        console.log(`Processed ${index + 1}/${products.length} MWD product pages.`);
+        console.log(`Processed ${index + 1}/${products.length} MWD products.`);
       }
       return result;
     });
