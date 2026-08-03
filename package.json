@@ -21,7 +21,7 @@
     "rename:dailydietitian-okf": "node scripts/rename-dailydietitian-okf-files.mjs",
     "import:dailydietitian": "node scripts/import-dailydietitian.mjs && npm run rename:dailydietitian-okf",
     "build:dailydietitian-drafts": "node scripts/build-dailydietitian-drafts.mjs && npm run rename:dailydietitian-okf",
-    "format:okf": "node scripts/format-okf-v0.2.mjs && node scripts/update-mwd-indexes.mjs"
+    "format:okf": "node scripts/format-okf-v0.2.mjs && node scripts/normalize-mwd-filenames.mjs && node scripts/update-mwd-indexes.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260728.1",
