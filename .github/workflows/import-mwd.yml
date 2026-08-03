@@ -20,12 +20,16 @@ permissions:
 
 concurrency:
   group: import-mwd-official-nutrition
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   import:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PRODUCTION_BASE_URL: https://okf-mcp.vincent930093.workers.dev
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,7 +67,64 @@ jobs:
           git add knowledge references/source-snapshots
           if git diff --cached --quiet; then
             echo "No MWD data changes to commit."
-            exit 0
+          else
+            git commit -m "data: refresh MWD official nutrition"
+            git push
           fi
-          git commit -m "data: refresh MWD official nutrition"
-          git push
+          echo "DATASET_VERSION=git-$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Check Cloudflare credentials
+        shell: bash
+        run: |
+          if [[ -z "$CLOUDFLARE_API_TOKEN" || -z "$CLOUDFLARE_ACCOUNT_ID" ]]; then
+            echo "::error::CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID are required to deploy the imported dataset."
+            exit 1
+          fi
+      - name: Build D1 dataset from committed OKF
+        run: npm run build:dataset
+      - name: Apply D1 migrations
+        run: npm run migrate:dataset
+      - name: Synchronize stable and preview datasets to D1
+        run: npm run publish:dataset
+      - name: Deploy D1-backed Worker
+        run: npm run deploy
+      - name: Verify MWD records in production preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected_version="$(cat dist/d1/current-version.txt)"
+          expected_preview_count="$(node --input-type=module -e 'import fs from "node:fs"; console.log(JSON.parse(fs.readFileSync("dist/d1/preview-manifest.json", "utf8")).preview_documents)')"
+
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error "$PRODUCTION_BASE_URL/dataset?channel=preview" > /tmp/mwd-preview-dataset.json; then
+              if EXPECTED_VERSION="$expected_version" EXPECTED_PREVIEW_COUNT="$expected_preview_count" node --input-type=module -e '
+                import fs from "node:fs";
+                const body = JSON.parse(fs.readFileSync("/tmp/mwd-preview-dataset.json", "utf8"));
+                if (body.dataset_channel !== "preview") process.exit(1);
+                if (body.dataset_version !== process.env.EXPECTED_VERSION) process.exit(1);
+                if (body.preview_documents !== Number(process.env.EXPECTED_PREVIEW_COUNT)) process.exit(1);
+              '; then break; fi
+            fi
+            if [[ "$attempt" == "12" ]]; then
+              echo "Preview dataset did not converge to $expected_version" >&2
+              cat /tmp/mwd-preview-dataset.json 2>/dev/null || true
+              exit 1
+            fi
+            sleep 10
+          done
+
+          curl --fail --silent --show-error \
+            -X POST "$PRODUCTION_BASE_URL/mcp" \
+            -H "content-type: application/json" \
+            --data '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"麥味登","brand":"麥味登","dataset_channel":"preview","limit":25}}}' \
+            > /tmp/mwd-search.json
+
+          EXPECTED_VERSION="$expected_version" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/mwd-search.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("MWD search returned the wrong dataset version");
+            if (!Array.isArray(content?.results) || content.results.length < 1) throw new Error("MWD preview search returned no records");
+            if (!content.results.every((item) => item.status === "draft" && item.brand === "麥味登")) throw new Error("MWD records are not correctly review-gated drafts");
+          '
+
+          echo "Verified MWD draft OKF records in production D1 preview dataset $expected_version."
