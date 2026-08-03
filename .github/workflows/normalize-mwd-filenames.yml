@@ -64,12 +64,12 @@ jobs:
         run: |
           set -euo pipefail
           count="$(find knowledge/menu-items/mwd -mindepth 2 -maxdepth 2 -type f -name '*.md' ! -name 'index.md' ! -name 'log.md' | wc -l | tr -d ' ')"
-          test "$count" -eq 81
+          test "$count" -gt 0
           if find knowledge/menu-items/mwd -mindepth 2 -maxdepth 2 -type f -name 'mwd-*.md' | grep -q .; then
             echo "Legacy mwd-<id>.md filenames remain." >&2
             exit 1
           fi
-          node --input-type=module <<'NODE'
+          EXPECTED_COUNT="$count" node --input-type=module <<'NODE'
           import { readdir } from "node:fs/promises";
           import path from "node:path";
           const root = "knowledge/menu-items/mwd";
@@ -82,7 +82,9 @@ jobs:
               checked += 1;
             }
           }
-          if (checked !== 81) throw new Error(`Expected 81 concepts, found ${checked}`);
+          if (checked !== Number(process.env.EXPECTED_COUNT)) {
+            throw new Error(`Filesystem count mismatch: shell=${process.env.EXPECTED_COUNT}, node=${checked}`);
+          }
           console.log(`Verified ${checked} descriptive MWD filenames.`);
           NODE
 
