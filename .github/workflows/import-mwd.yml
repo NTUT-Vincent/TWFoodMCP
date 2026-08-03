@@ -1,0 +1,68 @@
+name: import-mwd-official-nutrition
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 19 * * 1"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/import-mwd-okf.mjs"
+      - "scripts/format-okf-v0.2.mjs"
+      - "scripts/update-mwd-indexes.mjs"
+      - "package.json"
+      - ".github/workflows/import-mwd.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-mwd-official-nutrition
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Traditional Chinese OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
+      - name: Crawl official MWD nutrition data and build draft OKF
+        env:
+          MWD_MIN_PRODUCTS: "40"
+          MWD_MIN_NUTRITION: "25"
+          MWD_MIN_COMPLETE_NUTRITION: "3"
+        shell: bash
+        run: |
+          export MWD_SNAPSHOT_DATE="$(TZ=Asia/Taipei date +%F)"
+          export MWD_RETRIEVED_AT="$(TZ=Asia/Taipei date --iso-8601=seconds)"
+          npm run import:mwd
+      - name: Format and validate OKF v0.2 bundle
+        run: |
+          npm run format:okf
+          npm run validate:data
+          npm test
+      - name: Commit refreshed official data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add knowledge references/source-snapshots
+          if git diff --cached --quiet; then
+            echo "No MWD data changes to commit."
+            exit 0
+          fi
+          git commit -m "data: refresh MWD official nutrition"
+          git push
