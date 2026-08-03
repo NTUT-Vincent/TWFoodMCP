@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  statuses: write
 
 concurrency:
   group: import-mwd-official-nutrition
@@ -27,10 +28,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
+      GH_TOKEN: ${{ github.token }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       PRODUCTION_BASE_URL: https://okf-mcp.vincent930093.workers.dev
     steps:
+      - name: Mark MWD import pending
+        shell: bash
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=pending \
+            -f context=mwd-import \
+            -f description="Crawling official MWD nutrition and deploying D1" \
+            -f target_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -139,11 +149,25 @@ jobs:
           '
 
           echo "Verified MWD draft OKF records in production D1 preview dataset $expected_version."
+      - name: Mark MWD import successful
+        if: ${{ success() }}
+        shell: bash
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=success \
+            -f context=mwd-import \
+            -f description="Official MWD OKF drafts deployed and verified in D1" \
+            -f target_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
       - name: Record failed import or deployment
         if: ${{ failure() }}
         shell: bash
         run: |
           set -euo pipefail
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state=failure \
+            -f context=mwd-import \
+            -f description="MWD import or D1 deployment failed" \
+            -f target_url="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" || true
           mkdir -p reports
           cat > reports/mwd-import-failure.md <<EOF
           # MWD import failure
