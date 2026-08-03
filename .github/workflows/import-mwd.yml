@@ -3,6 +3,7 @@ name: import-mwd-official-nutrition
 on:
   workflow_dispatch:
   schedule:
+    # Every Tuesday at 03:20 Asia/Taipei.
     - cron: "20 19 * * 1"
   push:
     branches:
