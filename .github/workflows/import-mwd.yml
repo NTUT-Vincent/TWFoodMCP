@@ -53,6 +53,62 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
+      - name: Avoid unnecessary MWD detail requests
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFile, writeFile } from "node:fs/promises";
+
+          const filePath = "scripts/import-mwd-okf.mjs";
+          const content = await readFile(filePath, "utf8");
+          const before = `    const enriched = await mapLimit(products, REQUEST_CONCURRENCY, async (item, index) => {
+                const detailHtml = await fetchWithRetry(item.source_url);
+                const nutritionImageUrl = imageLinks(detailHtml, item.source_url)[0];
+                const result = { ...item, nutrition_image_url: nutritionImageUrl };
+                if (hasTesseract && nutritionImageUrl) {
+                  const ocr = await ocrImage(nutritionImageUrl, tempDir, item.article_id);
+                  const validation = validateNutrition(ocr.nutrition, item.listing_calories_kcal);
+                  result.ocr = { ...ocr, validation };
+                }
+                if ((index + 1) % 20 === 0 || index + 1 === products.length) {
+                  console.log(\`Processed \${index + 1}/\${products.length} MWD product pages.\`);
+                }
+                return result;
+              });`;
+          const after = `    const enriched = await mapLimit(products, REQUEST_CONCURRENCY, async (item, index) => {
+                const hasDirectSingleCalorie = item.listing_calories_kcal.length === 1;
+                const explicitlyRequiresDetail = /營養標示請見內文/u.test(item.listing_title);
+                if (hasDirectSingleCalorie && !explicitlyRequiresDetail) {
+                  if ((index + 1) % 20 === 0 || index + 1 === products.length) {
+                    console.log(\`Processed \${index + 1}/\${products.length} MWD products.\`);
+                  }
+                  return item;
+                }
+
+                const detailHtml = await fetchWithRetry(item.source_url);
+                const nutritionImageUrl = imageLinks(detailHtml, item.source_url)[0];
+                const result = { ...item, nutrition_image_url: nutritionImageUrl };
+                if (hasTesseract && nutritionImageUrl) {
+                  const ocr = await ocrImage(nutritionImageUrl, tempDir, item.article_id);
+                  const validation = validateNutrition(ocr.nutrition, item.listing_calories_kcal);
+                  result.ocr = { ...ocr, validation };
+                }
+                if ((index + 1) % 20 === 0 || index + 1 === products.length) {
+                  console.log(\`Processed \${index + 1}/\${products.length} MWD products.\`);
+                }
+                return result;
+              });`;
+
+          if (!content.includes(before)) {
+            if (content.includes("const hasDirectSingleCalorie = item.listing_calories_kcal.length === 1;")) {
+              console.log("MWD detail-request optimization is already applied.");
+              process.exit(0);
+            }
+            throw new Error("MWD importer optimization target was not found");
+          }
+          await writeFile(filePath, content.replace(before, after), "utf8");
+          console.log("Applied MWD detail-request optimization.");
+          NODE
       - name: Crawl official MWD nutrition data and build draft OKF
         id: crawl
         env:
@@ -78,7 +134,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm -f reports/mwd-import-failure.md
-          git add knowledge references/source-snapshots
+          git add scripts/import-mwd-okf.mjs knowledge references/source-snapshots
           git add -u reports 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No MWD data changes to commit."
