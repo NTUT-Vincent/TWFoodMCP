@@ -1,0 +1,3 @@
+---
+{"type":"Food Menu Item","title":"路易莎 薑汁燒肉","status":"draft","generated":{"by":"louisa-okf-importer/2.0.0","at":"2026-08-03T15:53:48Z"},"sources":[{"id":"louisa-official-nutrition","resource":"https://www.louisacoffee.co/upload/allergenImg/20250811_033114.jpg","source_class":"primary_official"}],"food":{"id":"louisa-menu-710dcec97bfb","kind":"menu_item","market":"TW","brand":"路易莎咖啡 Louisa Coffee","name":"薑汁燒肉","variant":"炊米堡系列"},"nutrition":[{"basis":"per_serving","values":{"energy_kcal":367.7,"protein_g":11.5,"fat_g":10.6,"saturated_fat_g":3.5,"trans_fat_g":0,"carbohydrate_g":56.7,"sugar_g":3.5,"sodium_mg":485.9}}],"quality":{"data_quality":"official_brand","completeness":"nutrition_complete","confidence":"medium","calculation_allowed":false}}
+---
