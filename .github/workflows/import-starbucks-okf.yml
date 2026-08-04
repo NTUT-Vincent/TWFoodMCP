@@ -1,0 +1,127 @@
+name: Import Starbucks OKF bundle
+
+on:
+  push:
+    branches:
+      - starbucks-okf-import-20260804
+    paths:
+      - imports/starbucks-taiwan-okf-bundle-20260804.zip
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-starbucks-okf-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  import:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout import branch
+        uses: actions/checkout@v4
+        with:
+          ref: starbucks-okf-import-20260804
+          fetch-depth: 0
+
+      - name: Inspect and extract bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          archive="imports/starbucks-taiwan-okf-bundle-20260804.zip"
+          test -f "$archive"
+          unzip -t "$archive"
+
+          rm -rf /tmp/starbucks-okf
+          mkdir -p /tmp/starbucks-okf
+          unzip -q "$archive" -d /tmp/starbucks-okf
+
+          root="/tmp/starbucks-okf/starbucks_okf_bundle"
+          test -d "$root/drinks"
+          test -d "$root/foods"
+
+          rm -rf knowledge/menu-items/starbucks/drinks
+          rm -rf knowledge/menu-items/starbucks/foods
+          mkdir -p knowledge/menu-items/starbucks
+
+          cp -R "$root/drinks" knowledge/menu-items/starbucks/drinks
+          cp -R "$root/foods" knowledge/menu-items/starbucks/foods
+
+      - name: Validate OKF concepts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          from pathlib import Path
+          import sys
+          import yaml
+
+          root = Path('knowledge/menu-items/starbucks')
+          files = sorted(root.rglob('*.md'))
+          if not files:
+              raise SystemExit('No Starbucks OKF concept files found')
+
+          errors = []
+          for path in files:
+              text = path.read_text(encoding='utf-8')
+              if not text.startswith('---\n'):
+                  errors.append(f'{path}: missing YAML frontmatter')
+                  continue
+              try:
+                  _, frontmatter, _ = text.split('---', 2)
+                  data = yaml.safe_load(frontmatter)
+              except Exception as exc:
+                  errors.append(f'{path}: invalid YAML: {exc}')
+                  continue
+              if not isinstance(data, dict) or not data.get('type'):
+                  errors.append(f'{path}: missing required type')
+
+          if errors:
+              print('\n'.join(errors), file=sys.stderr)
+              raise SystemExit(1)
+
+          print(f'Validated {len(files)} Starbucks OKF concepts')
+          PY
+
+      - name: Commit every concept separately
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          mapfile -d '' files < <(
+            find knowledge/menu-items/starbucks \
+              -type f -name '*.md' -print0 | sort -z
+          )
+
+          total=${#files[@]}
+          current=0
+          committed=0
+
+          for file in "${files[@]}"; do
+            current=$((current + 1))
+            git add -- "$file"
+
+            if git diff --cached --quiet -- "$file"; then
+              continue
+            fi
+
+            name=$(basename "$file" .md)
+            git commit -m "Add Starbucks OKF ${current}/${total}: ${name}"
+            committed=$((committed + 1))
+          done
+
+          echo "Created ${committed} individual commits"
+
+      - name: Push import commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git push origin HEAD:starbucks-okf-import-20260804
