@@ -1,11 +1,11 @@
-name: Import Starbucks OKF bundle
+name: Import Starbucks OKF JSONL
 
 on:
   push:
     branches:
       - starbucks-okf-import-20260804
     paths:
-      - imports/starbucks-taiwan-okf-bundle-20260804.zip
+      - imports/starbucks-okf/manifest.json
   workflow_dispatch:
 
 permissions:
@@ -27,65 +27,66 @@ jobs:
           ref: starbucks-okf-import-20260804
           fetch-depth: 0
 
-      - name: Inspect and extract bundle
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          archive="imports/starbucks-taiwan-okf-bundle-20260804.zip"
-          test -f "$archive"
-          unzip -t "$archive"
-
-          rm -rf /tmp/starbucks-okf
-          mkdir -p /tmp/starbucks-okf
-          unzip -q "$archive" -d /tmp/starbucks-okf
-
-          root="/tmp/starbucks-okf/starbucks_okf_bundle"
-          test -d "$root/drinks"
-          test -d "$root/foods"
-
-          rm -rf knowledge/menu-items/starbucks/drinks
-          rm -rf knowledge/menu-items/starbucks/foods
-          mkdir -p knowledge/menu-items/starbucks
-
-          cp -R "$root/drinks" knowledge/menu-items/starbucks/drinks
-          cp -R "$root/foods" knowledge/menu-items/starbucks/foods
-
-      - name: Validate OKF concepts
+      - name: Restore OKF files from JSONL
         shell: bash
         run: |
           set -euo pipefail
 
           python - <<'PY'
           from pathlib import Path
+          import hashlib
+          import json
           import sys
           import yaml
 
-          root = Path('knowledge/menu-items/starbucks')
-          files = sorted(root.rglob('*.md'))
-          if not files:
-              raise SystemExit('No Starbucks OKF concept files found')
+          source = Path('imports/starbucks-okf')
+          manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
+          if manifest.get('format') != 'okf-jsonl-v1':
+              raise SystemExit('Unsupported manifest format')
 
-          errors = []
-          for path in files:
-              text = path.read_text(encoding='utf-8')
+          combined = bytearray()
+          records = []
+          for part_name in manifest['parts']:
+              part = source / part_name
+              raw = part.read_bytes()
+              combined.extend(raw)
+              for line_no, line in enumerate(raw.decode('utf-8').splitlines(), 1):
+                  if not line.strip():
+                      continue
+                  record = json.loads(line)
+                  records.append(record)
+
+          digest = hashlib.sha256(combined).hexdigest()
+          if digest != manifest['sha256']:
+              raise SystemExit(f'JSONL checksum mismatch: {digest}')
+          if len(records) != manifest['count']:
+              raise SystemExit(f'Expected {manifest["count"]} records, found {len(records)}')
+
+          allowed_root = Path('knowledge/menu-items/starbucks')
+          seen = set()
+          for record in records:
+              path = Path(record['path'])
+              if path in seen:
+                  raise SystemExit(f'Duplicate path: {path}')
+              seen.add(path)
+              if path.suffix != '.md' or allowed_root not in path.parents:
+                  raise SystemExit(f'Invalid output path: {path}')
+
+              text = record['content']
               if not text.startswith('---\n'):
-                  errors.append(f'{path}: missing YAML frontmatter')
-                  continue
+                  raise SystemExit(f'{path}: missing YAML frontmatter')
               try:
                   _, frontmatter, _ = text.split('---', 2)
                   data = yaml.safe_load(frontmatter)
               except Exception as exc:
-                  errors.append(f'{path}: invalid YAML: {exc}')
-                  continue
+                  raise SystemExit(f'{path}: invalid YAML: {exc}')
               if not isinstance(data, dict) or not data.get('type'):
-                  errors.append(f'{path}: missing required type')
+                  raise SystemExit(f'{path}: missing required type')
 
-          if errors:
-              print('\n'.join(errors), file=sys.stderr)
-              raise SystemExit(1)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(text, encoding='utf-8')
 
-          print(f'Validated {len(files)} Starbucks OKF concepts')
+          print(f'Restored and validated {len(records)} Starbucks OKF concepts')
           PY
 
       - name: Commit every concept separately
@@ -108,11 +109,9 @@ jobs:
           for file in "${files[@]}"; do
             current=$((current + 1))
             git add -- "$file"
-
             if git diff --cached --quiet -- "$file"; then
               continue
             fi
-
             name=$(basename "$file" .md)
             git commit -m "Add Starbucks OKF ${current}/${total}: ${name}"
             committed=$((committed + 1))
