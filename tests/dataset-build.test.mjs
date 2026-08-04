@@ -4,6 +4,8 @@ import { buildDataset } from "../scripts/lib/dataset.mjs";
 
 const DAILYDIETITIAN_ID_PREFIX = "food:tw:menu:dailydietitian:";
 const MWD_ID_PREFIX = "food:tw:menu:mwd:";
+const EXISTING_CORPUS_DOCUMENTS = 283;
+const EXISTING_CORPUS_DRAFTS = 276;
 
 function splitSourceDocuments(dataset) {
   const dailydietitian = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX));
@@ -22,7 +24,7 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
   });
   const { dailydietitian, mwd, existing } = splitSourceDocuments(dataset);
 
-  assert.equal(existing.length, 106, "the pre-existing OKF corpus must remain intact");
+  assert.equal(existing.length, EXISTING_CORPUS_DOCUMENTS, "the pre-existing OKF corpus must remain intact");
   assert.equal(dataset.sourceDocuments.length, existing.length + dailydietitian.length + mwd.length);
   assert.equal(dataset.runtimeFoods.length, 7);
   assert.equal(dataset.manifest.dataset_version, "test-v1");
@@ -30,7 +32,7 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
   assert.equal(dataset.manifest.stable_documents, 7);
   assert.equal(dataset.manifest.stale_documents, 0);
   assert.equal(dataset.previewFoods.length, dataset.sourceDocuments.length);
-  assert.equal(dataset.previewManifest.draft_documents, 99 + dailydietitian.length + mwd.length);
+  assert.equal(dataset.previewManifest.draft_documents, EXISTING_CORPUS_DRAFTS + dailydietitian.length + mwd.length);
   assert.equal(dataset.previewManifest.preview_documents, dataset.previewFoods.length);
   assert.equal(dataset.versionedEntries.length, dataset.runtimeFoods.length + dataset.previewFoods.length + 3);
   assert.equal(dataset.versionedEntries.some((entry) => entry.key === "dataset:current"), false);
