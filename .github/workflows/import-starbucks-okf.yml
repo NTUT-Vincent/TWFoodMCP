@@ -1,11 +1,11 @@
-name: Import Starbucks OKF Markdown
+name: Import Starbucks OKF JSONL
 
 on:
   push:
     branches:
       - starbucks-okf-import-20260804
     paths:
-      - imports/starbucks-okf/import_payload.py
+      - imports/starbucks-okf/manifest.json
   workflow_dispatch:
 
 permissions:
@@ -30,24 +30,47 @@ jobs:
       - name: Install YAML parser
         run: python -m pip install pyyaml
 
-      - name: Write OKF Markdown files
-        run: python imports/starbucks-okf/import_payload.py
-
-      - name: Validate OKF concepts
+      - name: Restore and validate OKF Markdown
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
+          import hashlib
+          import json
           import yaml
 
-          root = Path('knowledge/menu-items/starbucks')
-          files = sorted(root.rglob('*.md'))
-          if len(files) != 279:
-              raise SystemExit(f'Expected 279 OKF files, found {len(files)}')
+          source = Path('imports/starbucks-okf')
+          manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
+          if manifest.get('format') != 'okf-jsonl-v1':
+              raise SystemExit('Unsupported manifest format')
 
-          for path in files:
-              text = path.read_text(encoding='utf-8')
+          records = []
+          combined = bytearray()
+          for part_name in manifest['parts']:
+              raw = (source / part_name).read_bytes()
+              combined.extend(raw)
+              for line in raw.decode('utf-8').splitlines():
+                  if line.strip():
+                      records.append(json.loads(line))
+
+          digest = hashlib.sha256(combined).hexdigest()
+          if digest != manifest['sha256']:
+              raise SystemExit(f'Checksum mismatch: {digest}')
+          if len(records) != manifest['count']:
+              raise SystemExit(f'Expected {manifest["count"]} records, found {len(records)}')
+
+          allowed_root = Path('knowledge/menu-items/starbucks')
+          seen = set()
+          for record in records:
+              path = Path(record['path'])
+              if path in seen:
+                  raise SystemExit(f'Duplicate path: {path}')
+              seen.add(path)
+              if path.suffix != '.md' or allowed_root not in path.parents:
+                  raise SystemExit(f'Invalid output path: {path}')
+
+              text = record['content']
               if not text.startswith('---\n'):
                   raise SystemExit(f'{path}: missing YAML frontmatter')
               _, frontmatter, _ = text.split('---', 2)
@@ -55,10 +78,13 @@ jobs:
               if not isinstance(data, dict) or not data.get('type'):
                   raise SystemExit(f'{path}: missing required type')
 
-          print(f'Validated {len(files)} Starbucks OKF concepts')
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(text, encoding='utf-8')
+
+          print(f'Restored and validated {len(records)} Starbucks OKF files')
           PY
 
-      - name: Commit every concept separately
+      - name: Commit every file separately
         shell: bash
         run: |
           set -euo pipefail
@@ -72,7 +98,6 @@ jobs:
           total=${#files[@]}
           current=0
           committed=0
-
           for file in "${files[@]}"; do
             current=$((current + 1))
             git add -- "$file"
@@ -83,7 +108,6 @@ jobs:
             git commit -m "Add Starbucks OKF ${current}/${total}: ${name}"
             committed=$((committed + 1))
           done
-
           echo "Created ${committed} individual commits"
 
       - name: Push import commits
