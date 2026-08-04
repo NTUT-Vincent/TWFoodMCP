@@ -36,27 +36,24 @@ jobs:
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
+          import base64
           import hashlib
           import json
+          import zlib
           import yaml
 
           source = Path('imports/starbucks-okf')
           manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
-          if manifest.get('format') != 'okf-jsonl-v1':
+          if manifest.get('format') != 'okf-jsonl-zlib-b85-v1':
               raise SystemExit('Unsupported manifest format')
 
-          records = []
-          combined = bytearray()
-          for part_name in manifest['parts']:
-              raw = (source / part_name).read_bytes()
-              combined.extend(raw)
-              for line in raw.decode('utf-8').splitlines():
-                  if line.strip():
-                      records.append(json.loads(line))
-
-          digest = hashlib.sha256(combined).hexdigest()
+          encoded = ''.join((source / name).read_text(encoding='ascii') for name in manifest['parts'])
+          raw = zlib.decompress(base64.b85decode(encoded.encode('ascii')))
+          digest = hashlib.sha256(raw).hexdigest()
           if digest != manifest['sha256']:
               raise SystemExit(f'Checksum mismatch: {digest}')
+
+          records = [json.loads(line) for line in raw.decode('utf-8').splitlines() if line.strip()]
           if len(records) != manifest['count']:
               raise SystemExit(f'Expected {manifest["count"]} records, found {len(records)}')
 
@@ -109,6 +106,14 @@ jobs:
             committed=$((committed + 1))
           done
           echo "Created ${committed} individual commits"
+
+      - name: Remove import transport files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -r imports/starbucks-okf
+          git rm .github/workflows/import-starbucks-okf.yml
+          git commit -m "Remove Starbucks OKF import transport"
 
       - name: Push import commits
         run: git push origin HEAD:starbucks-okf-import-20260804
