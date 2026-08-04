@@ -1,11 +1,11 @@
-name: Import Starbucks OKF JSONL
+name: Import Starbucks OKF Markdown
 
 on:
   push:
     branches:
       - starbucks-okf-import-20260804
     paths:
-      - imports/starbucks-okf/manifest.json
+      - imports/starbucks-okf/import_payload.py
   workflow_dispatch:
 
 permissions:
@@ -27,79 +27,46 @@ jobs:
           ref: starbucks-okf-import-20260804
           fetch-depth: 0
 
-      - name: Restore OKF files from JSONL
+      - name: Install YAML parser
+        run: python -m pip install pyyaml
+
+      - name: Write OKF Markdown files
+        run: python imports/starbucks-okf/import_payload.py
+
+      - name: Validate OKF concepts
         shell: bash
         run: |
           set -euo pipefail
-
           python - <<'PY'
           from pathlib import Path
-          import hashlib
-          import json
-          import sys
           import yaml
 
-          source = Path('imports/starbucks-okf')
-          manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
-          if manifest.get('format') != 'okf-jsonl-v1':
-              raise SystemExit('Unsupported manifest format')
+          root = Path('knowledge/menu-items/starbucks')
+          files = sorted(root.rglob('*.md'))
+          if len(files) != 279:
+              raise SystemExit(f'Expected 279 OKF files, found {len(files)}')
 
-          combined = bytearray()
-          records = []
-          for part_name in manifest['parts']:
-              part = source / part_name
-              raw = part.read_bytes()
-              combined.extend(raw)
-              for line_no, line in enumerate(raw.decode('utf-8').splitlines(), 1):
-                  if not line.strip():
-                      continue
-                  record = json.loads(line)
-                  records.append(record)
-
-          digest = hashlib.sha256(combined).hexdigest()
-          if digest != manifest['sha256']:
-              raise SystemExit(f'JSONL checksum mismatch: {digest}')
-          if len(records) != manifest['count']:
-              raise SystemExit(f'Expected {manifest["count"]} records, found {len(records)}')
-
-          allowed_root = Path('knowledge/menu-items/starbucks')
-          seen = set()
-          for record in records:
-              path = Path(record['path'])
-              if path in seen:
-                  raise SystemExit(f'Duplicate path: {path}')
-              seen.add(path)
-              if path.suffix != '.md' or allowed_root not in path.parents:
-                  raise SystemExit(f'Invalid output path: {path}')
-
-              text = record['content']
+          for path in files:
+              text = path.read_text(encoding='utf-8')
               if not text.startswith('---\n'):
                   raise SystemExit(f'{path}: missing YAML frontmatter')
-              try:
-                  _, frontmatter, _ = text.split('---', 2)
-                  data = yaml.safe_load(frontmatter)
-              except Exception as exc:
-                  raise SystemExit(f'{path}: invalid YAML: {exc}')
+              _, frontmatter, _ = text.split('---', 2)
+              data = yaml.safe_load(frontmatter)
               if not isinstance(data, dict) or not data.get('type'):
                   raise SystemExit(f'{path}: missing required type')
 
-              path.parent.mkdir(parents=True, exist_ok=True)
-              path.write_text(text, encoding='utf-8')
-
-          print(f'Restored and validated {len(records)} Starbucks OKF concepts')
+          print(f'Validated {len(files)} Starbucks OKF concepts')
           PY
 
       - name: Commit every concept separately
         shell: bash
         run: |
           set -euo pipefail
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           mapfile -d '' files < <(
-            find knowledge/menu-items/starbucks \
-              -type f -name '*.md' -print0 | sort -z
+            find knowledge/menu-items/starbucks -type f -name '*.md' -print0 | sort -z
           )
 
           total=${#files[@]}
@@ -120,7 +87,4 @@ jobs:
           echo "Created ${committed} individual commits"
 
       - name: Push import commits
-        shell: bash
-        run: |
-          set -euo pipefail
-          git push origin HEAD:starbucks-okf-import-20260804
+        run: git push origin HEAD:starbucks-okf-import-20260804
