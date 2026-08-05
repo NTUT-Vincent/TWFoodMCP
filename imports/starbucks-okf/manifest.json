@@ -1,0 +1,16 @@
+{
+  "format": "okf-jsonl-zlib-base85-v1",
+  "parts": [
+    "payload-001.b85",
+    "payload-002.b85",
+    "payload-003.b85"
+  ],
+  "count": 208,
+  "sha256": "28f9c2ad8b546936a132ea402bc12b0f239780f2a69c4b7514b8e133e9804123",
+  "dataset": {
+    "drink_concepts": 198,
+    "nutrition_ready": 7,
+    "food_concepts": 0,
+    "quarantined_food_ocr_rows": 79
+  }
+}
