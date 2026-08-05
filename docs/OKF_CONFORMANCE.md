@@ -1,6 +1,6 @@
 # TWFoodMCP OKF v0.2 Conformance Profile
 
-Checked against the official Open Knowledge Format `README.md` and `SPEC.md` on 2026-08-02. The official specification version was **0.2**.
+Checked against the official Open Knowledge Format `README.md` and `SPEC.md` on 2026-08-05. The official specification version was **0.2**.
 
 ## Bundle boundary
 

@@ -157,6 +157,7 @@ function validateNutrition(nutrition, filePath, errors) {
 
 function validateDocument(data, filePath, authorizedReviewers) {
   const errors = [];
+  const isFoodDocument = isRecord(data.food) || data.type === "Food Product" || data.type === "Food Menu Item";
   assert(nonEmptyString(data.type), `${filePath}: type is required`, errors);
   assert(nonEmptyString(data.title), `${filePath}: title is required`, errors);
   assert(LIFECYCLE.has(data.status), `${filePath}: explicit status draft|stable|deprecated is required`, errors);
@@ -174,8 +175,8 @@ function validateDocument(data, filePath, authorizedReviewers) {
     if (source.author !== undefined) assert(isActor(source.author), `${prefix}.author must follow the OKF actor convention`, errors);
   }
 
-  assert(isRecord(data.food), `${filePath}: food is required`, errors);
-  if (isRecord(data.food)) {
+  if (isFoodDocument) assert(isRecord(data.food), `${filePath}: food is required`, errors);
+  if (isFoodDocument && isRecord(data.food)) {
     assert(nonEmptyString(data.food.id), `${filePath}: food.id is required`, errors);
     assert(FOOD_KINDS.has(data.food.kind), `${filePath}: food.kind is invalid`, errors);
     assert(data.food.market === "TW", `${filePath}: food.market must be TW`, errors);
@@ -185,7 +186,7 @@ function validateDocument(data, filePath, authorizedReviewers) {
     }
   }
 
-  if (data.serving !== undefined) {
+  if (isFoodDocument && data.serving !== undefined) {
     assert(isRecord(data.serving), `${filePath}: serving must be an object`, errors);
     if (isRecord(data.serving)) {
       assert(typeof data.serving.amount === "number" && Number.isFinite(data.serving.amount) && data.serving.amount > 0, `${filePath}: serving.amount must be positive`, errors);
@@ -194,9 +195,9 @@ function validateDocument(data, filePath, authorizedReviewers) {
     }
   }
 
-  validateNutrition(data.nutrition, filePath, errors);
+  if (isFoodDocument) validateNutrition(data.nutrition, filePath, errors);
 
-  if (data.allergens !== undefined) {
+  if (isFoodDocument && data.allergens !== undefined) {
     assert(isRecord(data.allergens), `${filePath}: allergens must be an object`, errors);
     for (const [index, declaration] of asArray(data.allergens?.declarations).entries()) {
       const prefix = `${filePath}: allergens.declarations[${index}]`;
@@ -207,8 +208,8 @@ function validateDocument(data, filePath, authorizedReviewers) {
     }
   }
 
-  assert(isRecord(data.quality), `${filePath}: quality is required`, errors);
-  if (isRecord(data.quality)) {
+  if (isFoodDocument) assert(isRecord(data.quality), `${filePath}: quality is required`, errors);
+  if (isFoodDocument && isRecord(data.quality)) {
     assert(DATA_QUALITY.has(data.quality.data_quality), `${filePath}: quality.data_quality is invalid`, errors);
     assert(COMPLETENESS.has(data.quality.completeness), `${filePath}: quality.completeness is invalid`, errors);
     assert(CONFIDENCE.has(data.quality.confidence), `${filePath}: quality.confidence is invalid`, errors);
@@ -231,12 +232,13 @@ function validateDocument(data, filePath, authorizedReviewers) {
     }
   }
 
-  if (data.status === "stable") {
+  if (isFoodDocument && data.status === "stable") {
     assert(deriveTrustTier(verified) === "human-reviewed", `${filePath}: stable records require an authorized human review`, errors);
     assert(isRecord(data.access) && data.access.classification === "public", `${filePath}: stable public records require access.classification: public`, errors);
   }
 
   if (errors.length > 0) throw new Error(errors.join("\n"));
+  return isFoodDocument;
 }
 
 export async function loadOkfDocuments({
@@ -253,7 +255,8 @@ export async function loadOkfDocuments({
     try {
       const markdown = await readFile(filePath, "utf8");
       const data = extractFrontmatter(markdown, filePath);
-      validateDocument(data, filePath, authorizedReviewers);
+      const isFoodDocument = validateDocument(data, filePath, authorizedReviewers);
+      if (!isFoodDocument) continue;
       const id = data.food.id;
       if (ids.has(id)) throw new Error(`${filePath}: duplicate food.id ${id}; first declared in ${ids.get(id)}`);
       ids.set(id, filePath);

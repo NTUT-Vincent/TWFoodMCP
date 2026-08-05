@@ -1,0 +1,86 @@
+---
+type: Food Menu Item
+title: 星巴克 厚櫛瓜肉醬生義大利麵
+description: 星巴克台灣官方 2026-07-22 食品營養表所列「厚櫛瓜肉醬生義大利麵」每份營養資料。
+resource: https://www.starbucks.com.tw/products/objects/images/calories/260722/food-02.png
+tags:
+  - 星巴克
+  - Starbucks
+  - 官方營養
+  - 食品
+  - 輕食三明治
+generated:
+  by: twfoodmcp-starbucks-importer/1.0.0
+  at: 2026-08-05T15:30:00Z
+verified:
+  - by: process:twfoodmcp-schema-validator
+    at: 2026-08-05T15:30:00Z
+status: draft
+stale_after: 2027-01-22
+sources:
+  - id: starbucks-food-2026-07-22
+    resource: https://www.starbucks.com.tw/products/objects/images/calories/260722/food-02.png
+    title: 星巴克台灣官方食品營養標示表 food-02.png
+    author: starbucks-taiwan/2026-07-22
+    last_modified: 2026-07-22
+    source_class: primary_official
+    retrieved_at: 2026-08-05T15:30:00Z
+    sha256: 1edcee4c9a72efec63bf48f315b97796fdb3b30488cbeba1ce5d3d96ebac707e
+  - id: starbucks-calories-page
+    resource: https://www.starbucks.com.tw/products/calories/calories.jspx
+    title: 星巴克台灣營養標示表
+    author: starbucks-taiwan/2026-07-22
+    source_class: primary_official
+    retrieved_at: 2026-08-05T15:30:00Z
+access:
+  classification: public
+food:
+  id: food:tw:menu:starbucks:ca48fcb5ce0e
+  kind: menu_item
+  market: TW
+  brand: 星巴克
+  name: 厚櫛瓜肉醬生義大利麵
+  variant: 輕食三明治
+  aliases:
+    - 厚櫛瓜肉醬生義大利麵
+    - 星巴克厚櫛瓜肉醬生義大利麵
+    - 星巴克 厚櫛瓜肉醬生義大利麵
+    - Starbucks 厚櫛瓜肉醬生義大利麵
+revision:
+  revision_id: official-table-2026-07-22-ca48fcb5ce0e
+  source_version: 2026-07-22
+  source_image: food-02.png
+serving:
+  description: 官方表格所列一份（310 公克）
+  amount: 310
+  unit: g
+nutrition:
+  - basis: per_serving
+    values:
+      energy_kcal: 473
+      protein_g: 20.2
+      fat_g: 16.7
+      saturated_fat_g: 7.4
+      trans_fat_g: 0.3
+      carbohydrate_g: 60.5
+      sugar_g: 7.4
+      sodium_mg: 865
+quality:
+  data_quality: official_brand
+  completeness: nutrition_complete
+  confidence: medium
+  calculation_allowed: false
+extraction:
+  method: structured_transcription_official_table
+  source_image_sha256: 1edcee4c9a72efec63bf48f315b97796fdb3b30488cbeba1ce5d3d96ebac707e
+limitations:
+  - 本文件由官方營養表自動轉換為 draft，尚未經真人逐列審核，只進入 preview dataset。
+  - 官方數值為參考均值，可能因原物料、配方、產品版本與門市供應而變動。
+  - 官方表格未提供成分與過敏原；未列出不代表不含，本次不自行推測。
+---
+
+# Summary
+
+官方營養表提供一份 310 公克的熱量與八項營養數值；本文件保留官方每份基準，不補齊未提供欄位。[^starbucks-food-2026-07-22]
+
+[^starbucks-food-2026-07-22]: 星巴克台灣官方食品營養標示表

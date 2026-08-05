@@ -85,6 +85,7 @@ Human / Agent
 
 - [MVP Technical Specification](docs/MVP_SPEC.md)
 - [OKF v0.2 Conformance Profile](docs/OKF_CONFORMANCE.md)
+- [Starbucks Taiwan Official Nutrition Import](docs/STARBUCKS_IMPORT.md)
 - [DailyDietitian Discovery and Verification Policy](docs/DAILYDIETITIAN_IMPORT.md)
 - [Official Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
 
@@ -97,6 +98,7 @@ Human / Agent
 - Cloudflare KV versioned stable / preview dataset 發布。
 - 7 筆已人工審核的全家 Fami!ce stable records。
 - 99 筆由麥當勞台灣官方 API 轉換的 draft OKF records，可在 preview channel 搜尋與查詢。
+- 424 筆星巴克台灣官方營養 draft OKF records：113 筆食品完整營養表與 311 筆飲品杯型／規格資料。
 - 日日營養「熱量圖鑑」候選抽取、推估辨識、官方來源比對、衝突報告與 OKF draft 產生管線。
 - `create_draft` GitHub branch / PR workflow。
 
