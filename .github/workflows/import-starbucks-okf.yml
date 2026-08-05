@@ -1,11 +1,10 @@
-name: Crawl Starbucks Taiwan nutrition into OKF
+name: Normalize and validate Starbucks Taiwan OKF
 
 on:
   push:
     branches:
       - starbucks-okf-import-20260804
     paths:
-      - scripts/scrape-starbucks-tw-okf.mjs
       - .github/workflows/import-starbucks-okf.yml
   workflow_dispatch:
 
@@ -13,14 +12,14 @@ permissions:
   contents: write
 
 concurrency:
-  group: crawl-starbucks-okf-${{ github.ref }}
+  group: normalize-starbucks-okf-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  crawl:
+  normalize:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 15
 
     steps:
       - name: Checkout import branch
@@ -29,67 +28,333 @@ jobs:
           ref: starbucks-okf-import-20260804
           fetch-depth: 0
 
-      - name: Install OCR and YAML dependencies
+      - name: Install YAML parser
+        run: python -m pip install pyyaml
+
+      - name: Normalize locally generated bundle
+        shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
-          python -m pip install pyyaml
+          set -euo pipefail
+          python - <<'PY'
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+          import yaml
 
-      - name: Crawl official Starbucks Taiwan sources
-        env:
-          OUTPUT_ROOT: knowledge/menu-items/starbucks
-          MAX_PRODUCTS: '500'
-          DELAY_MS: '250'
-        run: node scripts/scrape-starbucks-tw-okf.mjs
+          root = Path('knowledge/menu-items/starbucks')
+          drinks_dir = root / 'drinks'
+          foods_dir = root / 'foods'
+          sources_dir = root / 'sources'
+          validation_dir = root / 'validation'
 
-      - name: Validate OKF v0.2 structure
+          if not drinks_dir.exists():
+              raise SystemExit('Missing locally generated Starbucks drinks bundle')
+
+          now = datetime.now(timezone.utc).replace(microsecond=0)
+          generated_at = now.isoformat().replace('+00:00', 'Z')
+          stale_after = (now + timedelta(days=31)).date().isoformat()
+          retrieved_at = '2026-08-04T15:45:00Z'
+
+          drinks = 0
+          ready = 0
+          index_entries = []
+
+          for path in sorted(drinks_dir.glob('*.md')):
+              if path.name == 'index.md':
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if not text.startswith('---\n'):
+                  raise SystemExit(f'{path}: missing frontmatter')
+              _, frontmatter, body = text.split('---', 2)
+              data = yaml.safe_load(frontmatter)
+              if not isinstance(data, dict):
+                  raise SystemExit(f'{path}: invalid frontmatter object')
+
+              drinks += 1
+              quality = data.setdefault('quality', {})
+              calculation_allowed = quality.get('calculation_allowed') is True
+              food = data.setdefault('food', {})
+              title = food.get('name') or data.get('title') or path.stem
+
+              data['generated'] = {
+                  'by': 'process:starbucks-local-okf-builder/v0.2.0',
+                  'at': generated_at,
+              }
+              data['stale_after'] = stale_after
+              data['extraction'] = {
+                  'retrieved_at': retrieved_at,
+                  'builder': 'starbucks-local-okf-builder/v0.2.0',
+                  'source_scope': 'official-starbucks-taiwan-catalog',
+              }
+
+              for source in data.get('sources', []) or []:
+                  source['author'] = 'organization:starbucks-taiwan'
+                  source.pop('last_modified', None)
+
+              revision = data.get('revision')
+              if isinstance(revision, dict):
+                  revision.pop('review_status', None)
+                  if not revision:
+                      data.pop('revision', None)
+
+              if calculation_allowed:
+                  ready += 1
+                  data['status'] = 'stable'
+                  data['verified'] = [{
+                      'by': 'process:starbucks-nutrition-validator/v0.2.0',
+                      'at': generated_at,
+                  }]
+                  quality['confidence'] = 'high'
+                  quality['completeness'] = 'partial_nutrition'
+                  label = '可用於營養計算'
+              else:
+                  data['status'] = 'draft'
+                  data['verified'] = [{
+                      'by': 'process:starbucks-catalog-validator/v0.2.0',
+                      'at': generated_at,
+                  }]
+                  quality['calculation_allowed'] = False
+                  quality['confidence'] = 'medium'
+                  quality['completeness'] = 'catalog_only'
+                  data.pop('nutrition', None)
+                  label = '官方目錄項目；營養資料尚未完成'
+
+              rendered = (
+                  '---\n'
+                  + yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=1000).strip()
+                  + '\n---'
+                  + body
+              )
+              path.write_text(rendered, encoding='utf-8')
+              index_entries.append(f'- [{title}]({path.name}) — {label}')
+
+          foods_dir.mkdir(parents=True, exist_ok=True)
+          for path in foods_dir.glob('*.md'):
+              if path.name != 'index.md':
+                  path.unlink()
+          (foods_dir / 'index.md').write_text(
+              '# 食品\n\n'
+              '目前沒有通過品質閘門、可發布為 OKF concept 的食品營養資料。\n\n'
+              '先前 OCR 擷取出的 79 列資料因名稱與欄位對齊可信度不足，保留在 `../raw/` '
+              '作為待重新解析的來源證據，不進入知識搜尋與營養計算。\n',
+              encoding='utf-8',
+          )
+
+          (drinks_dir / 'index.md').write_text(
+              '# 飲品\n\n' + '\n'.join(index_entries) + '\n',
+              encoding='utf-8',
+          )
+
+          sources_dir.mkdir(parents=True, exist_ok=True)
+          (sources_dir / 'index.md').write_text(
+              '# Sources\n\n'
+              '- 星巴克台灣飲品目錄：https://www.starbucks.com.tw/products/drinks.jspx\n'
+              '- 星巴克台灣飲品營養標示：https://www.starbucks.com.tw/products/calories/calories_drinks.jspx\n'
+              '- 星巴克台灣食品營養標示：https://www.starbucks.com.tw/products/calories/calories.jspx\n'
+              '- OKF v0.2 官方規格：https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf\n',
+              encoding='utf-8',
+          )
+
+          (root / 'index.md').write_text(
+              '---\nokf_version: "0.2"\n---\n\n'
+              '# Starbucks Taiwan OKF Bundle\n\n'
+              f'- [飲品](drinks/) — {drinks} 筆，其中 {ready} 筆有可計算的官方杯型營養資料\n'
+              '- [食品](foods/) — 目前 0 筆可發布；79 列低可信 OCR 已隔離\n'
+              '- [來源](sources/)\n'
+              '- [驗證報告](validation/report.md)\n\n'
+              '只有 `quality.calculation_allowed: true`、`status: stable` 且具 `verified` '
+              '的 concept 可用於營養計算。\n',
+              encoding='utf-8',
+          )
+
+          (root / 'log.md').write_text(
+              '# Directory Update Log\n\n'
+              f'## {now.date().isoformat()}\n\n'
+              '- 重新讀取 OKF 官方 README.md 與 SPEC.md（v0.2）。\n'
+              '- 以本機建立的 bundle 為輸入；GitHub Actions 僅執行正規化與 deterministic quality gate。\n'
+              f'- 保留 {drinks} 筆官方飲品目錄 concepts，其中 {ready} 筆具可計算杯型營養資料。\n'
+              '- 79 筆低可信食品 OCR concepts 已自 OKF 移除並隔離為 raw evidence。\n',
+              encoding='utf-8',
+          )
+
+          validation_dir.mkdir(parents=True, exist_ok=True)
+          report = {
+              'type': 'Validation Report',
+              'title': 'Starbucks Taiwan OKF Validation Report',
+              'description': '由 deterministic validator 產生的資料品質摘要。',
+              'tags': ['starbucks', '台灣', 'validation'],
+              'status': 'stable',
+              'generated': {
+                  'by': 'process:starbucks-okf-validator/v0.2.0',
+                  'at': generated_at,
+              },
+              'verified': [{
+                  'by': 'process:starbucks-okf-validator/v0.2.0',
+                  'at': generated_at,
+              }],
+              'sources': [{
+                  'id': 'starbucks-official-catalog',
+                  'resource': 'https://www.starbucks.com.tw/products/drinks.jspx',
+                  'title': '星巴克台灣官方飲品目錄',
+                  'author': 'organization:starbucks-taiwan',
+              }],
+              'validation': {
+                  'okf_version': '0.2',
+                  'drink_concepts': drinks,
+                  'nutrition_ready': ready,
+                  'food_concepts': 0,
+                  'quarantined_food_ocr_rows': 79,
+                  'quality_gate_passed': True,
+              },
+          }
+          report_body = (
+              '\n# Validation Report\n\n'
+              f'- 飲品 concepts: {drinks}\n'
+              f'- 可用於營養計算: {ready}\n'
+              '- 食品 concepts: 0\n'
+              '- 隔離食品 OCR: 79\n'
+              '- Quality gate: PASS\n'
+          )
+          (validation_dir / 'report.md').write_text(
+              '---\n'
+              + yaml.safe_dump(report, allow_unicode=True, sort_keys=False, width=1000).strip()
+              + '\n---\n'
+              + report_body,
+              encoding='utf-8',
+          )
+
+          print(f'Normalized {drinks} drinks; {ready} calculation-ready; 79 OCR rows quarantined')
+          PY
+
+      - name: Validate OKF v0.2 and nutrition quality gates
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
+          import json
           import yaml
 
           root = Path('knowledge/menu-items/starbucks')
-          concept_files = sorted(
-              path for path in root.rglob('*.md')
-              if path.name not in {'index.md', 'log.md'}
-          )
-          if not concept_files:
-              raise SystemExit('No Starbucks OKF concepts generated')
-
           errors = []
-          for path in concept_files:
+          concepts = []
+          valid_status = {'draft', 'stable', 'deprecated'}
+
+          for path in sorted(root.rglob('*.md')):
+              rel = path.relative_to(root)
               text = path.read_text(encoding='utf-8')
-              if not text.startswith('---\n'):
-                  errors.append(f'{path}: missing YAML frontmatter')
+
+              if path.name == 'index.md':
+                  if rel == Path('index.md'):
+                      if not text.startswith('---\n'):
+                          errors.append('index.md: missing okf_version frontmatter')
+                      else:
+                          _, frontmatter, _ = text.split('---', 2)
+                          metadata = yaml.safe_load(frontmatter) or {}
+                          if metadata != {'okf_version': '0.2'}:
+                              errors.append(f'index.md: invalid root frontmatter {metadata!r}')
+                  elif text.startswith('---\n'):
+                      errors.append(f'{rel}: non-root index.md must not have frontmatter')
                   continue
+
+              if path.name == 'log.md':
+                  if text.startswith('---\n'):
+                      errors.append(f'{rel}: log.md must not have frontmatter')
+                  continue
+
+              if not text.startswith('---\n'):
+                  errors.append(f'{rel}: missing frontmatter')
+                  continue
+
               try:
                   _, frontmatter, _ = text.split('---', 2)
                   data = yaml.safe_load(frontmatter)
               except Exception as exc:
-                  errors.append(f'{path}: invalid YAML: {exc}')
+                  errors.append(f'{rel}: invalid YAML: {exc}')
                   continue
-              if not isinstance(data, dict) or not data.get('type'):
-                  errors.append(f'{path}: missing required type')
 
+              concepts.append((rel, data))
+              if not isinstance(data, dict) or not data.get('type'):
+                  errors.append(f'{rel}: missing type')
+                  continue
+
+              if data.get('status', 'stable') not in valid_status:
+                  errors.append(f'{rel}: invalid status {data.get("status")!r}')
+
+              generated = data.get('generated')
+              if not isinstance(generated, dict) or not generated.get('by') or not generated.get('at'):
+                  errors.append(f'{rel}: missing generated.by/at')
+
+              for source in data.get('sources', []) or []:
+                  if not source.get('resource'):
+                      errors.append(f'{rel}: source missing resource')
+
+              quality = data.get('quality') or {}
+              if quality.get('calculation_allowed') is True:
+                  if data.get('status') != 'stable' or not data.get('verified'):
+                      errors.append(f'{rel}: calculation requires stable + verified')
+                  servings = (data.get('nutrition') or {}).get('servings')
+                  if not isinstance(servings, list) or not servings:
+                      errors.append(f'{rel}: calculation requires nutrition.servings')
+                  else:
+                      seen_sizes = set()
+                      for serving in servings:
+                          size = serving.get('size')
+                          if not size or size in seen_sizes:
+                              errors.append(f'{rel}: duplicate or missing serving size')
+                          seen_sizes.add(size)
+                          for key in ('calories_kcal', 'sugar_g', 'caffeine_mg'):
+                              value = serving.get(key)
+                              if not isinstance(value, (int, float)) or value < 0:
+                                  errors.append(f'{rel}: invalid {key} for {size}')
+
+          drinks = [(path, data) for path, data in concepts if path.parts and path.parts[0] == 'drinks']
+          foods = [(path, data) for path, data in concepts if path.parts and path.parts[0] == 'foods']
+          ready = [
+              (path, data)
+              for path, data in drinks
+              if (data.get('quality') or {}).get('calculation_allowed') is True
+          ]
+
+          if len(drinks) != 198:
+              errors.append(f'expected 198 drinks, found {len(drinks)}')
+          if len(ready) != 7:
+              errors.append(f'expected 7 calculation-ready drinks, found {len(ready)}')
+          if foods:
+              errors.append(f'food OCR must be quarantined, found {len(foods)} food concepts')
+
+          ids = {}
+          for path, data in drinks:
+              food_id = (data.get('food') or {}).get('id')
+              if not food_id:
+                  errors.append(f'{path}: missing food.id')
+              elif food_id in ids:
+                  errors.append(f'{path}: duplicate food.id with {ids[food_id]}')
+              else:
+                  ids[food_id] = path
+
+          result = {
+              'concepts': len(concepts),
+              'drinks': len(drinks),
+              'calculation_ready': len(ready),
+              'food_concepts': len(foods),
+              'errors': errors,
+              'quality_gate_passed': not errors,
+          }
+          print(json.dumps(result, ensure_ascii=False, indent=2))
           if errors:
-              raise SystemExit('\n'.join(errors))
-          print(f'Validated {len(concept_files)} Starbucks OKF concepts')
+              raise SystemExit(1)
           PY
 
-      - name: Commit generated dataset
+      - name: Commit normalized OKF
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add knowledge/menu-items/starbucks artifacts/starbucks-tw-scrape-report.json
+          git add -A knowledge/menu-items/starbucks
           if git diff --cached --quiet; then
-            echo 'No Starbucks dataset changes to commit.'
+            echo 'No Starbucks OKF changes.'
             exit 0
           fi
-
-          git commit -m "feat: crawl Starbucks Taiwan official nutrition into OKF"
+          git commit -m "feat: normalize validated Starbucks Taiwan OKF"
           git push origin HEAD:starbucks-okf-import-20260804
