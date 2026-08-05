@@ -1,30 +1,45 @@
 ---
 type: Validation Report
-title: 擷取與驗證報告
-description: 星巴克台灣營養資料 OKF 轉換狀態。
-status: draft
+title: Starbucks Taiwan OKF Validation Report
+description: 本機建置後由 deterministic validator 產生的資料品質摘要。
+tags:
+- starbucks
+- 台灣
+- validation
+status: stable
 generated:
-  by: process:starbucks-taiwan-nutrition-import
-  at: 2026-08-04T13:20:00Z
+  by: process:starbucks-okf-validator
+  at: '2026-08-05T03:18:00Z'
+verified:
+- by: process:starbucks-okf-validator
+  at: '2026-08-05T03:18:00Z'
+sources:
+- id: starbucks-catalog
+  resource: https://www.starbucks.com.tw/products/drinks.jspx
+  title: 星巴克台灣官方飲品目錄
+  author: organization:starbucks-taiwan
+validation:
+  okf_version: '0.2'
+  drink_concepts: 198
+  nutrition_ready: 7
+  catalog_only: 191
+  food_concepts: 0
+  quarantined_food_ocr_rows: 79
+  quality_gate_passed: true
 ---
 
-# 驗證狀態
+# Validation Report
 
-## 已完成
+- OKF target: 0.2
+- 飲品 concepts: 198
+- 可用於營養計算: 7
+- 僅目錄存在性: 191
+- 食品 concepts: 0
+- 隔離食品 OCR: 79
+- Quality gate: PASS
 
-- 讀取官方 OKF README.md 與 SPEC.md（v0.2）。
-- 保存星巴克台灣 2026-07-22 食品營養表 4 張官方原圖。
-- 執行第一輪繁體中文 OCR，保存未校正文字。
-- 建立符合 OKF 目錄、frontmatter 與 provenance 要求的 bundle 骨架。
+## 發布規則
 
-## 尚未完成
-
-- 食品 OCR 逐列與原圖核對。
-- 食品個別 concept 生成。
-- 飲品分類頁完整商品清單。
-- 飲品各杯型營養資料擷取。
-- 重複、缺值、欄位型別與總筆數驗證。
-
-## 品質規則
-
-OCR 內容不得直接標記為 verified。只有與官方頁面或官方營養表逐列核對後，才可寫入結構化營養欄位。
+- `status` 只允許 `draft | stable | deprecated`。
+- 只有 stable、具 machine verification、且有完整杯型營養資料者可計算。
+- OCR 名稱或欄位位置未可靠確認時，不建立食品 concept。

@@ -1,24 +1,16 @@
 ---
-type: Knowledge Bundle
-title: Starbucks Taiwan Nutrition
-description: 星巴克台灣官方飲品與食品營養資訊 OKF bundle（擷取進行中）。
-tags: [starbucks, taiwan, nutrition, food, beverage]
-status: draft
-generated:
-  by: process:starbucks-taiwan-nutrition-import
-  at: 2026-08-04T13:20:00Z
-sources:
-  - url: https://www.starbucks.com.tw/products/calories/calories.jspx
-    title: 星巴克台灣營養標示表
-  - url: https://www.starbucks.com.tw/products/drinks.jspx
-    title: 星巴克台灣飲品
+okf_version: "0.2"
 ---
 
-# Starbucks Taiwan Nutrition
+# Starbucks Taiwan OKF Bundle
 
-- [食品營養資料](foods/index.md)
-- [飲品營養資料](drinks/index.md)
-- [來源](sources/index.md)
+星巴克台灣官方商品目錄與已通過品質閘門的營養資料。
+
+## 內容
+
+- [飲品](drinks/) — 198 筆，其中 7 筆有可計算的官方杯型營養資料
+- [食品](foods/) — 目前 0 筆可發布；79 列低可信 OCR 已隔離
+- [來源](sources/)
 - [驗證報告](validation/report.md)
 
-目前已保存官方 2026-07-22 食品營養表原圖與第一輪 OCR。逐列正規化前不把 OCR 數字當成已驗證資料。
+只有 `quality.calculation_allowed: true`、`status: stable` 且具 `verified` 的 concept 可用於營養計算。

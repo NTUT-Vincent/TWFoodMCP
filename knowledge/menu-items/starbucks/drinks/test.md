@@ -1,3 +1,0 @@
----
-type: Food Menu Item
----
