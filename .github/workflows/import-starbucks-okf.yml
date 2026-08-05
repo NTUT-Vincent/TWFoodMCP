@@ -1,24 +1,26 @@
-name: Import Starbucks OKF JSONL
+name: Crawl Starbucks Taiwan nutrition into OKF
 
 on:
   push:
     branches:
       - starbucks-okf-import-20260804
     paths:
-      - imports/starbucks-okf/manifest.json
+      - scripts/scrape-starbucks-tw-okf.mjs
+      - .github/workflows/import-starbucks-okf.yml
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: import-starbucks-okf-${{ github.ref }}
+  group: crawl-starbucks-okf-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  import:
+  crawl:
     if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
+    timeout-minutes: 45
 
     steps:
       - name: Checkout import branch
@@ -27,93 +29,67 @@ jobs:
           ref: starbucks-okf-import-20260804
           fetch-depth: 0
 
-      - name: Install YAML parser
-        run: python -m pip install pyyaml
+      - name: Install OCR and YAML dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-chi-tra
+          python -m pip install pyyaml
 
-      - name: Restore and validate OKF Markdown
+      - name: Crawl official Starbucks Taiwan sources
+        env:
+          OUTPUT_ROOT: knowledge/menu-items/starbucks
+          MAX_PRODUCTS: '500'
+          DELAY_MS: '250'
+        run: node scripts/scrape-starbucks-tw-okf.mjs
+
+      - name: Validate OKF v0.2 structure
         shell: bash
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
-          import base64
-          import hashlib
-          import json
-          import zlib
           import yaml
 
-          source = Path('imports/starbucks-okf')
-          manifest = json.loads((source / 'manifest.json').read_text(encoding='utf-8'))
-          if manifest.get('format') != 'okf-jsonl-zlib-b85-v1':
-              raise SystemExit('Unsupported manifest format')
+          root = Path('knowledge/menu-items/starbucks')
+          concept_files = sorted(
+              path for path in root.rglob('*.md')
+              if path.name not in {'index.md', 'log.md'}
+          )
+          if not concept_files:
+              raise SystemExit('No Starbucks OKF concepts generated')
 
-          encoded = ''.join((source / name).read_text(encoding='ascii') for name in manifest['parts'])
-          raw = zlib.decompress(base64.b85decode(encoded.encode('ascii')))
-          digest = hashlib.sha256(raw).hexdigest()
-          if digest != manifest['sha256']:
-              raise SystemExit(f'Checksum mismatch: {digest}')
-
-          records = [json.loads(line) for line in raw.decode('utf-8').splitlines() if line.strip()]
-          if len(records) != manifest['count']:
-              raise SystemExit(f'Expected {manifest["count"]} records, found {len(records)}')
-
-          allowed_root = Path('knowledge/menu-items/starbucks')
-          seen = set()
-          for record in records:
-              path = Path(record['path'])
-              if path in seen:
-                  raise SystemExit(f'Duplicate path: {path}')
-              seen.add(path)
-              if path.suffix != '.md' or allowed_root not in path.parents:
-                  raise SystemExit(f'Invalid output path: {path}')
-
-              text = record['content']
+          errors = []
+          for path in concept_files:
+              text = path.read_text(encoding='utf-8')
               if not text.startswith('---\n'):
-                  raise SystemExit(f'{path}: missing YAML frontmatter')
-              _, frontmatter, _ = text.split('---', 2)
-              data = yaml.safe_load(frontmatter)
+                  errors.append(f'{path}: missing YAML frontmatter')
+                  continue
+              try:
+                  _, frontmatter, _ = text.split('---', 2)
+                  data = yaml.safe_load(frontmatter)
+              except Exception as exc:
+                  errors.append(f'{path}: invalid YAML: {exc}')
+                  continue
               if not isinstance(data, dict) or not data.get('type'):
-                  raise SystemExit(f'{path}: missing required type')
+                  errors.append(f'{path}: missing required type')
 
-              path.parent.mkdir(parents=True, exist_ok=True)
-              path.write_text(text, encoding='utf-8')
-
-          print(f'Restored and validated {len(records)} Starbucks OKF files')
+          if errors:
+              raise SystemExit('\n'.join(errors))
+          print(f'Validated {len(concept_files)} Starbucks OKF concepts')
           PY
 
-      - name: Commit every file separately
+      - name: Commit generated dataset
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          mapfile -d '' files < <(
-            find knowledge/menu-items/starbucks -type f -name '*.md' -print0 | sort -z
-          )
+          git add knowledge/menu-items/starbucks artifacts/starbucks-tw-scrape-report.json
+          if git diff --cached --quiet; then
+            echo 'No Starbucks dataset changes to commit.'
+            exit 0
+          fi
 
-          total=${#files[@]}
-          current=0
-          committed=0
-          for file in "${files[@]}"; do
-            current=$((current + 1))
-            git add -- "$file"
-            if git diff --cached --quiet -- "$file"; then
-              continue
-            fi
-            name=$(basename "$file" .md)
-            git commit -m "Add Starbucks OKF ${current}/${total}: ${name}"
-            committed=$((committed + 1))
-          done
-          echo "Created ${committed} individual commits"
-
-      - name: Remove import transport files
-        shell: bash
-        run: |
-          set -euo pipefail
-          git rm -r imports/starbucks-okf
-          git rm .github/workflows/import-starbucks-okf.yml
-          git commit -m "Remove Starbucks OKF import transport"
-
-      - name: Push import commits
-        run: git push origin HEAD:starbucks-okf-import-20260804
+          git commit -m "feat: crawl Starbucks Taiwan official nutrition into OKF"
+          git push origin HEAD:starbucks-okf-import-20260804
