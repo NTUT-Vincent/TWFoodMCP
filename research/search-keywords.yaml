@@ -89,6 +89,30 @@ keywords:
       - Q Burger 高蛋白 早餐 熱量
       - Q Burger 新品 熱量 2026
 
+  - id: fastfood-mcdonalds-official
+    priority: P0
+    category: fast_food
+    topic: McDonald's Taiwan official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 麥當勞 台灣 營養標示 官方
+      - 麥當勞 營養計算機 官方
+      - 麥當勞 itemDetails Taiwan nutrition
+      - 麥當勞 新品 熱量 2026
+
+  - id: fastfood-mos-official
+    priority: P0
+    category: fast_food
+    topic: MOS Burger Taiwan official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 摩斯漢堡 營養標示 官方
+      - 摩斯 菜單 熱量 蛋白質 官方
+      - 摩斯 早餐 營養標示
+      - 摩斯 新品 熱量 2026
+
   - id: fastfood-kfc-official
     priority: P0
     category: fast_food
