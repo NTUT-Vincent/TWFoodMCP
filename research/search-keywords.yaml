@@ -1,0 +1,296 @@
+version: 1
+updated_at: 2026-08-07
+spec: research/TWFoodMCP-search-keyword-spec.md
+execution_log:
+  system: google_sheets
+  spreadsheet: TWFood 台灣超商營養資料庫（持續更新）
+  sheet: Search Runs
+
+principles:
+  - GitHub stores canonical search intent, priority, and query definitions.
+  - Google Sheets stores actual execution history and result counts.
+  - Search for high recall first; source quality affects later ranking, not discovery eligibility.
+  - Do not create a nutrition row from a search snippet if the source page cannot confirm the number.
+  - Preserve conflicting observations by source, date, market, and serving basis; never average them.
+
+keywords:
+  - id: cvs-7eleven-official
+    priority: P0
+    category: convenience_store
+    topic: 7-ELEVEN official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 7-ELEVEN 台灣 營養標示 官方
+      - 7-ELEVEN 鮮食 熱量 官方
+      - 7-ELEVEN 食安專區 營養標示
+      - 7-ELEVEN 完整菜單 熱量 2026
+      - 7-ELEVEN 新品 熱量 2026
+
+  - id: cvs-familymart-official
+    priority: P0
+    category: convenience_store
+    topic: FamilyMart official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 全家 食在購安心 營養標示
+      - 全家 鮮食 熱量 官方
+      - FamilyMart 台灣 營養標示 官方
+      - 全家 新品 熱量 2026
+      - 全家 高蛋白 餐盒 營養標示
+
+  - id: cvs-hilife-official
+    priority: P0
+    category: convenience_store
+    topic: Hi-Life official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 萊爾富 營養標示 官方
+      - Hi-Life 鮮食 熱量 官方
+      - 萊爾富 餐盒 蛋白質 熱量
+      - 萊爾富 新品 熱量 2026
+
+  - id: cvs-okmart-official
+    priority: P0
+    category: convenience_store
+    topic: OKmart official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - OKmart 營養標示 官方
+      - OK超商 鮮食 熱量 官方
+      - OKmart 餐盒 蛋白質 熱量
+      - OKmart 新品 熱量 2026
+
+  - id: breakfast-mwd-official
+    priority: P0
+    category: breakfast_chain
+    topic: 麥味登 official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 麥味登 營養標示 官方
+      - 麥味登 菜單 熱量 蛋白質 官方
+      - 麥味登 原塊嫩雞蛋白套餐 營養
+      - 麥味登 優蛋白捲餐 營養
+      - 麥味登 新品 熱量 2026
+
+  - id: breakfast-qburger-official
+    priority: P0
+    category: breakfast_chain
+    topic: Q Burger official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - Q Burger 營養標示 官方
+      - Q Burger 菜單 熱量 蛋白質
+      - Q Burger 高蛋白 早餐 熱量
+      - Q Burger 新品 熱量 2026
+
+  - id: fastfood-kfc-official
+    priority: P0
+    category: fast_food
+    topic: KFC Taiwan official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 肯德基 台灣 營養標示 官方
+      - KFC 台灣 菜單 熱量 蛋白質
+      - 肯德基 完整營養標示 PDF
+      - 肯德基 新品 熱量 2026
+
+  - id: coffee-louisa-official
+    priority: P0
+    category: coffee_chain
+    topic: Louisa official nutrition
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 路易莎 營養標示 官方
+      - 路易莎 菜單 熱量 咖啡因
+      - 路易莎 飲品 糖量 咖啡因 官方
+      - 路易莎 餐點 熱量 蛋白質
+      - 路易莎 新品 熱量 2026
+
+  - id: lunch-healthbox
+    priority: P1
+    category: lunch
+    topic: 健康餐與健身餐
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 健康餐 熱量 蛋白質 台灣
+      - 健康餐 半飯 熱量
+      - 雞胸健康餐 蛋白質 熱量
+      - 雞腿健康餐 半飯 熱量
+      - 健身餐 500卡 30g蛋白質 台灣
+
+  - id: lunch-poke
+    priority: P1
+    category: lunch
+    topic: Poke bowls
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - Poke 碗 熱量 蛋白質 台灣
+      - Poke 半飯 熱量
+      - Poke 雞胸 蛋白質
+      - Poke 減脂 怎麼選 營養師
+
+  - id: lunch-convenience-high-protein
+    priority: P1
+    category: lunch
+    topic: 超商高蛋白午餐
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 超商 高蛋白 午餐 熱量
+      - 7-ELEVEN 高蛋白 午餐 2026
+      - 全家 高蛋白 午餐 2026
+      - 便利商店 健身餐 蛋白質
+      - 超商 500卡 30g蛋白質
+      - 超商 100元 高蛋白
+
+  - id: lunch-bento-half-rice
+    priority: P1
+    category: lunch
+    topic: 便當半飯與少飯
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 便當 半飯 熱量
+      - 雞胸便當 半飯 熱量 蛋白質
+      - 雞腿便當 半飯 熱量 蛋白質
+      - 排骨便當 少飯 熱量
+      - 健康便當 飯減半 熱量
+
+  - id: dinner-hotpot
+    priority: P1
+    category: dinner
+    topic: 火鍋與小火鍋
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 小火鍋 熱量 蛋白質
+      - 火鍋 肉盤 蛋白質 熱量
+      - 火鍋 湯底 熱量 鈉
+      - 石二鍋 熱量 營養
+      - 12MINI 熱量 營養
+      - 涮涮鍋 減脂 怎麼選 營養師
+
+  - id: dinner-dumplings
+    priority: P1
+    category: dinner
+    topic: 水餃與鍋貼
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 水餃 10顆 熱量 蛋白質
+      - 鍋貼 10顆 熱量 蛋白質
+      - 八方雲集 熱量 蛋白質
+      - 四海遊龍 熱量 蛋白質
+      - 水餃 減脂 怎麼選
+
+  - id: dinner-sushi
+    priority: P1
+    category: dinner
+    topic: 壽司與迴轉壽司
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 壽司 熱量 蛋白質 一貫
+      - 爭鮮 熱量 營養
+      - 壽司郎 熱量 營養 台灣
+      - 藏壽司 熱量 營養 台灣
+      - 壽司 減脂 怎麼選
+
+  - id: dinner-luwei
+    priority: P2
+    category: dinner
+    topic: 滷味
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 滷味 一份 熱量 蛋白質
+      - 滷味 高蛋白 怎麼夾
+      - 滷味 減脂 怎麼選 營養師
+      - 滷味 鈉含量
+      - 滷味 豆干 雞胸 青菜 熱量
+
+  - id: dinner-saltwater-chicken
+    priority: P2
+    category: dinner
+    topic: 鹽水雞
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 鹽水雞 熱量 蛋白質
+      - 鹽水雞 一份 熱量
+      - 鹽水雞 減脂 怎麼點
+      - 鹽水雞 雞胸 熱量 蛋白質
+      - 鹽水雞 鈉含量
+
+  - id: lunch-self-service
+    priority: P2
+    category: lunch
+    topic: 自助餐
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 自助餐 熱量 蛋白質 台灣
+      - 自助餐 雞胸 一份 熱量
+      - 自助餐 雞腿 一份 熱量
+      - 自助餐 青菜 一份 熱量
+      - 自助餐 減脂 怎麼夾 營養師
+
+  - id: taiwan-rice-meals
+    priority: P2
+    category: taiwanese_food
+    topic: 台灣飯類外食
+    intent: nutrition_discovery
+    enabled: true
+    queries:
+      - 雞肉飯 一碗 熱量 蛋白質
+      - 滷肉飯 一碗 熱量 蛋白質
+      - 牛肉麵 一碗 熱量 蛋白質
+      - 排骨飯 一份 熱量 蛋白質
+      - 雞腿飯 一份 熱量 蛋白質
+
+  - id: budget-high-protein
+    priority: P2
+    category: decision_support
+    topic: 平價高蛋白外食
+    intent: source_discovery
+    enabled: true
+    queries:
+      - 100元 高蛋白 午餐 台灣
+      - 150元 高蛋白 外食 台灣
+      - 30g蛋白質 100元 超商
+      - 便宜 高蛋白 外食 營養師
+      - 高蛋白 CP值 超商
+
+  - id: social-convenience-protein
+    priority: P3
+    category: social_discovery
+    topic: 超商高蛋白社群實拍
+    intent: candidate_source_discovery
+    enabled: true
+    queries:
+      - site:threads.com 超商 高蛋白 熱量
+      - site:instagram.com 超商 高蛋白 營養標示
+      - site:dcard.tw 超商 減脂 餐盒 熱量
+      - site:facebook.com 超商 餐盒 營養標示
+
+  - id: social-breakfast-protein
+    priority: P3
+    category: social_discovery
+    topic: 早餐店高蛋白社群實拍
+    intent: candidate_source_discovery
+    enabled: true
+    queries:
+      - site:threads.com 早餐店 高蛋白 熱量
+      - site:instagram.com 麥味登 營養標示
+      - site:dcard.tw 早餐店 減脂 熱量
+      - 早餐店 菜單 熱量 圖片
