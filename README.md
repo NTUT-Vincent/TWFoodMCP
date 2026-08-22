@@ -87,7 +87,7 @@ Human / Agent
 - [OKF v0.2 Conformance Profile](docs/OKF_CONFORMANCE.md)
 - [Starbucks Taiwan Official Nutrition Import](docs/STARBUCKS_IMPORT.md)
 - [DailyDietitian Discovery and Verification Policy](docs/DAILYDIETITIAN_IMPORT.md)
-- [Official Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
+- [Official Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md)
 
 ## Current Status
 

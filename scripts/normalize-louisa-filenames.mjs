@@ -6,6 +6,7 @@ import { parse } from "yaml";
 const LOUISA_ROOT = "knowledge/menu-items/louisa";
 const RESERVED = new Set(["index.md", "log.md"]);
 const HASH_FILE = /^[a-f0-9]{12}\.md$/u;
+const HASH_SUFFIX_FILE = /-([a-f0-9]{12})\.md$/u;
 
 function splitFrontmatter(markdown, filePath) {
   const match = markdown.replace(/^\uFEFF/u, "").match(/^---\s*\r?\n([\s\S]*?)\r?\n---/u);
@@ -32,6 +33,8 @@ function descriptiveSlug(value) {
 
 function identitySuffix(data, fileName) {
   if (HASH_FILE.test(fileName)) return path.basename(fileName, ".md");
+  const existingHashSuffix = fileName.match(HASH_SUFFIX_FILE)?.[1];
+  if (existingHashSuffix) return existingHashSuffix;
 
   const sourceProductId = data?.revision?.source_product_id;
   if (typeof sourceProductId === "string" && sourceProductId.trim()) {
@@ -53,6 +56,7 @@ function identitySuffix(data, fileName) {
 }
 
 function desiredFilename(data, fileName) {
+  if (!HASH_FILE.test(fileName) && !HASH_SUFFIX_FILE.test(fileName)) return fileName;
   const name = data?.food?.name;
   if (typeof name !== "string" || !name.trim()) {
     throw new Error(`${fileName}: missing food.name`);

@@ -1,6 +1,6 @@
 # TWFoodMCP OKF v0.2 Conformance Profile
 
-Checked against the official Open Knowledge Format `README.md` and `SPEC.md` on 2026-08-05. The official specification version was **0.2**.
+Checked against the latest canonical Open Knowledge Format `README.md` and `SPEC.md` on 2026-08-22. The official specification version remains **0.2**. The former `knowledge-catalog/okf` directory is a frozen snapshot; the canonical repository is now `GoogleCloudPlatform/open-knowledge-format`.
 
 ## Bundle boundary
 
@@ -25,9 +25,11 @@ Official OKF requires only a non-empty `type` for a concept. TWFoodMCP intention
 
 ## Maintenance rule
 
-Before any future OKF format change, re-read the latest official [OKF README](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/README.md) and [OKF specification](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md). If the official version changes, update this profile, `knowledge/index.md`, formatter, validator, tests, and existing concepts together.
+Before any future OKF format change, re-read the latest official [OKF README](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/README.md) and [OKF specification](https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md). If the official version changes, update this profile, `knowledge/index.md`, formatter, validator, tests, and existing concepts together.
 
 Run `npm run format:okf` after adding or importing concepts. The formatter is idempotent: running it repeatedly must produce the same working tree.
+
+Run `npm run check:links` before publication. It resolves URL-encoded Unicode paths, filenames containing parentheses, relative links, bundle-root links, and directory links through their `index.md` files.
 
 ## Brand and category hierarchy
 

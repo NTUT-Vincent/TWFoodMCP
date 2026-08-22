@@ -39,6 +39,7 @@ jobs:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run validate:data
+      - run: npm run check:links
       - run: npm test
       - run: npm run build:dataset
 
@@ -128,6 +129,21 @@ jobs:
             if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("preview search returned the wrong dataset");
             const bigMac = content?.results?.find((item) => item.food_id === "food:tw:menu:mcdonalds:big-mac");
             if (!bigMac || bigMac.status !== "draft") throw new Error("preview search did not return the McDonald\u0027s Big Mac draft");
+          '
+
+          curl --fail --silent --show-error \
+            -X POST "$PRODUCTION_BASE_URL/mcp" \
+            -H "content-type: application/json" \
+            --data '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"search_food","arguments":{"query":"21香草烤半雞","dataset_channel":"preview","limit":10}}}' \
+            > /tmp/google-sheet-preview-search.json
+
+          EXPECTED_VERSION="$expected_version" node --input-type=module -e '
+            import fs from "node:fs";
+            const body = JSON.parse(fs.readFileSync("/tmp/google-sheet-preview-search.json", "utf8"));
+            const content = body?.result?.structuredContent;
+            if (content?.dataset_channel !== "preview" || content?.dataset_version !== process.env.EXPECTED_VERSION) throw new Error("Google Sheet preview search returned the wrong dataset");
+            const imported = content?.results?.find((item) => item.food_id === "food:tw:menu:google-sheet:nut-00001");
+            if (!imported || imported.status !== "draft") throw new Error("Google Sheet observation NUT-00001 is missing from production preview");
           '
 
           echo "Verified stable and preview D1 dataset $expected_version in production."

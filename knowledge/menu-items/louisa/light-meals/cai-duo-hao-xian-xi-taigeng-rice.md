@@ -4,29 +4,29 @@ title: 路易莎 菜多好纖細－台梗米
 description: 路易莎官方營養標示圖片經本地 OCR 與保守欄位整理產生的待人工審核草稿。
 resource: https://www.louisacoffee.co/upload/allergenImg/20250811_033319.jpg
 tags:
-- louisa
-- 路易莎
-- menu-item
-- light-meal
-- nutrition
-- ocr-draft
-status: draft
-stale_after: '2026-08-01'
+  - louisa
+  - 路易莎
+  - menu-item
+  - light-meal
+  - nutrition
+  - ocr-draft
 generated:
   by: louisa-okf-importer/1.0.0
-  at: '2026-08-03T15:47:50Z'
+  at: 2026-08-03T15:47:50Z
+status: draft
+stale_after: 2026-08-01
 sources:
-- id: louisa-official-nutrition-2025-08
-  resource: https://www.louisacoffee.co/upload/allergenImg/20250811_033319.jpg
-  title: 路易莎 2025.08 官方輕食類營養標示彙整表
-  author: process:louisa-official-site
-  last_modified: '2025-08-11'
-  source_class: primary_official
-- id: louisa-official-nutrition-page
-  resource: https://www.louisacoffee.co/allergenImg?CatlogID=2
-  title: 路易莎官方營養與過敏原資訊頁
-  author: process:louisa-official-site
-  source_class: primary_official
+  - id: louisa-official-nutrition-2025-08
+    resource: https://www.louisacoffee.co/upload/allergenImg/20250811_033319.jpg
+    title: 路易莎 2025.08 官方輕食類營養標示彙整表
+    author: process:louisa-official-site
+    last_modified: 2025-08-11
+    source_class: primary_official
+  - id: louisa-official-nutrition-page
+    resource: https://www.louisacoffee.co/allergenImg?CatlogID=2
+    title: 路易莎官方營養與過敏原資訊頁
+    author: process:louisa-official-site
+    source_class: primary_official
 food:
   id: louisa-menu-cai-duo-hao-xian-xi-taigeng-rice-2025-08
   kind: menu_item
@@ -34,23 +34,23 @@ food:
   brand: 路易莎咖啡 Louisa Coffee
   name: 菜多好纖細－台梗米
   aliases:
-  - 菜多好纖細-台梗米
+    - 菜多好纖細-台梗米
   variant: 2025.08 官方營養標示版本
 serving:
   amount: 1
   unit: serving
   description: 每一份；官方圖片未在該列提供重量
 nutrition:
-- basis: per_serving
-  values:
-    energy_kcal: 418.2
-    protein_g: 13.8
-    fat_g: 4.4
-    saturated_fat_g: 1.3
-    trans_fat_g: 0.0
-    carbohydrate_g: 80.8
-    sugar_g: 4.0
-    sodium_mg: 917.3
+  - basis: per_serving
+    values:
+      energy_kcal: 418.2
+      protein_g: 13.8
+      fat_g: 4.4
+      saturated_fat_g: 1.3
+      trans_fat_g: 0
+      carbohydrate_g: 80.8
+      sugar_g: 4
+      sodium_mg: 917.3
 quality:
   data_quality: official_brand
   completeness: nutrition_complete

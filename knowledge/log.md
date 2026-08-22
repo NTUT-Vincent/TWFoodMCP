@@ -1,5 +1,12 @@
 # Knowledge Bundle Update Log
 
+## 2026-08-22
+
+* **Import**: Added 1,214 traceable nutrition observation drafts from the TWFood Google Sheet and preserved all four source tabs in a reproducible snapshot.
+* **Linking**: Linked 66 corroborating observations and 17 conflicting observations to their existing official OKF concepts without overwriting either source.
+* **Validation**: Validated all 6,505 food documents and 6,686 internal Markdown links; missing nutrient values remain unknown and every imported observation remains non-calculable draft data.
+* **Conformance**: Re-read the canonical Open Knowledge Format `README.md` and `SPEC.md`; the official version remains 0.2 and the canonical repository is now `GoogleCloudPlatform/open-knowledge-format`.
+
 ## 2026-08-05
 
 * **Import**: Added 113 Starbucks Taiwan official food nutrition drafts and 311 drink size/variant drafts from 202 official product pages.

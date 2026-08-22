@@ -5,18 +5,22 @@ import { buildDataset } from "../scripts/lib/dataset.mjs";
 const DAILYDIETITIAN_ID_PREFIX = "food:tw:menu:dailydietitian:";
 const MWD_ID_PREFIX = "food:tw:menu:mwd:";
 const STARBUCKS_ID_PREFIX = "food:tw:menu:starbucks:";
+const GOOGLE_SHEET_ID_PREFIX = "food:tw:menu:google-sheet:";
 const EXISTING_CORPUS_DOCUMENTS = 283;
 const STARBUCKS_DOCUMENTS = 424;
+const GOOGLE_SHEET_DOCUMENTS = 1214;
 
 function splitSourceDocuments(dataset) {
   const dailydietitian = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX));
   const mwd = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(MWD_ID_PREFIX));
   const starbucks = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(STARBUCKS_ID_PREFIX));
+  const googleSheet = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(GOOGLE_SHEET_ID_PREFIX));
   const existing = dataset.sourceDocuments.filter(({ data }) =>
     !data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX)
     && !data.food.id.startsWith(MWD_ID_PREFIX)
-    && !data.food.id.startsWith(STARBUCKS_ID_PREFIX));
-  return { dailydietitian, mwd, starbucks, existing };
+    && !data.food.id.startsWith(STARBUCKS_ID_PREFIX)
+    && !data.food.id.startsWith(GOOGLE_SHEET_ID_PREFIX));
+  return { dailydietitian, mwd, starbucks, googleSheet, existing };
 }
 
 test("builds reviewed public OKF records into versioned KV entries", async () => {
@@ -25,14 +29,15 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
     version: "test-v1",
     generatedAt: "2026-08-01T02:00:00+08:00",
   });
-  const { dailydietitian, mwd, starbucks, existing } = splitSourceDocuments(dataset);
+  const { dailydietitian, mwd, starbucks, googleSheet, existing } = splitSourceDocuments(dataset);
   const publicPreviewDocuments = dataset.sourceDocuments.filter(({ data }) =>
     data.status !== "deprecated" && data.access?.classification === "public");
   const publicDraftDocuments = publicPreviewDocuments.filter(({ data }) => data.status === "draft");
 
   assert.equal(existing.length, EXISTING_CORPUS_DOCUMENTS, "the pre-existing OKF corpus must remain intact");
   assert.equal(starbucks.length, STARBUCKS_DOCUMENTS);
-  assert.equal(dataset.sourceDocuments.length, existing.length + dailydietitian.length + mwd.length + starbucks.length);
+  assert.equal(googleSheet.length, GOOGLE_SHEET_DOCUMENTS);
+  assert.equal(dataset.sourceDocuments.length, existing.length + dailydietitian.length + mwd.length + starbucks.length + googleSheet.length);
   assert.equal(dataset.runtimeFoods.length, 7);
   assert.equal(dataset.manifest.dataset_version, "test-v1");
   assert.equal(dataset.manifest.source_commit, "0123456789abcdef0123456789abcdef01234567");
@@ -74,6 +79,12 @@ test("builds reviewed public OKF records into versioned KV entries", async () =>
     assert.equal(data.status, "draft");
     assert.equal(data.food.brand, "星巴克");
     assert.equal(data.sources[0].source_class, "primary_official");
+    assert.equal(data.quality.calculation_allowed, false);
+  }
+
+  for (const { data } of googleSheet) {
+    assert.equal(data.status, "draft");
+    assert.equal(data.verified, undefined, "Google Sheet observations must stay unverified");
     assert.equal(data.quality.calculation_allowed, false);
   }
 

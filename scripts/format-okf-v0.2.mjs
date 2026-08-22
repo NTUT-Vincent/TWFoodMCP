@@ -6,7 +6,7 @@ import { parse, stringify } from "yaml";
 const BUNDLE_ROOT = "knowledge";
 const RESERVED = new Set(["index.md", "log.md"]);
 const ACTOR_PATTERN = /^(?:(?:human|process):[A-Za-z0-9][A-Za-z0-9._-]*|[A-Za-z0-9][A-Za-z0-9._-]*\/[A-Za-z0-9][A-Za-z0-9._-]*)$/u;
-const OFFICIAL_SPEC = "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md";
+const OFFICIAL_SPEC = "https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md";
 
 const GENERATED_ACTOR_REPLACEMENTS = new Map([
   ["agent:chatgpt-mcdonalds-official-api-import", "twfoodmcp-mcdonalds-importer/1.0.0"],
@@ -149,11 +149,45 @@ function indexEntry(relativePath, data) {
   return `* [${title}](${relativePath.replaceAll(path.sep, "/")})${description}`;
 }
 
+async function writeCollectionIndexes(concepts, collectionRoot, collectionTitle, collectionDescription) {
+  await mkdir(collectionRoot, { recursive: true });
+  const directories = (await readdir(collectionRoot, { withFileTypes: true }))
+    .filter((entry) => entry.isDirectory())
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const groups = [];
+  for (const directory of directories) {
+    const directoryPath = path.join(collectionRoot, directory.name);
+    const entries = concepts
+      .filter(({ filePath }) => path.dirname(filePath) === directoryPath)
+      .sort((a, b) => a.data.title.localeCompare(b.data.title, "zh-Hant"));
+    await writeFile(
+      path.join(directoryPath, "index.md"),
+      [`# ${collectionTitle}: ${directory.name}`, "", ...entries.map(({ filePath, data }) => indexEntry(path.basename(filePath), data)), ""].join("\n"),
+      "utf8",
+    );
+    groups.push({ name: directory.name, count: entries.length });
+  }
+  await writeFile(
+    path.join(collectionRoot, "index.md"),
+    [
+      `# ${collectionTitle}`,
+      "",
+      collectionDescription,
+      "",
+      ...groups.map(({ name, count }) => `* [${name}](${name}/) - ${count} 份概念文件。`),
+      "",
+    ].join("\n"),
+    "utf8",
+  );
+}
+
 async function writeIndexes(concepts) {
   const menuRoot = path.join(BUNDLE_ROOT, "menu-items");
   const mcdonaldsRoot = path.join(menuRoot, "mcdonalds");
   const familymartRoot = path.join(menuRoot, "familymart");
   const familymartSoftcreamRoot = path.join(familymartRoot, "softcream");
+  const dailyDietitianRoot = path.join(menuRoot, "dailydietitian");
+  const louisaRoot = path.join(menuRoot, "louisa");
   await mkdir(mcdonaldsRoot, { recursive: true });
   await mkdir(familymartSoftcreamRoot, { recursive: true });
 
@@ -163,6 +197,19 @@ async function writeIndexes(concepts) {
     "utf8",
   );
 
+  await writeCollectionIndexes(
+    concepts,
+    dailyDietitianRoot,
+    "DailyDietitian drafts",
+    "日日營養熱量圖鑑候選與來源比對草稿，依品牌分組。",
+  );
+  await writeCollectionIndexes(
+    concepts,
+    louisaRoot,
+    "Louisa Coffee drafts",
+    "路易莎咖啡營養資料轉換草稿，依食品類型分組。",
+  );
+
   await writeFile(
     path.join(menuRoot, "index.md"),
     [
@@ -170,6 +217,7 @@ async function writeIndexes(concepts) {
       "",
       "* [DailyDietitian](dailydietitian/) - 日日營養熱量圖鑑候選與來源比對草稿。",
       "* [FamilyMart](familymart/) - 全家便利商店食品品項。",
+      "* [TWFood Google Sheet](google-sheet/) - 共筆試算表匯入的可追溯營養觀測草稿。",
       "* [Louisa Coffee](louisa/) - 路易莎咖啡官方營養資料轉換的餐點概念。",
       "* [McDonald's](mcdonalds/) - 麥當勞台灣官方營養資料轉換的餐點概念。",
       "* [My Warm Day](mwd/) - 麥味登官方產品頁與營養標示轉換的餐點概念。",
