@@ -1,11 +1,13 @@
 name: One-shot rename OKF files by title
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types:
+      - opened
     paths:
-      - .github/workflows/rename-okf-by-title.yml
+      - .github/okf-rename-trigger
 
 permissions:
   contents: write
