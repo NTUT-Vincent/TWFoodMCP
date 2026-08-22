@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Rename menu-item OKF Markdown files from their frontmatter title.
 
-Example:
+Normal case:
     title: 星巴克 Starbucks 馬斯卡邦輕乳蛋糕
 becomes:
     星巴克_Starbucks_馬斯卡邦輕乳蛋糕.md
+
+If multiple OKF files in the same directory normalize to the same title-based
+filename, every colliding file gets a stable ``--<12 hex>`` suffix so no OKF is
+overwritten. Existing suffixes are preserved, which makes the migration
+idempotent after the first successful run.
 
 The script also rewrites local Markdown links in index.md files and can validate
 that filenames and index links are consistent. It has no third-party deps.
@@ -12,6 +17,7 @@ that filenames and index links are consistent. It has no third-party deps.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -29,6 +35,8 @@ INVALID_FILENAME_CHARS = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 WHITESPACE = re.compile(r"\s+")
 UNDERSCORES = re.compile(r"_+")
 MD_LINK = re.compile(r"(?<!!)\[([^\]]*)\]\(([^)]+)\)")
+STABLE_SUFFIX = re.compile(r"--([0-9a-f]{12})$", re.IGNORECASE)
+MAX_FILENAME_BYTES = 255
 
 
 @dataclass(frozen=True)
@@ -88,9 +96,40 @@ def title_to_filename(title: str) -> str:
     if not name:
         raise ValueError(f"title normalizes to an empty filename: {title!r}")
     filename = f"{name}.md"
-    if len(filename.encode("utf-8")) > 255:
-        raise ValueError(f"filename exceeds 255 UTF-8 bytes: {filename!r}")
+    if len(filename.encode("utf-8")) > MAX_FILENAME_BYTES:
+        raise ValueError(f"filename exceeds {MAX_FILENAME_BYTES} UTF-8 bytes: {filename!r}")
     return filename
+
+
+def _truncate_utf8(text: str, max_bytes: int) -> str:
+    out: list[str] = []
+    size = 0
+    for char in text:
+        encoded = char.encode("utf-8")
+        if size + len(encoded) > max_bytes:
+            break
+        out.append(char)
+        size += len(encoded)
+    return "".join(out).rstrip(" ._")
+
+
+def _stable_suffix(path: Path) -> str:
+    match = STABLE_SUFFIX.search(path.stem)
+    if match:
+        return match.group(1).lower()
+    return hashlib.sha256(path.name.encode("utf-8")).hexdigest()[:12]
+
+
+def collision_filename(base_filename: str, source: Path) -> str:
+    suffix = _stable_suffix(source)
+    trailer = f"--{suffix}.md"
+    max_stem_bytes = MAX_FILENAME_BYTES - len(trailer.encode("utf-8"))
+    stem = Path(base_filename).stem
+    if len(stem.encode("utf-8")) > max_stem_bytes:
+        stem = _truncate_utf8(stem, max_stem_bytes)
+    if not stem:
+        raise ValueError(f"cannot build collision-safe filename for {source}")
+    return f"{stem}{trailer}"
 
 
 def is_candidate(path: Path, root: Path) -> bool:
@@ -105,8 +144,7 @@ def is_candidate(path: Path, root: Path) -> bool:
 
 def collect_renames(root: Path) -> tuple[list[Rename], list[str]]:
     errors: list[str] = []
-    renames: list[Rename] = []
-    candidates: list[tuple[Path, str, Path]] = []
+    raw: list[tuple[Path, str, Path]] = []
 
     for path in sorted(root.rglob("*.md")):
         if not is_candidate(path, root):
@@ -119,19 +157,40 @@ def collect_renames(root: Path) -> tuple[list[Rename], list[str]]:
         if title is None:
             continue
         try:
-            target = path.with_name(title_to_filename(title))
+            base_target = path.with_name(title_to_filename(title))
         except ValueError as exc:
             errors.append(f"{path}: {exc}")
             continue
-        candidates.append((path, title, target))
+        raw.append((path, title, base_target))
+
+    grouped: dict[str, list[tuple[Path, str, Path]]] = {}
+    for item in raw:
+        path, _title, base_target = item
+        key = str(path.parent.resolve()) + "\0" + base_target.name.casefold()
+        grouped.setdefault(key, []).append(item)
+
+    candidates: list[tuple[Path, str, Path]] = []
+    for group in grouped.values():
+        if len(group) == 1:
+            candidates.append(group[0])
+            continue
+        for path, title, base_target in group:
+            try:
+                target = path.with_name(collision_filename(base_target.name, path))
+            except ValueError as exc:
+                errors.append(str(exc))
+                continue
+            candidates.append((path, title, target))
 
     seen: dict[str, Path] = {}
     source_paths = {p.resolve() for p, _, _ in candidates}
-    for path, title, target in candidates:
+    renames: list[Rename] = []
+
+    for path, title, target in sorted(candidates, key=lambda item: str(item[0])):
         key = str(target.parent.resolve()) + "\0" + target.name.casefold()
         previous = seen.get(key)
         if previous and previous.resolve() != path.resolve():
-            errors.append(f"filename collision: {previous} and {path} -> {target.name}")
+            errors.append(f"filename collision after suffixing: {previous} and {path} -> {target.name}")
         else:
             seen[key] = path
 
@@ -229,18 +288,11 @@ def iter_local_md_links(index: Path):
 
 def validate(root: Path) -> list[str]:
     errors: list[str] = []
-    _renames, collection_errors = collect_renames(root)
+    renames, collection_errors = collect_renames(root)
     errors.extend(collection_errors)
 
-    for path in sorted(root.rglob("*.md")):
-        if not is_candidate(path, root):
-            continue
-        title = read_title(path)
-        if title is None:
-            continue
-        expected = title_to_filename(title)
-        if path.name != expected:
-            errors.append(f"filename mismatch: {path} (expected {expected})")
+    for item in renames:
+        errors.append(f"filename mismatch: {item.old} (expected {item.new.name})")
 
     for index in sorted(root.rglob("index.md")):
         for dest, resolved in iter_local_md_links(index):
