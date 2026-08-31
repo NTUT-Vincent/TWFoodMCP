@@ -1,8 +1,8 @@
 # MWD import failure
 
-- Run: https://github.com/NTUT-Vincent/TWFoodMCP/actions/runs/32768556778
-- Trigger commit: 47125b584dc49ece8e24bea4c8afe8065b8e846e
-- Recorded at: 2026-08-24T20:18:14+00:00
+- Run: https://github.com/NTUT-Vincent/TWFoodMCP/actions/runs/33430236332
+- Trigger commit: cfcac5ede4d87b04f65ef2d59ab6969a5a4c58d2
+- Recorded at: 2026-08-31T20:08:51+00:00
 - crawl: success
 - validate: failure
 - commit_data: skipped
