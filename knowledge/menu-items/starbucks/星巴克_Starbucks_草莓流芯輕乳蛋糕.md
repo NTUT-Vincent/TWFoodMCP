@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 黑芝麻可可千層薄餅](/menu-items/starbucks/foods/黑芝麻可可千層薄餅-8eb281d22271.md)。
+數值需要衝突審查：[星巴克 黑芝麻可可千層薄餅](/menu-items/starbucks/foods/星巴克_黑芝麻可可千層薄餅.md)。
 
 # Review Required
 

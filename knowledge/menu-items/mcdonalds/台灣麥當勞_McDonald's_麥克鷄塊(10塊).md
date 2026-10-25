@@ -194,7 +194,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 麥克鷄塊(10塊)](/menu-items/mcdonalds/chicken-mcnuggets-10-pieces.md)。
+數值可交叉支持：[麥當勞 麥克鷄塊(10塊)](麥當勞_麥克鷄塊(10塊).md)。
 
 # Review Required
 

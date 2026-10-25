@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 焗烤法式里肌三明治](/menu-items/starbucks/foods/焗烤法式里肌三明治-862dff1bbfe7.md)。
+數值需要衝突審查：[星巴克 焗烤法式里肌三明治](/menu-items/starbucks/foods/星巴克_焗烤法式里肌三明治.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 海鹽奶油捲](/menu-items/starbucks/foods/海鹽奶油捲-a71a579b145b.md)。
+數值可交叉支持：[星巴克 海鹽奶油捲](/menu-items/starbucks/foods/星巴克_海鹽奶油捲.md)。
 
 # Review Required
 

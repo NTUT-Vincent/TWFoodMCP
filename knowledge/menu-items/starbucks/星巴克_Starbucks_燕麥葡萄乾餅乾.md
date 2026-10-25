@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 燕麥葡萄乾餅乾](/menu-items/starbucks/foods/燕麥葡萄乾餅乾-93069118341f.md)。
+數值可交叉支持：[星巴克 燕麥葡萄乾餅乾](/menu-items/starbucks/foods/星巴克_燕麥葡萄乾餅乾.md)。
 
 # Review Required
 

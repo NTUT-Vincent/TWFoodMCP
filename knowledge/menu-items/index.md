@@ -28,8 +28,10 @@
 * [KFC](kfc/) - 肯德基食品品項。
 * [Burger King](burgerking/) - 漢堡王食品品項。
 * [SUBWAY](subway/) - SUBWAY 食品品項。
+* [Sukiya](sukiya/) - Sukiya（吉野家）日日營養來源品項 draft。
 
 > **注意**: 
-> - 原有的 `google-sheet/` 資料夾已遷移至各對應商家資料夾，並重新命名為 `google-sheet-deprecated/` 以供參考。
-> - 原有的 `dailydietitian/` 資料夾的品項已遷移至各對應商家資料夾，並重新命名為 `dailydietitian-deprecated/` 以供參考。
+> - 原有的 `google-sheet/` 資料夾已遷移至各對應商家資料夾，並重新命名為 `google-sheet-deprecated/` 以供參考；其內部已改依品牌分組（原記錄編號分桶已解散）。
+> - 原有的 `dailydietitian/` 資料夾的品項已遷移至各對應商家資料夾，並重新命名為 `dailydietitian-deprecated/` 以供參考；其內部目錄已改以品牌或來源文章命名。
 > - 所有品項現在都按商家組織，符合 OKF v0.2 標準的 `food:tw:menu:<brand-slug>:<item-slug>` 格式。
+> - 概念檔名一律使用真實世界名稱（品牌＋品項）；同名衝突以份量基準或來源記錄編號區分，不留無意義雜湊檔名。

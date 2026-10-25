@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 葡萄乾司康](/menu-items/starbucks/foods/葡萄乾司康-a4940ed80052.md)。
+數值可交叉支持：[星巴克 葡萄乾司康](/menu-items/starbucks/foods/星巴克_葡萄乾司康.md)。
 
 # Review Required
 

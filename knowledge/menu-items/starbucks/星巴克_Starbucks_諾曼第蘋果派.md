@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 諾曼第蘋果派](/menu-items/starbucks/foods/諾曼第蘋果派-b18c4e547afb.md)。
+數值可交叉支持：[星巴克 諾曼第蘋果派](/menu-items/starbucks/foods/星巴克_諾曼第蘋果派.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 黑松露嫩蛋三明治](/menu-items/starbucks/foods/黑松露嫩蛋三明治-92dffe01e454.md)。
+數值可交叉支持：[星巴克 黑松露嫩蛋三明治](/menu-items/starbucks/foods/星巴克_黑松露嫩蛋三明治.md)。
 
 # Review Required
 

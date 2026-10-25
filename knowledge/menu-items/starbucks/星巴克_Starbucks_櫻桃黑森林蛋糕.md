@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 櫻桃黑森林蛋糕](/menu-items/starbucks/foods/櫻桃黑森林蛋糕-533d9f9b055f.md)。
+數值可交叉支持：[星巴克 櫻桃黑森林蛋糕](/menu-items/starbucks/foods/星巴克_櫻桃黑森林蛋糕.md)。
 
 # Review Required
 

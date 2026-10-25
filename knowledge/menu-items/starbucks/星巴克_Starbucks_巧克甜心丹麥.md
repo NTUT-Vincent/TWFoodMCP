@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 巧克甜心丹麥](/menu-items/starbucks/foods/巧克甜心丹麥-6b2057ccaa70.md)。
+數值可交叉支持：[星巴克 巧克甜心丹麥](/menu-items/starbucks/foods/星巴克_巧克甜心丹麥.md)。
 
 # Review Required
 

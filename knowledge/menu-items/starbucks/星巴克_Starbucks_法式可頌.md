@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 法式可頌](/menu-items/starbucks/foods/法式可頌-ba0d3bb98d5f.md)。
+數值可交叉支持：[星巴克 法式可頌](/menu-items/starbucks/foods/星巴克_法式可頌.md)。
 
 # Review Required
 

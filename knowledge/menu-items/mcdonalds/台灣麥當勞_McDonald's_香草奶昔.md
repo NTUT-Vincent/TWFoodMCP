@@ -183,7 +183,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[麥當勞 香草奶昔](/menu-items/mcdonalds/200337.md)。
+數值需要衝突審查：[麥當勞 香草奶昔](/menu-items/mcdonalds/麥當勞_香草奶昔.md)。
 
 # Review Required
 

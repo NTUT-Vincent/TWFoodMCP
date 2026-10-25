@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 葡式蛋撻](/menu-items/starbucks/foods/葡式蛋撻-1c87c19552a5.md)。
+數值可交叉支持：[星巴克 葡式蛋撻](/menu-items/starbucks/foods/星巴克_葡式蛋撻.md)。
 
 # Review Required
 

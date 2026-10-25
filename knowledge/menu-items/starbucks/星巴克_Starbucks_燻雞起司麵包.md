@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 藍莓馬芬](/menu-items/starbucks/foods/藍莓馬芬-2fb0d63e928a.md)。
+數值需要衝突審查：[星巴克 藍莓馬芬](/menu-items/starbucks/foods/星巴克_藍莓馬芬.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 綜合堅果塔](/menu-items/starbucks/foods/綜合堅果塔-abb847b9a194.md)。
+數值可交叉支持：[星巴克 綜合堅果塔](/menu-items/starbucks/foods/星巴克_綜合堅果塔.md)。
 
 # Review Required
 

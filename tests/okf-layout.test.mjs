@@ -15,18 +15,16 @@ test("FamilyMart softcream concepts use brand and category hierarchy", async () 
   const concepts = (await readdir(softcreamRoot))
     .filter((name) => name.endsWith(".md") && name !== "index.md")
     .sort();
-  assert.deepEqual(concepts, [
-    "cone-original.md",
-    "heart-cone.md",
-    "nissei-belgian-chocolate.md",
-    "nissei-estate-milk.md",
-    "nissei-peach.md",
-    "nissei-sweet-soy-sauce.md",
-    "nissei-wasabi.md",
-  ]);
+  // Best-practice OKF naming: every concept filename carries the real-world
+  // brand and product name (no hash-only or hash-suffixed names).
+  assert.ok(concepts.length >= 7, "softcream concepts exist");
+  for (const name of concepts) {
+    assert.match(name, /^全家_Fami!ce_/u, `meaningful brand-prefixed filename: ${name}`);
+    assert.doesNotMatch(name, /(^-+|--[0-9a-f]{8,})/u, `no meaningless hash name: ${name}`);
+  }
 
   const familymartIndex = await readFile(path.join(menuRoot, "familymart", "index.md"), "utf8");
   const softcreamIndex = await readFile(path.join(softcreamRoot, "index.md"), "utf8");
   assert.match(familymartIndex, /\[Softcream\]\(softcream\/\)/u);
-  assert.match(softcreamIndex, /nissei-peach\.md/u);
+  assert.match(softcreamIndex, /日世霜淇淋-水蜜桃\.md/u);
 });

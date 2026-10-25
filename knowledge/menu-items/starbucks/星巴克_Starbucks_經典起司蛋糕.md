@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 經典起司蛋糕](/menu-items/starbucks/foods/經典起司蛋糕-708aaf868868.md)。
+數值可交叉支持：[星巴克 經典起司蛋糕](/menu-items/starbucks/foods/星巴克_經典起司蛋糕.md)。
 
 # Review Required
 

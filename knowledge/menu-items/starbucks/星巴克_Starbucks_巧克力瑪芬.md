@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 巧克力瑪芬](/menu-items/starbucks/foods/巧克力瑪芬-9195554bf318.md)。
+數值可交叉支持：[星巴克 巧克力瑪芬](/menu-items/starbucks/foods/星巴克_巧克力瑪芬.md)。
 
 # Review Required
 

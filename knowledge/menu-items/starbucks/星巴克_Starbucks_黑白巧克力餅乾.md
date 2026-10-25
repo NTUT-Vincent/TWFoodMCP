@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 黑白巧克力餅乾](/menu-items/starbucks/foods/黑白巧克力餅乾-ac50c4ed21a9.md)。
+數值可交叉支持：[星巴克 黑白巧克力餅乾](/menu-items/starbucks/foods/星巴克_黑白巧克力餅乾.md)。
 
 # Review Required
 

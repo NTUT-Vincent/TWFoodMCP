@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 雙起司軟歐麵包](/menu-items/starbucks/foods/雙起司軟歐麵包-d1fabef64941.md)。
+數值可交叉支持：[星巴克 雙起司軟歐麵包](/menu-items/starbucks/foods/星巴克_雙起司軟歐麵包.md)。
 
 # Review Required
 

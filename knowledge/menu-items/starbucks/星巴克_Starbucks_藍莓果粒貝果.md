@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 藍莓果粒貝果](/menu-items/starbucks/foods/藍莓果粒貝果-ffd9fb1fdc9e.md)。
+數值可交叉支持：[星巴克 藍莓果粒貝果](/menu-items/starbucks/foods/星巴克_藍莓果粒貝果.md)。
 
 # Review Required
 

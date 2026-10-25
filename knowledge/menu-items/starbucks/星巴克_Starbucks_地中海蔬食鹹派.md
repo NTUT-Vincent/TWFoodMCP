@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 地中海蔬食鹹派](/menu-items/starbucks/foods/地中海蔬食鹹派-a5ff2d4f1ea9.md)。
+數值可交叉支持：[星巴克 地中海蔬食鹹派](/menu-items/starbucks/foods/星巴克_地中海蔬食鹹派.md)。
 
 # Review Required
 

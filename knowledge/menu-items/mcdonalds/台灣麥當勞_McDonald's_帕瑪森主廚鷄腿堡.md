@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 帕瑪森主廚鷄腿堡](/menu-items/mcdonalds/parmesan-crispy-chicken-burger.md)。
+數值可交叉支持：[麥當勞 帕瑪森主廚鷄腿堡](/menu-items/mcdonalds/麥當勞_帕瑪森主廚鷄腿堡.md)。
 
 # Review Required
 

@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 蕈菇主廚鷄腿堡](/menu-items/mcdonalds/mushroom-crispy-chicken-burger.md)。
+數值可交叉支持：[麥當勞 蕈菇主廚鷄腿堡](/menu-items/mcdonalds/麥當勞_蕈菇主廚鷄腿堡.md)。
 
 # Review Required
 

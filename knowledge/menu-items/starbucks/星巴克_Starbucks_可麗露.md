@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 經典可麗露](/menu-items/starbucks/foods/經典可麗露-51439432c1f2.md)。
+數值需要衝突審查：[星巴克 經典可麗露](/menu-items/starbucks/foods/星巴克_經典可麗露.md)。
 
 # Review Required
 

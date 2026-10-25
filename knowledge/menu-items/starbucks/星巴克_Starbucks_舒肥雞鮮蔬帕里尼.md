@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 舒肥雞鮮蔬帕里尼](/menu-items/starbucks/foods/舒肥雞鮮蔬帕里尼-413fe4c9792c.md)。
+數值可交叉支持：[星巴克 舒肥雞鮮蔬帕里尼](/menu-items/starbucks/foods/星巴克_舒肥雞鮮蔬帕里尼.md)。
 
 # Review Required
 

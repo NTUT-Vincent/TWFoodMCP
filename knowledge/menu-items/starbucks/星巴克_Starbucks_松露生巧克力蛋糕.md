@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 經典咖啡松露生巧克力蛋糕](/menu-items/starbucks/foods/經典咖啡松露生巧克力蛋糕-c5541a3321b2.md)。
+數值需要衝突審查：[星巴克 經典咖啡松露生巧克力蛋糕](/menu-items/starbucks/foods/星巴克_經典咖啡松露生巧克力蛋糕.md)。
 
 # Review Required
 

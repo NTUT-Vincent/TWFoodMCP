@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 法式烤布蕾瑪德蓮](/menu-items/starbucks/foods/法式烤布蕾瑪德蓮-967a92bef554.md)。
+數值可交叉支持：[星巴克 法式烤布蕾瑪德蓮](/menu-items/starbucks/foods/星巴克_法式烤布蕾瑪德蓮.md)。
 
 # Review Required
 

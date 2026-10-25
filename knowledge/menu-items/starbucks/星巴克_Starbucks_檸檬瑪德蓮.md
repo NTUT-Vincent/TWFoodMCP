@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 檸檬瑪德蓮](/menu-items/starbucks/foods/檸檬瑪德蓮-95742c31ab6c.md)。
+數值可交叉支持：[星巴克 檸檬瑪德蓮](/menu-items/starbucks/foods/星巴克_檸檬瑪德蓮.md)。
 
 # Review Required
 

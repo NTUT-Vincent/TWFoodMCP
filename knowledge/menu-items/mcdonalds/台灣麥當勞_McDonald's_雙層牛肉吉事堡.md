@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 雙層牛肉吉事堡](/menu-items/mcdonalds/double-cheese-burger.md)。
+數值可交叉支持：[麥當勞 雙層牛肉吉事堡](/menu-items/mcdonalds/麥當勞_雙層牛肉吉事堡.md)。
 
 # Review Required
 

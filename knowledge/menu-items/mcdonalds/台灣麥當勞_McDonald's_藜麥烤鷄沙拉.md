@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 藜麥烤鷄沙拉](/menu-items/mcdonalds/200325.md)。
+數值可交叉支持：[麥當勞 藜麥烤鷄沙拉](/menu-items/mcdonalds/麥當勞_藜麥烤鷄沙拉.md)。
 
 # Review Required
 

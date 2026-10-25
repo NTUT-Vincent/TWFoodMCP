@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 經典核桃肉桂捲](/menu-items/starbucks/foods/經典核桃肉桂捲-d9958eb7d202.md)。
+數值需要衝突審查：[星巴克 經典核桃肉桂捲](/menu-items/starbucks/foods/星巴克_經典核桃肉桂捲.md)。
 
 # Review Required
 

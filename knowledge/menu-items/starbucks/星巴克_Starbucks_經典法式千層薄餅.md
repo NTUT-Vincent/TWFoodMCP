@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 經典法式千層薄餅](/menu-items/starbucks/foods/經典法式千層薄餅-f8bb5ce0b0e8.md)。
+數值可交叉支持：[星巴克 經典法式千層薄餅](/menu-items/starbucks/foods/星巴克_經典法式千層薄餅.md)。
 
 # Review Required
 

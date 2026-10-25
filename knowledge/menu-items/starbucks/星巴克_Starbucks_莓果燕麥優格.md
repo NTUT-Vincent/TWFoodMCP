@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 莓果燕麥優格](/menu-items/starbucks/foods/莓果燕麥優格-a76f5e7f7f34.md)。
+數值可交叉支持：[星巴克 莓果燕麥優格](/menu-items/starbucks/foods/星巴克_莓果燕麥優格.md)。
 
 # Review Required
 

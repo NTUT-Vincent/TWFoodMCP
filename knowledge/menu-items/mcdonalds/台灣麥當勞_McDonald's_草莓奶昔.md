@@ -192,7 +192,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[麥當勞 草莓奶昔](/menu-items/mcdonalds/200338.md)。
+數值需要衝突審查：[麥當勞 草莓奶昔](/menu-items/mcdonalds/麥當勞_草莓奶昔.md)。
 
 # Review Required
 

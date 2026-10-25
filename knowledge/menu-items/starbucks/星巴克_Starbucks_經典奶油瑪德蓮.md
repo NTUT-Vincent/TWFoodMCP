@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 經典奶油瑪德蓮](/menu-items/starbucks/foods/經典奶油瑪德蓮-db95f6c3bc26.md)。
+數值可交叉支持：[星巴克 經典奶油瑪德蓮](/menu-items/starbucks/foods/星巴克_經典奶油瑪德蓮.md)。
 
 # Review Required
 

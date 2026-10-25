@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 經典總匯三明治](/menu-items/starbucks/foods/經典總匯三明治-0c5db329661c.md)。
+數值可交叉支持：[星巴克 經典總匯三明治](/menu-items/starbucks/foods/星巴克_經典總匯三明治.md)。
 
 # Review Required
 

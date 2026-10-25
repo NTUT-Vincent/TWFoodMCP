@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 經典美式咖啡(冰)](/menu-items/mcdonalds/iced-americano.md)。
+數值可交叉支持：[麥當勞 經典美式咖啡(冰)](/menu-items/mcdonalds/麥當勞_經典美式咖啡(冰).md)。
 
 # Review Required
 

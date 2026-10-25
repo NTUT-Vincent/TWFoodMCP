@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 經典檸檬塔](/menu-items/starbucks/foods/經典檸檬塔-eb9b759d8096.md)。
+數值需要衝突審查：[星巴克 經典檸檬塔](/menu-items/starbucks/foods/星巴克_經典檸檬塔.md)。
 
 # Review Required
 

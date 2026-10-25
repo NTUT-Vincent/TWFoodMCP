@@ -194,7 +194,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 大麥克](/menu-items/mcdonalds/big-mac.md)。
+數值可交叉支持：[麥當勞 大麥克](/menu-items/mcdonalds/麥當勞_大麥克.md)。
 
 # Review Required
 

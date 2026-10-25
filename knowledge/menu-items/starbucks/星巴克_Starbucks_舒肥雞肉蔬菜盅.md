@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 舒肥雞肉蔬菜盅](/menu-items/starbucks/foods/舒肥雞肉蔬菜盅-009bcf424326.md)。
+數值可交叉支持：[星巴克 舒肥雞肉蔬菜盅](/menu-items/starbucks/foods/星巴克_舒肥雞肉蔬菜盅.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 義式番茄起司捲](/menu-items/starbucks/foods/義式番茄起司捲-698b37baa693.md)。
+數值可交叉支持：[星巴克 義式番茄起司捲](/menu-items/starbucks/foods/星巴克_義式番茄起司捲.md)。
 
 # Review Required
 

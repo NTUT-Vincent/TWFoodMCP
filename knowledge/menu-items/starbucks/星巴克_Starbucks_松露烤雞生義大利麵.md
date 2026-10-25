@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 松露烤雞生義大利麵](/menu-items/starbucks/foods/松露烤雞生義大利麵-ee37fd4e2521.md)。
+數值可交叉支持：[星巴克 松露烤雞生義大利麵](/menu-items/starbucks/foods/星巴克_松露烤雞生義大利麵.md)。
 
 # Review Required
 

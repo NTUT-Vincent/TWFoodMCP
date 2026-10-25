@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 巧克力雙色可頌](/menu-items/starbucks/foods/巧克力雙色可頌-8216ad17187c.md)。
+數值可交叉支持：[星巴克 巧克力雙色可頌](/menu-items/starbucks/foods/星巴克_巧克力雙色可頌.md)。
 
 # Review Required
 

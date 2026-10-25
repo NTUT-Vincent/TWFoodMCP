@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 夏威夷豆白巧餅乾](/menu-items/starbucks/foods/夏威夷豆白巧餅乾-d0d8f730a0df.md)。
+數值可交叉支持：[星巴克 夏威夷豆白巧餅乾](/menu-items/starbucks/foods/星巴克_夏威夷豆白巧餅乾.md)。
 
 # Review Required
 

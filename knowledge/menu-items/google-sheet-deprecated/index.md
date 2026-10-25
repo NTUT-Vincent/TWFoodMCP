@@ -1,17 +1,35 @@
-# TWFood Google Sheet Import
+# google-sheet-deprecated
 
-從 TWFood 共筆試算表匯入的營養觀測 draft；依記錄編號分桶，所有資料均待人工審核。
+TWFood Google Sheet 匯入的營養觀測 draft 封存，依品牌分組，全部維持未驗證 draft。
 
-* [00000-00099](00000-00099/) - 99 筆觀測。
-* [00100-00199](00100-00199/) - 100 筆觀測。
-* [00200-00299](00200-00299/) - 100 筆觀測。
-* [00300-00399](00300-00399/) - 100 筆觀測。
-* [00400-00499](00400-00499/) - 100 筆觀測。
-* [00500-00599](00500-00599/) - 100 筆觀測。
-* [00600-00699](00600-00699/) - 100 筆觀測。
-* [00700-00799](00700-00799/) - 100 筆觀測。
-* [00800-00899](00800-00899/) - 100 筆觀測。
-* [00900-00999](00900-00999/) - 99 筆觀測。
-* [01000-01099](01000-01099/) - 100 筆觀測。
-* [01100-01199](01100-01199/) - 100 筆觀測。
-* [01200-01299](01200-01299/) - 16 筆觀測。
+# Subdirectories
+
+* [21st-century-flavor-factory](21st-century-flavor-factory/) - 24 份概念文件。
+* [50lagu](50lagu/) - 104 份概念文件。
+* [7-eleven](7-eleven/) - 279 份概念文件。
+* [bafangyunji](bafangyunji/) - 61 份概念文件。
+* [burgerking](burgerking/) - 1 份概念文件。
+* [dezheng](dezheng/) - 66 份概念文件。
+* [familymart](familymart/) - 130 份概念文件。
+* [generic-recipes](generic-recipes/) - 4 份概念文件。
+* [generic-sushi](generic-sushi/) - 3 份概念文件。
+* [honger-burger](honger-burger/) - 8 份概念文件。
+* [instant-noodles](instant-noodles/) - 10 份概念文件。
+* [kenshui](kenshui/) - 9 份概念文件。
+* [kfc](kfc/) - 1 份概念文件。
+* [kura-sushi](kura-sushi/) - 5 份概念文件。
+* [laifu](laifu/) - 51 份概念文件。
+* [laiya-burger](laiya-burger/) - 12 份概念文件。
+* [louisa](louisa/) - 2 份概念文件。
+* [macuteafang](macuteafang/) - 96 份概念文件。
+* [marugame-seimen](marugame-seimen/) - 44 份概念文件。
+* [mcdonalds](mcdonalds/) - 32 份概念文件。
+* [morning-michishiki](morning-michishiki/) - 16 份概念文件。
+* [mos-burger](mos-burger/) - 47 份概念文件。
+* [mwd](mwd/) - 14 份概念文件。
+* [okmart](okmart/) - 45 份概念文件。
+* [pizza-hut](pizza-hut/) - 45 份概念文件。
+* [starbucks](starbucks/) - 88 份概念文件。
+* [subway](subway/) - 1 份概念文件。
+* [sushiro](sushiro/) - 11 份概念文件。
+* [zazengbao](zazengbao/) - 5 份概念文件。

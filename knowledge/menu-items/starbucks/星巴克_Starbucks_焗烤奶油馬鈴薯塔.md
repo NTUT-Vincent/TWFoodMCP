@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 焗烤奶油馬鈴薯塔](/menu-items/starbucks/foods/焗烤奶油馬鈴薯塔-bf37122277bc.md)。
+數值可交叉支持：[星巴克 焗烤奶油馬鈴薯塔](/menu-items/starbucks/foods/星巴克_焗烤奶油馬鈴薯塔.md)。
 
 # Review Required
 

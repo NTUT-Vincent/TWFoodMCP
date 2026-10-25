@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 辣炒牛肉起司長堡](/menu-items/starbucks/foods/辣炒牛肉起司長堡-335409ec7883.md)。
+數值可交叉支持：[星巴克 辣炒牛肉起司長堡](/menu-items/starbucks/foods/星巴克_辣炒牛肉起司長堡.md)。
 
 # Review Required
 

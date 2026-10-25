@@ -4,7 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import { extractFrontmatter } from "../scripts/lib/dataset.mjs";
 
-const ROOT = "knowledge/menu-items/google-sheet";
+const ROOT = "knowledge/menu-items/google-sheet-deprecated";
 
 async function conceptFiles(root) {
   const files = [];

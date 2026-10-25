@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 脆糖卡士達可頌](/menu-items/starbucks/foods/脆糖卡士達可頌-8cf1c8b6dd8a.md)。
+數值可交叉支持：[星巴克 脆糖卡士達可頌](/menu-items/starbucks/foods/星巴克_脆糖卡士達可頌.md)。
 
 # Review Required
 

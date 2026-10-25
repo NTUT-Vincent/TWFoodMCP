@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 藍莓果粒起司麵包](/menu-items/starbucks/foods/藍莓果粒起司麵包-6f35f777d774.md)。
+數值可交叉支持：[星巴克 藍莓果粒起司麵包](/menu-items/starbucks/foods/星巴克_藍莓果粒起司麵包.md)。
 
 # Review Required
 

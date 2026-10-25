@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[麥當勞 嫩煎鷄腿堡](/menu-items/mcdonalds/grilled-bbq-chicken-burger.md)。
+數值需要衝突審查：[麥當勞 嫩煎鷄腿堡](/menu-items/mcdonalds/麥當勞_嫩煎鷄腿堡.md)。
 
 # Review Required
 

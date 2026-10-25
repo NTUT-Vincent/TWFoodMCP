@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 義式濃縮咖啡(熱)](/menu-items/mcdonalds/espresso.md)。
+數值可交叉支持：[麥當勞 義式濃縮咖啡(熱)](/menu-items/mcdonalds/麥當勞_義式濃縮咖啡(熱).md)。
 
 # Review Required
 

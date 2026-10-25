@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 馬斯卡邦輕乳蛋糕](/menu-items/starbucks/foods/馬斯卡邦輕乳蛋糕-3b89e973456b.md)。
+數值可交叉支持：[星巴克 馬斯卡邦輕乳蛋糕](/menu-items/starbucks/foods/星巴克_馬斯卡邦輕乳蛋糕.md)。
 
 # Review Required
 

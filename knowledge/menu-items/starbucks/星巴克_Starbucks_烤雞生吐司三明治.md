@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 烤雞生吐司三明治](/menu-items/starbucks/foods/烤雞生吐司三明治-e531d9d75c18.md)。
+數值可交叉支持：[星巴克 烤雞生吐司三明治](/menu-items/starbucks/foods/星巴克_烤雞生吐司三明治.md)。
 
 # Review Required
 

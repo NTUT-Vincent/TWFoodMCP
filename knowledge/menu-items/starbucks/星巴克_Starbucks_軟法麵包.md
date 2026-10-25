@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 軟法麵包](/menu-items/starbucks/foods/軟法麵包-b366a9ad14fd.md)。
+數值可交叉支持：[星巴克 軟法麵包](/menu-items/starbucks/foods/星巴克_軟法麵包.md)。
 
 # Review Required
 

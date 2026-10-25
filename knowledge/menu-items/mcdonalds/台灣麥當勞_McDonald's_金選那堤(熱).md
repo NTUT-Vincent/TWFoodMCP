@@ -191,7 +191,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[麥當勞 金選那堤(熱)](/menu-items/mcdonalds/200333.md)。
+數值可交叉支持：[麥當勞 金選那堤(熱)](/menu-items/mcdonalds/麥當勞_金選那堤(熱).md)。
 
 # Review Required
 

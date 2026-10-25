@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 裸麥核果麵包](/menu-items/starbucks/foods/裸麥核果麵包-f083395b6b80.md)。
+數值可交叉支持：[星巴克 裸麥核果麵包](/menu-items/starbucks/foods/星巴克_裸麥核果麵包.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 粉紅覆盆莓可頌](/menu-items/starbucks/foods/粉紅覆盆莓可頌-85c780a29808.md)。
+數值可交叉支持：[星巴克 粉紅覆盆莓可頌](/menu-items/starbucks/foods/星巴克_粉紅覆盆莓可頌.md)。
 
 # Review Required
 

@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 比利時風格鬆餅](/menu-items/starbucks/foods/比利時風格鬆餅-0faaf8ac8350.md)。
+數值可交叉支持：[星巴克 比利時風格鬆餅](/menu-items/starbucks/foods/星巴克_比利時風格鬆餅.md)。
 
 # Review Required
 

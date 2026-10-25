@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 溫野菜](/menu-items/starbucks/foods/溫野菜-c095ab0c3908.md)。
+數值可交叉支持：[星巴克 溫野菜](/menu-items/starbucks/foods/星巴克_溫野菜.md)。
 
 # Review Required
 

@@ -78,7 +78,7 @@ jobs:
             if (!category.isDirectory()) continue;
             for (const file of await readdir(path.join(root, category.name))) {
               if (file === "index.md" || file === "log.md" || !file.endsWith(".md")) continue;
-              if (!/-\d+\.md$/u.test(file)) throw new Error(`Invalid MWD filename: ${category.name}/${file}`);
+              if (!file.startsWith("麥味登_")) throw new Error(`Invalid MWD filename: ${category.name}/${file}`);
               checked += 1;
             }
           }

@@ -147,7 +147,7 @@ limitations:
 
 # Related Existing Concept
 
-數值需要衝突審查：[星巴克 柚香蜂蜜波士頓派](/menu-items/starbucks/foods/柚香蜂蜜波士頓派-3a24fdc4ddec.md)。
+數值需要衝突審查：[星巴克 柚香蜂蜜波士頓派](/menu-items/starbucks/foods/星巴克_柚香蜂蜜波士頓派.md)。
 
 # Review Required
 

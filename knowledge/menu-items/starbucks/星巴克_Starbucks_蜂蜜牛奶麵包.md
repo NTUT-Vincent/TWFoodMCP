@@ -146,7 +146,7 @@ limitations:
 
 # Related Existing Concept
 
-數值可交叉支持：[星巴克 蜂蜜牛奶麵包](/menu-items/starbucks/foods/蜂蜜牛奶麵包-959b0c4b9e7b.md)。
+數值可交叉支持：[星巴克 蜂蜜牛奶麵包](/menu-items/starbucks/foods/星巴克_蜂蜜牛奶麵包.md)。
 
 # Review Required
 
