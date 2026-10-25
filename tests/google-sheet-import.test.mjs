@@ -18,7 +18,7 @@ async function conceptFiles(root) {
 
 test("Google Sheet import preserves all nutrition rows as safe drafts", async () => {
   const files = await conceptFiles(ROOT);
-  assert.equal(files.length, 1214);
+  assert.equal(files.length, 1720);
   const records = [];
   for (const file of files) {
     const data = extractFrontmatter(await readFile(file, "utf8"), file);
@@ -30,7 +30,7 @@ test("Google Sheet import preserves all nutrition rows as safe drafts", async ()
     assert.ok(data.sources[0].resource);
     assert.ok(Object.keys(data.nutrition[0].values).length >= 1);
   }
-  assert.equal(new Set(records.map(({ food }) => food.id)).size, 1214);
+  assert.equal(new Set(records.map(({ food }) => food.id)).size, 1720);
 });
 
 test("Google Sheet import keeps exact official corroborations and conflicts linked", async () => {

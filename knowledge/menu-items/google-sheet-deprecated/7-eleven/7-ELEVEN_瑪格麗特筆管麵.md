@@ -1,0 +1,117 @@
+---
+type: Food Product
+title: 7-ELEVEN 瑪格麗特筆管麵
+description: 從 TWFood 共筆試算表匯入的可追溯營養觀測 draft。
+resource: https://www.7-11.com.tw/freshfoods/17_ohlala/index.aspx
+tags:
+  - 7-ELEVEN
+  - 義大利麵／筆管麵
+  - TWFood 共筆
+  - 待人工審核
+generated:
+  by: twfoodmcp-google-sheet-importer/1.0.0
+  at: 2026-10-25T00:00:00.000Z
+status: draft
+stale_after: 2027-02-27
+sources:
+  - id: sheet-source-cc8ff9d8a4ca
+    resource: https://www.7-11.com.tw/freshfoods/17_ohlala/index.aspx
+    title: 7-ELEVEN 小七食堂｜Ohlala
+    source_class: primary_official
+    retrieved_at: 2026-08-27T00:00:00+08:00
+access:
+  classification: public
+food:
+  id: food:tw:menu:google-sheet:nut-01241
+  kind: menu_item
+  market: TW
+  brand: 7-ELEVEN
+  name: 瑪格麗特筆管麵
+  aliases:
+    - 瑪格麗特筆管麵
+    - 7-ELEVEN瑪格麗特筆管麵
+    - 7-ELEVEN 瑪格麗特筆管麵
+revision:
+  revision_id: google-sheet-2026-10-25-nut-01241
+serving:
+  description: 1份（官網商品頁）
+  amount: 1
+  unit: serving
+nutrition:
+  - basis: per_serving
+    values:
+      energy_kcal: 632
+quality:
+  data_quality: official_brand
+  completeness: minimal
+  confidence: medium
+  calculation_allowed: false
+extraction:
+  source_system: TWFood Google Sheet
+  spreadsheet_id: 16f4_7C9pBo0d9XDhXyRmqIh-MRhSwnGWAT122H9mONY
+  sheet_name: Nutrition Data
+  record_id: NUT-01241
+  evidence_grade: B
+  verification_status_as_reported: needs_verification
+  value_method: official_product_page_summary
+  source_type: brand_official_product_page
+  source_publisher: 7-ELEVEN Taiwan
+  source_author: null
+  source_row:
+    record_id: NUT-01241
+    food_name: 瑪格麗特筆管麵
+    brand_or_context: 7-ELEVEN
+    category: 義大利麵／筆管麵
+    serving_basis: 1份（官網商品頁）
+    calories_kcal: 632
+    protein_g: null
+    fat_g: null
+    saturated_fat_g: null
+    trans_fat_g: null
+    carbohydrate_g: null
+    sugar_g: null
+    sodium_mg: null
+    price_twd: 99
+    value_method: official_product_page_summary
+    evidence_grade: B
+    verification_status: needs_verification
+    source_type: brand_official_product_page
+    source_publisher: 7-ELEVEN Taiwan
+    source_author: null
+    source_title: 7-ELEVEN 小七食堂｜Ohlala
+    source_url: https://www.7-11.com.tw/freshfoods/17_ohlala/index.aspx
+    article_updated_at: null
+    accessed_at: 2026-08-27
+    primary_source_url: null
+    usage_note: 7-ELEVEN官方Ohlala商品頁明示整份熱量632kcal與價格99元；頁面非完整營養標示，其餘營養素保持空白，不推算，B級待以實體包裝核對。
+source_observation:
+  price_twd: 99
+  usage_note: 7-ELEVEN官方Ohlala商品頁明示整份熱量632kcal與價格99元；頁面非完整營養標示，其餘營養素保持空白，不推算，B級待以實體包裝核對。
+official_review_hint:
+  status: not_compared_or_no_match
+limitations:
+  - 此文件保存試算表的一筆觀測，不表示品牌、政府或 TWFoodMCP 已人工確認其正確性。
+  - 試算表中的 verification_status 只作為原始欄位保留，不會轉成 OKF verified 或 human-reviewed。
+  - 此 draft 的 quality.calculation_allowed 固定為 false；缺少的營養欄位維持 unknown。
+  - 份量描述依原始試算表保存，未據此推算重量、容量或每 100 g／ml 數值。
+---
+
+# Summary
+
+此文件保存試算表記錄 NUT-01241 的營養觀測。[^sheet-source-cc8ff9d8a4ca] 它是未驗證 draft，不能直接用於營養計算。
+
+# Observation
+
+| 欄位 | 值 |
+| --- | --- |
+| 食品 | 瑪格麗特筆管麵 |
+| 品牌／情境 | 7-ELEVEN |
+| 分類 | 義大利麵／筆管麵 |
+| 份量基準 | 1份（官網商品頁） |
+| energy_kcal | 632 |
+
+# Review Required
+
+升為 stable 前，真人 reviewer 必須確認產品身分、份量基準、來源版本、營養數值與重複／改版關係。
+
+[^sheet-source-cc8ff9d8a4ca]: 7-ELEVEN 小七食堂｜Ohlala

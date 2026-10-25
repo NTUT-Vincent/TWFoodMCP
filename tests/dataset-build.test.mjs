@@ -11,7 +11,7 @@ const GOOGLE_SHEET_ID_PREFIX = "food:tw:menu:google-sheet:";
 // brand-scoped food.id values; the count below is the full current corpus.
 const EXISTING_CORPUS_DOCUMENTS = 3704;
 const STARBUCKS_DOCUMENTS = 930;
-const GOOGLE_SHEET_DOCUMENTS = 1214;
+const GOOGLE_SHEET_DOCUMENTS = 1720;
 
 function splitSourceDocuments(dataset) {
   const dailydietitian = dataset.sourceDocuments.filter(({ data }) => data.food.id.startsWith(DAILYDIETITIAN_ID_PREFIX));
@@ -136,7 +136,9 @@ test("marks records stale relative to the publication timestamp", async () => {
   const dataset = await buildDataset({
     sourceCommit: "0123456789abcdef0123456789abcdef01234567",
     version: "test-stale",
-    generatedAt: "2027-03-01T00:00:00Z",
+    // Past the latest stale_after in the corpus (2027-04-25, from CSV rows
+    // accessed on 2026-10-25), so every preview record is stale.
+    generatedAt: "2027-05-01T00:00:00Z",
   });
 
   assert.equal(dataset.manifest.stale_documents, dataset.runtimeFoods.length);

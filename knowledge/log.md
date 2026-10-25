@@ -1,5 +1,14 @@
 # Knowledge Bundle Update Log
 
+## 2026-10-25 — CSV convergence
+
+* **Import**: Converged the bundle with the current `TWFood 台灣超商營養資料庫（持續更新） - Nutrition Data.csv` export. Added 506 new nutrition-observation drafts (`NUT-01216`–`NUT-01721`); the 1,214 rows already present were left untouched, so the archive now holds one concept per CSV row (1,720 total). New concepts land under `knowledge/menu-items/google-sheet-deprecated/<brand>/` using the same brand grouping as the 2026-08 import.
+* **Organization**: Composite brand strings (`7-ELEVEN i預購／…`, `7-ELEVEN／…`, `全家 FamilyMart／…`, `萊爾富 Hi-Life／…`, `OKmart／…`) fold into their parent brand directory; no new top-level directory was needed.
+* **Trust**: Every added row stays an explicit `status: draft` with `quality.calculation_allowed: false`, no `verified` events, the CSV `verification_status` preserved only under `extraction.verification_status_as_reported`, and missing nutrient cells left unknown. Rows are never replaced once present.
+* **Linking**: New rows were compared against the pre-existing official concepts: 1 corroborated and 5 conflicting observations link to the canonical concept for review, and 6 matched identity only. No draft overwrites a canonical record.
+* **Tooling**: Added `scripts/import-google-sheet-csv-okf.mjs` (`npm run import:google-sheet-csv`), an idempotent, non-destructive pass that adds only missing `food:tw:menu:google-sheet:<record_id>` concepts and refreshes the affected brand indexes and the archive index; audit report at `reports/google-sheet-csv-import-2026-10-25.json`.
+* **Validation**: `npm run validate:data` parses 10,962 documents (7 stable, 10,955 draft); `npm run check:links` resolves 10,036 internal links with zero broken; the full test suite passes (52/52).
+
 ## 2026-10-25
 
 * **Naming**: Renamed 6,503 concept files whose filenames carried no real-world meaning (hash-only stems such as `---2097cdc89fb4.md`, or hash suffixes such as `50嵐_8冰綠--12ec84073395.md`) to meaningful names derived from their frontmatter `title`. Colliding names are disambiguated with real-world qualifiers (serving basis like `中杯全糖`, source record ids like `NUT-00944`, official API slugs), with a stable id-hash only as the last resort. Every `food.id`, and all frontmatter content, is unchanged.
