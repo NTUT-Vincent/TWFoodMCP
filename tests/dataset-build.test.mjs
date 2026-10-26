@@ -6,10 +6,11 @@ const DAILYDIETITIAN_ID_PREFIX = "food:tw:menu:dailydietitian:";
 const MWD_ID_PREFIX = "food:tw:menu:mwd:";
 const STARBUCKS_ID_PREFIX = "food:tw:menu:starbucks:";
 const GOOGLE_SHEET_ID_PREFIX = "food:tw:menu:google-sheet:";
-// Re-baselined after the documented 2026-08 imports (MWD, Starbucks, Google
-// Sheet, DailyDietitian) migrated source drafts into brand directories with
-// brand-scoped food.id values; the count below is the full current corpus.
-const EXISTING_CORPUS_DOCUMENTS = 3704;
+// Re-baselined after the documented imports (MWD, Starbucks, Google Sheet,
+// DailyDietitian) and the 2026-10-26 Taiwan food-composition import (2,213
+// `food:tw:generic:*` concepts); the count below is the full current corpus
+// excluding the four explicitly namespaced sources.
+const EXISTING_CORPUS_DOCUMENTS = 5917;
 const STARBUCKS_DOCUMENTS = 930;
 const GOOGLE_SHEET_DOCUMENTS = 1720;
 
@@ -136,9 +137,9 @@ test("marks records stale relative to the publication timestamp", async () => {
   const dataset = await buildDataset({
     sourceCommit: "0123456789abcdef0123456789abcdef01234567",
     version: "test-stale",
-    // Past the latest stale_after in the corpus (2027-04-25, from CSV rows
-    // accessed on 2026-10-25), so every preview record is stale.
-    generatedAt: "2027-05-01T00:00:00Z",
+    // Past the latest stale_after in the corpus (2028-10-26, from the
+    // government generic-food 24-month default), so every preview record is stale.
+    generatedAt: "2028-11-01T00:00:00Z",
   });
 
   assert.equal(dataset.manifest.stale_documents, dataset.runtimeFoods.length);

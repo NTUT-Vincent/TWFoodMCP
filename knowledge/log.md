@@ -1,5 +1,14 @@
 # Knowledge Bundle Update Log
 
+## 2026-10-26 — Taiwan food composition database
+
+* **Import**: Added 2,213 generic-food concepts under a new `knowledge/generic-foods/` bundle from the Taiwan FDA Food Composition Database (台灣地區食品營養成分資料庫) snapshot `imports/20_2.csv` — one concept per 整合編號 (2,116 樣品基本資料 + 97 樣品平均值), grouped into 18 food-category directories. This matches the `knowledge/generic-foods/` layout anticipated by `docs/MVP_SPEC.md` §6.
+* **Identity**: New `food:tw:generic:<code>` ids (`kind: generic_food`), distinct from the `food:tw:menu:*` namespaces.
+* **Nutrition**: Values are captured verbatim on the explicit `per_100g` basis. Only the canonical schema fields (`energy_kcal`, `protein_g`, `fat_g`, `saturated_fat_g`, `trans_fat_g`, `carbohydrate_g`, `sugar_g`, `dietary_fiber_g`, `sodium_mg`) are structured; the complete per-100 g analysis (amino acids, fatty acids, vitamins, minerals) is preserved in each concept body. Source `trans fat` is reported in mg and converted to g (exact same-dimension conversion).
+* **Trust**: Government deterministic import → `source_class: primary_government`, `data_quality: government_database`, `confidence: medium`, and a single `process:tfnd-composition-importer` verification (machine-confirmed). Every concept is an explicit `status: draft`; `quality.calculation_allowed` is `false` per policy §5.4. Missing analysis items remain unknown (never 0); explicit source 0 values are preserved. `stale_after` uses the 24-month government-generic-food default.
+* **Tooling**: Added `scripts/import-tfnd-composition-okf.mjs` (`npm run import:tfnd`), an additive, idempotent pass that pivots the long-format CSV into concepts and regenerates the category and root indexes; audit report at `reports/tfnd-composition-import-2026-10-26.json`.
+* **Validation**: `npm run validate:data` parses 13,175 documents (7 stable, 13,168 draft); `npm run check:links` resolves 12,267 internal links with zero broken.
+
 ## 2026-10-25 — CSV convergence
 
 * **Import**: Converged the bundle with the current `TWFood 台灣超商營養資料庫（持續更新） - Nutrition Data.csv` export. Added 506 new nutrition-observation drafts (`NUT-01216`–`NUT-01721`); the 1,214 rows already present were left untouched, so the archive now holds one concept per CSV row (1,720 total). New concepts land under `knowledge/menu-items/google-sheet-deprecated/<brand>/` using the same brand grouping as the 2026-08 import.

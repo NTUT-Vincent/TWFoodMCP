@@ -22,6 +22,7 @@
     "import:starbucks": "node scripts/starbucks/scrape-starbucks-tw.mjs",
     "import:google-sheet": "node scripts/import-google-sheet-okf.mjs",
     "import:google-sheet-csv": "node scripts/import-google-sheet-csv-okf.mjs",
+    "import:tfnd": "node scripts/import-tfnd-composition-okf.mjs",
     "rename:dailydietitian-okf": "node scripts/rename-dailydietitian-okf-files.mjs",
     "import:dailydietitian": "node scripts/import-dailydietitian.mjs && npm run rename:dailydietitian-okf",
     "build:dailydietitian-drafts": "node scripts/build-dailydietitian-drafts.mjs && npm run rename:dailydietitian-okf",
