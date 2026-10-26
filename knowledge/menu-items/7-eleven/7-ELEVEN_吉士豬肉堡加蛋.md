@@ -1,6 +1,6 @@
 ---
 type: Food Product
-title: 7-ELEVEN 吉士豬肉堡加蛋
+title: 吉士豬肉堡加蛋
 description: 從 TWFood 共筆試算表匯入的可追溯營養觀測 draft。
 resource: https://www.7-11.com.tw/freshfoods/16_sandwich/index.aspx
 tags:
@@ -9,8 +9,8 @@ tags:
   - TWFood 共筆
   - 待人工審核
 generated:
-  by: twfoodmcp-google-sheet-importer/1.0.0
-  at: 2026-08-22T04:54:57.024Z
+  by: human:ntut-vincent
+  at: 2026-10-26T04:40:11.529Z
 status: draft
 stale_after: 2027-02-08
 sources:
@@ -40,7 +40,13 @@ serving:
 nutrition:
   - basis: per_serving
     values:
-      energy_kcal: 261
+      energy_kcal: 270
+      protein_g: 16.2
+      fat_g: 10.6
+      saturated_fat_g: 4.2
+      carbohydrate_g: 27.5
+      sugar_g: 1
+      sodium_mg: 780
 quality:
   data_quality: official_brand
   completeness: minimal
